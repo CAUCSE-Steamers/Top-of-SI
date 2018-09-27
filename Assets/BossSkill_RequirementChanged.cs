@@ -7,7 +7,7 @@ public class BossSkill_RequirementChanged : MonoBehaviour, Assets.BossSkill
 {
     void BossSkill.Do(Animator anim)
     {
-        anim.Play("Shout");
+        anim.Play("shout");
     }
 
     // Use this for initialization

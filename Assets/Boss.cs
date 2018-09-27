@@ -18,13 +18,18 @@ public class Boss : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(KeyCode.Space))
+        /*
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             update.Do(anim);
+            Debug.Log("Space Pressed");
         }
-        else if (Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             requirementchanged.Do(anim);
+            Debug.Log("Left Control Pressed");
         }
+        */
+        update.Do(anim);
     }
 }
