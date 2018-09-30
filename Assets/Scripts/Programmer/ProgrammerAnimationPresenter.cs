@@ -13,7 +13,7 @@ public class ProgrammerAnimationPresenter : MonoBehaviour
 
     private void Start()
     {
-        programmer.OnMovingStarted += position =>
+        programmer.OnMovingStarted += deltaPosition =>
         {
             animator.Play("Moving");
         };
