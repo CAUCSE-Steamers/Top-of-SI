@@ -32,24 +32,28 @@ public class Programmer : MonoBehaviour
     {
         var rotationBeforeMoving = transform.rotation;
 
+        OnMovingStarted(deltaPosition);
+        yield return Translate(deltaPosition);
+        OnMovingEnded(transform.position);
+
+        transform.rotation = rotationBeforeMoving;
+    }
+
+    private IEnumerator Translate(Vector3 deltaPosition)
+    {
         var sourcePosition = transform.position;
         var destinationPosition = transform.position + deltaPosition;
 
         float interpolationValue = 0.0f;
 
-        OnMovingStarted(deltaPosition);
-
         while (transform.position != destinationPosition)
         {
             yield return new WaitForEndOfFrame();
+
             interpolationValue += Time.deltaTime;
 
             var interpolatedPosition = Vector3.Lerp(sourcePosition, destinationPosition, interpolationValue);
             transform.position = interpolatedPosition;
         }
-
-        OnMovingEnded(transform.position);
-
-        transform.rotation = rotationBeforeMoving;
     }
 }
