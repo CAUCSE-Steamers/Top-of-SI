@@ -3,33 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets;
 
-public class Boss : MonoBehaviour {
+public class Boss : AbstractBoss {
     //private List<BossSkill> skills;
-    BossSkill update, requirementchanged;
-    private Animator anim;
+    //pririty queue 구현 필요
 
+    private Animator anim;
+    readonly int skill_hash = Animator.StringToHash("Skill_Called");
+    
     // Use this for initialization
     void Start () {
-        //skills = new List<BossSkill>();
         anim = GetComponent<Animator>();
-        update = gameObject.AddComponent<BossSkill_Update>();
-        requirementchanged = gameObject.AddComponent<BossSkill_RequirementChanged>();
+        Debug.Log("HP : " + GetCurrentHP());
     }
 	
 	// Update is called once per frame
 	void Update () {
-        /*
-        if (Input.GetKeyDown(KeyCode.Space))
+        // This codes are added for test of Get Damage.
+        // After merge, please Delete it.
+        if (Input.GetKey(KeyCode.Space))
         {
-            update.Do(anim);
-            Debug.Log("Space Pressed");
+            bool die = GetDamage(10);
+            if (die)
+            {
+                Debug.Log("Boss Dead");
+            }
+            else
+            {
+                Debug.Log("boss get Damaged. now HP is " + GetCurrentHP());
+            }
         }
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            requirementchanged.Do(anim);
-            Debug.Log("Left Control Pressed");
-        }
-        */
-        update.Do(anim);
     }
 }
