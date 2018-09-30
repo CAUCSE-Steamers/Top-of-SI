@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace Assets
 {
-    interface BossSkill
+    public interface IPassive
     {
-        void Do(Animator anim);       // 프로그래머 객체 배열
+        float SkilledCoolTime(float cooltime);
     }
 
-    interface ProgrammerSkill
+    public interface IBossSkill
     {
-        void Do();
+        void Do(ref Animator anim);
     }
 }

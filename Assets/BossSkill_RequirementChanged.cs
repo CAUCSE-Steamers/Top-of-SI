@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets;
 
-public class BossSkill_RequirementChanged : MonoBehaviour, Assets.BossSkill
+public class BossSkill_RequirementChanged : MonoBehaviour, Assets.IBossSkill
 {
-    void BossSkill.Do(Animator anim)
+    void IBossSkill.Do(ref Animator anim)
     {
         anim.Play("shout");
     }

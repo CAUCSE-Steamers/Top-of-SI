@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets;
 
-public class BossSkill_Update : MonoBehaviour, Assets.BossSkill {
+public class BossSkill_Update : MonoBehaviour, IBossSkill
+{
 
-    void BossSkill.Do(Animator anim) {
+    void IBossSkill.Do(ref Animator anim) {
         anim.Play("Attack");
     }
 
