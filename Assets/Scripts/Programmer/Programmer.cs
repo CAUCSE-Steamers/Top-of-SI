@@ -11,8 +11,12 @@ public class Programmer : MonoBehaviour
     public event Action OnSkillStarted = delegate { };
     public event Action OnSkillEnded = delegate { };
 
+    private Guid id;
+
     private void Start()
     {
+        id = Guid.NewGuid();
+
         OnMovingStarted += Rotate;
     }
 
@@ -46,7 +50,6 @@ public class Programmer : MonoBehaviour
     {
         var sourcePosition = transform.position;
         var destinationPosition = transform.position + deltaPosition;
-
         float interpolationValue = 0.0f;
 
         while (transform.position != destinationPosition)
@@ -84,5 +87,22 @@ public class Programmer : MonoBehaviour
         Destroy(particle.gameObject);
         OnSkillEnded();
         
+    }
+
+    public override int GetHashCode()
+    {
+        return id.GetHashCode();
+    }
+
+    public override bool Equals(object other)
+    {
+        var otherProgrammer = other as Programmer;
+        if (otherProgrammer == null)
+        {
+            return false;
+        }
+
+        return this.id == otherProgrammer.id &&
+               this.GetHashCode() == otherProgrammer.GetHashCode();
     }
 }
