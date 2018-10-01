@@ -32,5 +32,13 @@ public class Boss : AbstractBoss {
                 Debug.Log("boss get Damaged. now HP is " + GetCurrentHP());
             }
         }
+        else if (Input.GetKey(KeyCode.LeftControl))
+        {
+            anim.Play("Attack");
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            anim.Play("Shout");
+        }
     }
 }
