@@ -22,5 +22,15 @@ public class ProgrammerAnimationPresenter : MonoBehaviour
         {
             animator.SetTrigger("MovingEnd");
         };
+
+        programmer.OnSkillStarted += () =>
+        {
+            animator.Play("Skill");
+        };
+
+        programmer.OnSkillEnded += () =>
+        {
+            animator.SetTrigger("SkillEnd");
+        };
     }
 }

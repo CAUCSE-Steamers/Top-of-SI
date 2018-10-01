@@ -8,6 +8,9 @@ public class Programmer : MonoBehaviour
     public event Action<Vector3> OnMovingStarted = delegate { };
     public event Action<Vector3> OnMovingEnded = delegate { };
 
+    public event Action OnSkillStarted = delegate { };
+    public event Action OnSkillEnded = delegate { };
+
     private void Start()
     {
         OnMovingStarted += Rotate;
@@ -31,7 +34,7 @@ public class Programmer : MonoBehaviour
     private IEnumerator StartMove(Vector3 deltaPosition)
     {
         var rotationBeforeMoving = transform.rotation;
-
+        
         OnMovingStarted(deltaPosition);
         yield return Translate(deltaPosition);
         OnMovingEnded(transform.position);
@@ -55,5 +58,31 @@ public class Programmer : MonoBehaviour
             var interpolatedPosition = Vector3.Lerp(sourcePosition, destinationPosition, interpolationValue);
             transform.position = interpolatedPosition;
         }
+    }
+
+    public void UseSkill()
+    {
+        StartCoroutine(StartUseSkill());
+    }
+
+    [SerializeField]
+    private ParticleSystem testEffect;
+    [SerializeField]
+    private GameObject skillSpellPositionObject;
+
+    private IEnumerator StartUseSkill()
+    {
+        OnSkillStarted();
+
+        yield return new WaitForSeconds(0.5f);
+
+        var particle = Instantiate(testEffect, skillSpellPositionObject.transform);
+        particle.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(1.5f);
+
+        Destroy(particle.gameObject);
+        OnSkillEnded();
+        
     }
 }
