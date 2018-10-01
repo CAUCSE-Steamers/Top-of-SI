@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public static class RuntimeLogger
+public static class CommonLogger
 {
     public static void Log(object message)
     {
