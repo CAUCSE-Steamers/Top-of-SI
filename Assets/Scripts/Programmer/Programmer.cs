@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Model;
 
-public class Programmer : MonoBehaviour
+public class Programmer : MonoBehaviour, IEventDisposable
 {
+    public event Action OnActionFinished = delegate { };
+
     public event Action<Vector3> OnMovingStarted = delegate { };
     public event Action<Vector3> OnMovingEnded = delegate { };
 
@@ -40,10 +43,13 @@ public class Programmer : MonoBehaviour
         var rotationBeforeMoving = transform.rotation;
         
         OnMovingStarted(deltaPosition);
+
         yield return Translate(deltaPosition);
-        OnMovingEnded(transform.position);
 
         transform.rotation = rotationBeforeMoving;
+
+        OnMovingEnded(transform.position);
+        OnActionFinished();
     }
 
     private IEnumerator Translate(Vector3 deltaPosition)
@@ -85,8 +91,9 @@ public class Programmer : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         Destroy(particle.gameObject);
+
         OnSkillEnded();
-        
+        OnActionFinished();
     }
 
     public override int GetHashCode()
@@ -104,5 +111,14 @@ public class Programmer : MonoBehaviour
 
         return this.id == otherProgrammer.id &&
                this.GetHashCode() == otherProgrammer.GetHashCode();
+    }
+
+    public void DisposeRegisteredEvents()
+    {
+        OnActionFinished = delegate { };
+        OnMovingStarted = delegate { };
+        OnMovingEnded = delegate { };
+        OnSkillStarted = delegate { };
+        OnSkillEnded = delegate { };
     }
 }
