@@ -14,12 +14,8 @@ public class Programmer : MonoBehaviour, IEventDisposable
     public event Action OnSkillStarted = delegate { };
     public event Action OnSkillEnded = delegate { };
 
-    private Guid id;
-
     private void Start()
     {
-        id = Guid.NewGuid();
-
         OnMovingStarted += Rotate;
     }
 
@@ -91,26 +87,9 @@ public class Programmer : MonoBehaviour, IEventDisposable
         yield return new WaitForSeconds(1.5f);
 
         Destroy(particle.gameObject);
-
+        
         OnSkillEnded();
         OnActionFinished();
-    }
-
-    public override int GetHashCode()
-    {
-        return id.GetHashCode();
-    }
-
-    public override bool Equals(object other)
-    {
-        var otherProgrammer = other as Programmer;
-        if (otherProgrammer == null)
-        {
-            return false;
-        }
-
-        return this.id == otherProgrammer.id &&
-               this.GetHashCode() == otherProgrammer.GetHashCode();
     }
 
     public void DisposeRegisteredEvents()
