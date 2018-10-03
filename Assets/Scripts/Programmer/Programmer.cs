@@ -21,14 +21,19 @@ public class Programmer : MonoBehaviour, IEventDisposable
 
     private void Rotate(Vector3 direction)
     {
+        CommonLogger.LogFormat("Programmer::Rotate => 프로그래머가 회전 명령을 받음. RotateDirection = {0}", direction);
+
         var normalizedDirection = direction.normalized;
         var newRotation = Quaternion.LookRotation(normalizedDirection);
         
         transform.rotation = newRotation;
+
+        CommonLogger.Log("Programmer::Rotate => 프로그래머가 회전이 완료됨.");
     }
 
     public void Move(Vector3 deltaPosition)
     {
+        CommonLogger.LogFormat("Programmer::Move => 프로그래머가 이동 명령을 받음. DeltaPosition = {0}", deltaPosition);
         StopCoroutine("StartMove");
 
         StartCoroutine(StartMove(deltaPosition));
@@ -43,6 +48,8 @@ public class Programmer : MonoBehaviour, IEventDisposable
         yield return Translate(deltaPosition);
 
         transform.rotation = rotationBeforeMoving;
+
+        CommonLogger.Log("Programmer::Move => 프로그래머의 이동이 종료됨.");
 
         OnMovingEnded(transform.position);
         OnActionFinished();
@@ -67,6 +74,7 @@ public class Programmer : MonoBehaviour, IEventDisposable
 
     public void UseSkill()
     {
+        CommonLogger.Log("Programmer::UseSkill => 프로그래머의 스킬 사용이 시작됨.");
         StartCoroutine(StartUseSkill());
     }
 
@@ -87,7 +95,9 @@ public class Programmer : MonoBehaviour, IEventDisposable
         yield return new WaitForSeconds(1.5f);
 
         Destroy(particle.gameObject);
-        
+
+        CommonLogger.Log("Programmer::UseSkill => 프로그래머의 스킬 사용이 끝남.");
+
         OnSkillEnded();
         OnActionFinished();
     }
