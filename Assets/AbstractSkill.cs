@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Assets;
+using System;
 
-public abstract class AbstractSkill : MonoBehaviour{
+public abstract class AbstractSkill : MonoBehaviour, IComparable<AbstractSkill>{
     protected int coolTime = 0, cool = 0;
     private List<IPassive> passiveSkills;
 
@@ -39,4 +40,16 @@ public abstract class AbstractSkill : MonoBehaviour{
     }
 
     public abstract void Do(ref Animator anim);
+
+    public int CompareTo(AbstractSkill other)
+    {
+        if(this.coolTime == other.coolTime)
+        {
+            return (this.cool > other.cool) ? 1 : -1;
+        }
+        else
+        {
+            return (this.coolTime > other.coolTime) ? 1 : -1;
+        }
+    }
 }
