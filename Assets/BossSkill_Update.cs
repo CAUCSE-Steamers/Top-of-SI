@@ -8,6 +8,7 @@ public class BossSkill_Update : AbstractSkill
     public override void Do(ref Animator anim)
     {
         anim.Play("Attack");
+        cool = 0;
     }
 
     // Use this for initialization

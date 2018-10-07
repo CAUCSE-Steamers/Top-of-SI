@@ -7,7 +7,8 @@ public class BossSkill_RequirementChanged : AbstractSkill
 {
     public override void Do(ref Animator anim)
     {
-        anim.Play("shout");
+        anim.Play("Shout");
+        cool = 0;
     }
 
     // Use this for initialization

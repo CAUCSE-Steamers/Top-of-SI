@@ -16,8 +16,12 @@ public abstract class AbstractSkill : MonoBehaviour, IComparable<AbstractSkill>{
 	
 	// Update is called once per frame
 	void Update () {
-        cool++;
 	}
+
+    public void OnTurn()
+    {
+        cool++;
+    }
 
     public bool SkillOnActive()
     {
@@ -27,6 +31,10 @@ public abstract class AbstractSkill : MonoBehaviour, IComparable<AbstractSkill>{
     public int GetCoolTime()
     {
         float cooltime = this.coolTime;
+        if(passiveSkills == null)
+        {
+            return (int)(cooltime);
+        }
         foreach (IPassive iter in passiveSkills)
         {
             cooltime = iter.SkilledCoolTime(cooltime);
@@ -49,7 +57,7 @@ public abstract class AbstractSkill : MonoBehaviour, IComparable<AbstractSkill>{
         }
         else
         {
-            return (this.coolTime > other.coolTime) ? 1 : -1;
+            return (this.GetCoolTime() > other.GetCoolTime()) ? 1 : -1;
         }
     }
 }

@@ -6,14 +6,14 @@ using Assets;
 public class Boss : AbstractBoss {
 
     private Animator anim;
-    readonly int skill_hash = Animator.StringToHash("Skill_Called");
-    
     // Use this for initialization
     void Start ()
     {
         anim = GetComponent<Animator>();
-        this.skill_list = new List<AbstractSkill>();
         //nullpoint exception
+        this.skill_list = new List<AbstractSkill>();
+        gameObject.AddComponent<BossSkill_RequirementChanged>();
+        gameObject.AddComponent<BossSkill_Update>();
         skill_list.Add(GetComponent<BossSkill_RequirementChanged>());
         skill_list.Add(GetComponent<BossSkill_Update>());
         Debug.Log("HP : " + GetCurrentHP());
@@ -38,19 +38,25 @@ public class Boss : AbstractBoss {
         }
         else if (Input.GetKey(KeyCode.LeftControl))
         {
-            Debug.Log("LeftControl Pressed");
-            skill_list[0].Do(ref anim);
-        }
-        else if (Input.GetKey(KeyCode.LeftShift))
-        {
-            Debug.Log("LeftShift Pressed");
-            skill_list[1].Do(ref anim);
+            this.Do();
         }
     }
 
     public override void Do()
     {
-        //Boss AI function
-        throw new System.NotImplementedException();
+        //Add Cool and Sort
+        foreach (AbstractSkill skill in skill_list)
+        {
+            skill.OnTurn();
+        }
+        skill_list.Sort((x, y) => x.CompareTo(y));
+        //Do Skill
+        foreach(AbstractSkill skill in skill_list)
+        {
+            if (skill.SkillOnActive())
+            {
+                skill.Do(ref anim);
+            }
+        }
     }
 }
