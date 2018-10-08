@@ -14,6 +14,8 @@ public class Programmer : MonoBehaviour, IEventDisposable
     public event Action OnSkillStarted = delegate { };
     public event Action OnSkillEnded = delegate { };
 
+    public event Action OnMouseClicked = delegate { };
+
     private void Start()
     {
         OnMovingStarted += Rotate;
@@ -29,6 +31,11 @@ public class Programmer : MonoBehaviour, IEventDisposable
         transform.rotation = newRotation;
 
         CommonLogger.Log("Programmer::Rotate => 프로그래머가 회전이 완료됨.");
+    }
+
+    private void OnMouseDown()
+    {
+        OnMouseClicked();
     }
 
     public void Move(Vector3 deltaPosition)
@@ -105,9 +112,11 @@ public class Programmer : MonoBehaviour, IEventDisposable
     public void DisposeRegisteredEvents()
     {
         OnActionFinished = delegate { };
-        OnMovingStarted = delegate { };
         OnMovingEnded = delegate { };
         OnSkillStarted = delegate { };
         OnSkillEnded = delegate { };
+        OnMouseClicked = delegate { };
+
+        OnMovingStarted = Rotate;
     }
 }
