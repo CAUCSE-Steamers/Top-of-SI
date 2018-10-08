@@ -13,6 +13,20 @@ public class UnitManager : MonoBehaviour, IDisposable, IEventDisposable
     private Programmer boss; // TODO : Convert to boss
     private TurnState currentTurn;
 
+    public IEnumerable<Programmer> Programmers
+    {
+        get
+        {
+            if (programmerActingDictionary == null)
+            {
+                DebugLogger.LogError("UnitManager::Programmer => 아직 설정된 프로그래머가 없습니다.");
+                throw new NullReferenceException();
+            }
+
+            return programmerActingDictionary.Keys;
+        }
+    }
+
     public void SetUnits(IEnumerable<Programmer> programmers, Programmer boss)
     {
         CommonLogger.Log("UnitManager::SetUnits => 초기화 시작.");
