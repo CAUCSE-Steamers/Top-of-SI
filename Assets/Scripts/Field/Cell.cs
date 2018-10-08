@@ -6,7 +6,7 @@ public class Cell : MonoBehaviour
     [SerializeField]
     private Vector2Int size;
     [SerializeField]
-    private int layerMaskForCheckingObject;
+    private int layerMaskOnlyForProgrammer;
 
     public Vector2Int Size
     {
@@ -23,7 +23,7 @@ public class Cell : MonoBehaviour
 
     public bool HasObjectOnCell()
     {
-        int programmerOnlyMask = (1 << layerMaskForCheckingObject);
+        int programmerOnlyMask = (1 << layerMaskOnlyForProgrammer);
 
         var detectedProgrammers =
             Physics.BoxCastAll(center: transform.position,
