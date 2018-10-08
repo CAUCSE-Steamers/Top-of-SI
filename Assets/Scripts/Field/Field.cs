@@ -84,6 +84,12 @@ public class Field : MonoBehaviour
                             .Select(cell => cell);
     }
 
+    public IEnumerable<Cell> FetchObjectNotContainingCells()
+    {
+        return cellsInSquare.SelectMany(rowCells => rowCells)
+                            .Except(FetchObjectContainingCells());
+    }
+
     public Vector2Int VectorToIndices(Vector3 position)
     {
         var cellSize = GetCell(0, 0).Size;
