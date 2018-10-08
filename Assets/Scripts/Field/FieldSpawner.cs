@@ -10,6 +10,8 @@ public class FieldSpawner : MonoBehaviour
     [SerializeField]
     private Cell[] sampleCells;
     [SerializeField]
+    private GameObject cellEffect;
+    [SerializeField]
     private Vector2Int fieldLength;
 
     private void Start()
@@ -24,7 +26,7 @@ public class FieldSpawner : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    private void SpawnField()
+    public Field SpawnField()
     {
         var fieldObject = CreateFieldObject();
         var includedCells = new List<List<Cell>>();
@@ -40,6 +42,8 @@ public class FieldSpawner : MonoBehaviour
                 createdCell.transform.position = CalculateCellPosition(fieldObject.transform.position, xPositionInField, yPositionInField);
                 createdCell.gameObject.SetActive(true);
 
+                CreateCellEffect(createdCell);
+
                 rowCells.Add(createdCell);
                 pointedIndex = (pointedIndex + 1) % sampleCells.Length;
             }
@@ -48,6 +52,8 @@ public class FieldSpawner : MonoBehaviour
         }
 
         fieldObject.SetIncludedCells(includedCells.Select(rowCells => rowCells as IEnumerable<Cell>));
+
+        return fieldObject;
     }
 
     private Field CreateFieldObject()
@@ -57,6 +63,23 @@ public class FieldSpawner : MonoBehaviour
         fieldObject.transform.position = this.transform.position;
 
         return fieldObject;
+    }
+
+    private GameObject CreateCellEffect(Cell createdCell)
+    {
+        if (cellEffect == null)
+        {
+            DebugLogger.LogWarning("FieldSpawner::CreateCellAreaParticle => Cell에 생성할 AreaParticle이 없으므로 파티클을 생성하지 않습니다.");
+            return null;
+        }
+
+        var createdEffect = Instantiate(cellEffect, createdCell.gameObject.transform);
+
+        createdEffect.gameObject.SetActive(false);
+        createdEffect.transform.position = createdCell.transform.position;
+
+        createdCell.Effect = createdEffect.gameObject;
+        return createdEffect;
     }
 
     private Vector3 CalculateCellPosition(Vector3 origin, int xPositionInField, int yPositionInField)
