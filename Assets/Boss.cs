@@ -12,8 +12,14 @@ public class Boss : AbstractBoss {
         anim = GetComponent<Animator>();
         //nullpoint exception
         this.skill_list = new List<AbstractSkill>();
-        gameObject.AddComponent<BossSkill_RequirementChanged>();
-        gameObject.AddComponent<BossSkill_Update>();
+        if(GetComponent<BossSkill_RequirementChanged>() == null)
+        {
+            gameObject.AddComponent<BossSkill_RequirementChanged>();
+        }
+        if(GetComponent<BossSkill_Update>() == null)
+        {
+            gameObject.AddComponent<BossSkill_Update>();
+        }
         skill_list.Add(GetComponent<BossSkill_RequirementChanged>());
         skill_list.Add(GetComponent<BossSkill_Update>());
         Debug.Log("HP : " + GetCurrentHP());
