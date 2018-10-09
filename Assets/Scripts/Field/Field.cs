@@ -8,6 +8,20 @@ public class Field : MonoBehaviour
     private IList<IList<Cell>> cellsInSquare;
     private Vector2Int size;
 
+    public IEnumerable<Cell> Cells
+    {
+        get
+        {
+            if (cellsInSquare == null)
+            {
+                DebugLogger.LogError("Field::Cells => 아직 Field에 설정된 Cell이 없습니다.");
+                throw new NullReferenceException();
+            }
+
+            return cellsInSquare.SelectMany(rowCells => rowCells);
+        }
+    }
+
     public Cell GetCell(int x, int y)
     {
         try
@@ -68,6 +82,12 @@ public class Field : MonoBehaviour
         return cellsInSquare.SelectMany(rowCells => rowCells)
                             .Where(cell => cell.HasObjectOnCell())
                             .Select(cell => cell);
+    }
+
+    public IEnumerable<Cell> FetchObjectNotContainingCells()
+    {
+        return cellsInSquare.SelectMany(rowCells => rowCells)
+                            .Except(FetchObjectContainingCells());
     }
 
     public Vector2Int VectorToIndices(Vector3 position)

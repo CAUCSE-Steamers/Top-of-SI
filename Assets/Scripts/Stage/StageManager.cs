@@ -13,6 +13,8 @@ public class StageManager : MonoBehaviour, IDisposable
     private StageStatusManager statusManager;
     [SerializeField]
     private UnitManager unitManager;
+    [SerializeField]
+    private FieldSpawner fieldSpawner;
 
     private void Awake()
     {
@@ -24,6 +26,16 @@ public class StageManager : MonoBehaviour, IDisposable
 
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
+    }
+    
+    private void Start()
+    {
+        if (fieldSpawner == null)
+        {
+            DebugLogger.LogError("StageManager::Start => 필드를 생성할 Spawner가 null입니다.");
+        }
+
+        TempSetStage();
     }
 
     public StageStatusManager Status
@@ -56,7 +68,7 @@ public class StageManager : MonoBehaviour, IDisposable
     private Programmer[] programmers;
     [SerializeField]
     private Programmer boss; // TODO: Changed to boss
-    private void Start()
+    private void TempSetStage()
     {
         SetStage(programmers, boss);
     }
@@ -67,9 +79,9 @@ public class StageManager : MonoBehaviour, IDisposable
         CommonLogger.Log("StageManager::SetStage => 초기화 시작");
 
         Status.InitializeStageStatus(maximumDayLimit: 10, unitManager: Unit);
-        Unit.SetUnits(programmers, boss);
+        Unit.SetUnits(programmers, boss, fieldSpawner.SpawnField());
     }
-
+    
     public void Dispose()
     {
         Unit.DisposeRegisteredEvents();

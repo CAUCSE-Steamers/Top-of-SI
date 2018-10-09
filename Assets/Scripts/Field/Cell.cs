@@ -6,7 +6,12 @@ public class Cell : MonoBehaviour
     [SerializeField]
     private Vector2Int size;
     [SerializeField]
-    private int layerMaskForCheckingObject;
+    private int layerMaskOnlyForProgrammer;
+
+    public GameObject Effect
+    {
+        private get; set;
+    }
 
     public Vector2Int Size
     {
@@ -23,7 +28,7 @@ public class Cell : MonoBehaviour
 
     public bool HasObjectOnCell()
     {
-        int programmerOnlyMask = (1 << layerMaskForCheckingObject);
+        int programmerOnlyMask = (1 << layerMaskOnlyForProgrammer);
 
         var detectedProgrammers =
             Physics.BoxCastAll(center: transform.position,
@@ -34,5 +39,17 @@ public class Cell : MonoBehaviour
                                layermask: programmerOnlyMask);
 
         return detectedProgrammers.Length > 0;
+    }
+
+    public void SetEffectActiveState(bool newState)
+    {
+        if (Effect == null)
+        {
+            DebugLogger.LogWarning("Cell::SetAreaParticleActiveState => AreaParticle 상태를 변경하려 했지만, 설정된 파티클이 없습니다.");
+        }
+        else
+        {
+            Effect.gameObject.SetActive(newState);
+        }
     }
 }
