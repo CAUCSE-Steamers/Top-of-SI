@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets;
 
-public class BossSkill_Update : MonoBehaviour, IBossSkill
+public class BossSkill_Update : AbstractSkill
 {
-
-    void IBossSkill.Do(ref Animator anim) {
+    public override void Do(ref Animator anim)
+    {
         anim.Play("Attack");
+        cool = 0;
     }
 
     // Use this for initialization

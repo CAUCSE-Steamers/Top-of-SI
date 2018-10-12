@@ -10,9 +10,4 @@ namespace Assets
     {
         float SkilledCoolTime(float cooltime);
     }
-
-    public interface IBossSkill
-    {
-        void Do(ref Animator anim);
-    }
 }

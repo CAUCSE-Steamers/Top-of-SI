@@ -4,15 +4,24 @@ using UnityEngine;
 using Assets;
 
 public class Boss : AbstractBoss {
-    //private List<BossSkill> skills;
-    //pririty queue 구현 필요
 
     private Animator anim;
-    readonly int skill_hash = Animator.StringToHash("Skill_Called");
-    
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         anim = GetComponent<Animator>();
+        //nullpoint exception
+        this.skill_list = new List<AbstractSkill>();
+        if(GetComponent<BossSkill_RequirementChanged>() == null)
+        {
+            gameObject.AddComponent<BossSkill_RequirementChanged>();
+        }
+        if(GetComponent<BossSkill_Update>() == null)
+        {
+            gameObject.AddComponent<BossSkill_Update>();
+        }
+        skill_list.Add(GetComponent<BossSkill_RequirementChanged>());
+        skill_list.Add(GetComponent<BossSkill_Update>());
         Debug.Log("HP : " + GetCurrentHP());
     }
 	
@@ -20,6 +29,7 @@ public class Boss : AbstractBoss {
 	void Update () {
         // This codes are added for test of Get Damage.
         // After merge, please Delete it.
+
         if (Input.GetKey(KeyCode.Space))
         {
             bool die = GetDamage(10);
@@ -34,11 +44,25 @@ public class Boss : AbstractBoss {
         }
         else if (Input.GetKey(KeyCode.LeftControl))
         {
-            anim.Play("Attack");
+            this.Do();
         }
-        else if (Input.GetKey(KeyCode.LeftShift))
+    }
+
+    public override void Do()
+    {
+        //Add Cool and Sort
+        foreach (AbstractSkill skill in skill_list)
         {
-            anim.Play("Shout");
+            skill.OnTurn();
+        }
+        skill_list.Sort((x, y) => x.CompareTo(y));
+        //Do Skill
+        foreach(AbstractSkill skill in skill_list)
+        {
+            if (skill.SkillOnActive())
+            {
+                skill.Do(ref anim);
+            }
         }
     }
 }

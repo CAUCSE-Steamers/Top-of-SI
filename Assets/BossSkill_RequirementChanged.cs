@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets;
 
-public class BossSkill_RequirementChanged : MonoBehaviour, Assets.IBossSkill
+public class BossSkill_RequirementChanged : AbstractSkill
 {
-    void IBossSkill.Do(ref Animator anim)
+    public override void Do(ref Animator anim)
     {
-        anim.Play("shout");
+        anim.Play("Shout");
+        cool = 0;
     }
 
     // Use this for initialization
