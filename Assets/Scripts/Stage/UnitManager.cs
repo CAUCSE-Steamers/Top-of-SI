@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Model;
 
-public class UnitManager : MonoBehaviour, IDisposable, IEventDisposable
+public class UnitManager : MonoBehaviour, IEventDisposable
 {
     public readonly static IEnumerable<Vector2Int> ProgrammerMovableIndices = new List<Vector2Int>
     {
@@ -68,7 +68,7 @@ public class UnitManager : MonoBehaviour, IDisposable, IEventDisposable
 
         OnTurnChanged += RequestBossActionIfTurnChangedToBoss;
         OnTurnChanged += PermitProgrammersActionIfTurnChangedToPlayer;
-        
+        OnTurnChanged += DecreaseActiveSkillCooldownIfTurnChangedToPlayer;
         programmerActingDictionary = 
             programmers.ToDictionary(keySelector: programmer => programmer,
                                      elementSelector: programmer => false);
@@ -83,7 +83,7 @@ public class UnitManager : MonoBehaviour, IDisposable, IEventDisposable
 
         CommonLogger.Log("UnitManager::SetUnits => 초기화 완료.");
     }
-    
+
     private void SubscribeToProgrammers()
     {
         foreach (var programmer in programmerActingDictionary.Keys)
@@ -109,6 +109,7 @@ public class UnitManager : MonoBehaviour, IDisposable, IEventDisposable
     }
 
     // TODO: Delete
+    public Programmer CurrentSelectedProgrammer;
     private void Register(Programmer programmer)
     {
         programmer.OnMouseClicked += () =>
@@ -117,7 +118,28 @@ public class UnitManager : MonoBehaviour, IDisposable, IEventDisposable
             {
                 movableCell.SetEffectActiveState(true);
             }
+
+            CurrentSelectedProgrammer = programmer;
         };
+    }
+
+    // TODO: Delete
+    public void TempSkillUse()
+    {
+        var skill = CurrentSelectedProgrammer.Ability.AcquiredActiveSkills.First();
+
+        if (skill is IEffectProducible)
+        {
+            var effectObject = (skill as IEffectProducible).MakeEffect(CurrentSelectedProgrammer.transform);
+
+            CurrentSelectedProgrammer.OnSkillEnded += () =>
+            {
+                Destroy(effectObject);
+            };
+        }
+
+        CurrentSelectedProgrammer.UseSkill();
+        skill.ApplySkill(boss, ProjectType.Application, RequiredTechType.Web);
     }
 
     public IEnumerable<Cell> CurrentMovableCellFor(Programmer programmer)
@@ -125,7 +147,7 @@ public class UnitManager : MonoBehaviour, IDisposable, IEventDisposable
         var currentProgrammerIndexInField = stageField.VectorToIndices(programmer.transform.position);
 
         var noObjectContainingCells = stageField.FetchObjectNotContainingCells();
-        var movableCells = noObjectContainingCells.Where(cell => UnitManager.ProgrammerMovableIndices.Contains(cell.PositionInField - currentProgrammerIndexInField));
+        var movableCells = noObjectContainingCells.Where(cell => ProgrammerMovableIndices.Contains(cell.PositionInField - currentProgrammerIndexInField));
 
         var blockedMovableCells = from cell in movableCells
                                   let difference = cell.PositionInField - currentProgrammerIndexInField
@@ -166,6 +188,27 @@ public class UnitManager : MonoBehaviour, IDisposable, IEventDisposable
         }
     }
 
+    private void DecreaseActiveSkillCooldownIfTurnChangedToPlayer(TurnState turn)
+    {
+        if (turn == TurnState.Player)
+        {
+            foreach (var activeSkill in Programmers.SelectMany(programmer => programmer.Ability.AcquiredActiveSkills))
+            {
+                if (activeSkill is ICooldownRequired)
+                {
+                    (activeSkill as ICooldownRequired).DecreaseCooldown();
+                }
+
+                foreach (var passiveSkill in activeSkill.FlattenContainingPassiveSkills()
+                                                        .Where(passiveSkill => passiveSkill is ICooldownRequired)
+                                                        .Select(passiveSkill => passiveSkill as ICooldownRequired))
+                {
+                    passiveSkill.DecreaseCooldown();    
+                }
+            }
+        }
+    }
+
     public TurnState Turn
     {
         get
@@ -190,11 +233,6 @@ public class UnitManager : MonoBehaviour, IDisposable, IEventDisposable
 
         DebugLogger.LogWarning("UnitManager::IsAbleToAct => 전달된 프로그래머가 현재 사전에 존재하지 않습니다.");
         return false;
-    }
-
-    public void Dispose()
-    {
-        programmerActingDictionary.Clear();
     }
 
     public void DisposeRegisteredEvents()
