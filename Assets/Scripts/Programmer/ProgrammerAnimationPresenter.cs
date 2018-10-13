@@ -32,5 +32,15 @@ public class ProgrammerAnimationPresenter : MonoBehaviour
         {
             animator.SetTrigger("SkillEnd");
         };
+
+        programmer.OnDamaged += damage =>
+        {
+            animator.Play("Damaged");
+        };
+
+        programmer.OnDeath += () =>
+        {
+            animator.Play("Death");
+        };
     }
 }

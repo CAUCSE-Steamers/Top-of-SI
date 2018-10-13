@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Model;
 
-public class Programmer : MonoBehaviour, IEventDisposable
+public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
 {
     public event Action OnActionFinished = delegate { };
 
@@ -16,8 +16,61 @@ public class Programmer : MonoBehaviour, IEventDisposable
 
     public event Action OnMouseClicked = delegate { };
 
-    private void Start()
+    public event Action<int> OnDamaged = delegate { };
+    public event Action OnDeath = delegate { };
+
+    public ProgrammerStatus Status
     {
+        get; private set;
+    }
+
+    public ProgrammerAbility Ability
+    {
+        get; private set;
+    }
+
+    public void SetHealth(int newHealth)
+    {
+        Status.Health = newHealth;
+    }
+
+    public void Heal(int increasingHealth)
+    {
+        Status.Health += increasingHealth;
+        Status.Health = Mathf.Clamp(Status.Health, 0, Status.FullHealth);
+
+        CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 {1}의 체력을 회복함. 현재 체력은 {2}.", name, increasingHealth, Status.Health);
+    }
+
+    public void Hurt(int damage)
+    {
+        if (damage < 0)
+        {
+            DebugLogger.LogWarningFormat("Programmer::Hurt => {0} 프로그래머가 음수의 데미지를 입음.", name);
+        }
+
+        Status.Health -= damage;
+        OnDamaged(damage);
+
+        CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 {1}의 데미지를 입음. 남은 체력은 {2}.", name, damage, Status.Health);
+
+        if (Status.Health <= 0)
+        {
+            CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 사망함!", name);
+            OnDeath();
+        }
+    }
+
+    private void Awake()
+    {
+        Status = new ProgrammerStatus
+        {
+            FullHealth = 100,
+            Health = 4
+        };
+
+        Ability = new ProgrammerAbility();
+
         OnMovingStarted += Rotate;
     }
 
@@ -116,6 +169,8 @@ public class Programmer : MonoBehaviour, IEventDisposable
         OnSkillStarted = delegate { };
         OnSkillEnded = delegate { };
         OnMouseClicked = delegate { };
+        OnDeath = delegate { };
+        OnDamaged = delegate { };
 
         OnMovingStarted = Rotate;
     }
