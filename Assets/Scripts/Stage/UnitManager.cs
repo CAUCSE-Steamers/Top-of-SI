@@ -30,15 +30,11 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     private TurnState currentTurn;
     private Field stageField;
 
-    // TODO: Delete
-    private void Update()
+    public void ResetCells()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        foreach (var cell in stageField.Cells)
         {
-            foreach (var cell in stageField.Cells)
-            {
-                cell.SetEffectActiveState(false);
-            }
+            cell.SetEffectActiveState(false);
         }
     }
 
@@ -53,6 +49,20 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             }
 
             return programmerActingDictionary.Keys;
+        }
+    }
+
+    // TODO: Convert to boss
+    public Programmer Boss
+    {
+        get
+        {
+            if (boss == null)
+            {
+                DebugLogger.LogError("UnitManager::Boss => 아직 설정된 보스가 없습니다.");
+            }
+
+            return boss;
         }
     }
 
@@ -114,11 +124,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         programmer.OnMouseClicked += () =>
         {
-            foreach (var movableCell in CurrentMovableCellFor(programmer))
-            {
-                movableCell.SetEffectActiveState(true);
-            }
-
             CurrentSelectedProgrammer = programmer;
         };
     }

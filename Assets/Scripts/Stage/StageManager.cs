@@ -12,6 +12,8 @@ public class StageManager : MonoBehaviour, IDisposable
     [SerializeField]
     private StageStatusManager statusManager;
     [SerializeField]
+    private StageUiPresenter uiPresenter;
+    [SerializeField]
     private UnitManager unitManager;
     [SerializeField]
     private FieldSpawner fieldSpawner;
@@ -64,6 +66,19 @@ public class StageManager : MonoBehaviour, IDisposable
         }
     }
 
+    public StageUiPresenter UiPresenter
+    {
+        get
+        {
+            if (uiPresenter == null)
+            {
+                DebugLogger.LogError("UnitManager::UiPresenter => UiPresenter가 Null입니다!");
+            }
+
+            return uiPresenter;
+        }
+    }
+
     [SerializeField]
     private Programmer[] programmers;
     [SerializeField]
@@ -78,6 +93,7 @@ public class StageManager : MonoBehaviour, IDisposable
         // TODO : Remove hard-coding
         CommonLogger.Log("StageManager::SetStage => 초기화 시작");
 
+        UiPresenter.SetPresenter(Status, Unit);
         Status.InitializeStageStatus(maximumDayLimit: 10, unitManager: Unit);
         Unit.SetUnits(programmers, boss, fieldSpawner.SpawnField());
     }
