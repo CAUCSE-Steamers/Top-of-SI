@@ -14,18 +14,6 @@ public class FieldSpawner : MonoBehaviour
     [SerializeField]
     private Vector2Int fieldLength;
 
-    private void Start()
-    {
-        SpawnField();
-        
-        foreach (var cell in sampleCells)
-        {
-            Destroy(cell.gameObject);
-        }
-
-        Destroy(this.gameObject);
-    }
-
     public Field SpawnField()
     {
         var fieldObject = CreateFieldObject();

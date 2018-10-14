@@ -37,7 +37,7 @@ namespace Model
         {
             get
             {
-                return cooldown == 0;
+                return cooldown < double.Epsilon;
             }
         }
 

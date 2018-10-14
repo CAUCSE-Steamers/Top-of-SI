@@ -14,7 +14,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
     public event Action OnSkillStarted = delegate { };
     public event Action OnSkillEnded = delegate { };
 
-    public event Action OnMouseClicked = delegate { };
+    public event Action<GameObject> OnMouseClicked = delegate { };
 
     public event Action<int> OnDamaged = delegate { };
     public event Action OnDeath = delegate { };
@@ -66,7 +66,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
         Status = new ProgrammerStatus
         {
             FullHealth = 100,
-            Health = 4
+            Health = 4,
+            Name = "테스트 보스"
         };
 
         Ability = new ProgrammerAbility();
@@ -88,7 +89,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
 
     private void OnMouseDown()
     {
-        OnMouseClicked();
+        OnMouseClicked(this.gameObject);
     }
 
     public void Move(Vector3 deltaPosition)
@@ -171,6 +172,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
         OnMouseClicked = delegate { };
         OnDeath = delegate { };
         OnDamaged = delegate { };
+
+        Status.DisposeRegisteredEvents();
 
         OnMovingStarted = Rotate;
     }
