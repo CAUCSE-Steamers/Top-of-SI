@@ -5,7 +5,8 @@ public enum StateParameter
 {
     Idle,
     SelectMove,
-    Pause
+    Pause,
+    Setting
 }
 
 public static class StateParameterConverter
@@ -20,6 +21,8 @@ public static class StateParameterConverter
                 return "SelectMove";
             case StateParameter.Pause:
                 return "Pause";
+            case StateParameter.Setting:
+                return "Setting";
             default:
                 DebugLogger.LogWarningFormat("StateParameterConverter::ParameterToName => 알 수 없는 매개변수 {0}이 주어졌습니다.", parameter);
                 return string.Empty;

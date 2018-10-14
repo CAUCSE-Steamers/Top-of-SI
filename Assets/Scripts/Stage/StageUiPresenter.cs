@@ -55,14 +55,34 @@ public class StageUiPresenter : MonoBehaviour
 
     public void TogglePause()
     {
-        var isPaused = stateAnimator.GetStateBool(StateParameter.Pause);
-        if (isPaused)
+        ToggleState
+        (
+            StateParameter.Pause,
+            onTrueValue: stateAnimator.GetBehaviour<PauseState>().TransitionToIdle,
+            onFalseValue: stateAnimator.GetBehaviour<IdleState>().TransitionToPauseState
+        );
+    }
+
+    public void ToggleSetting()
+    {
+        ToggleState
+        (
+            StateParameter.Setting,
+            onTrueValue: stateAnimator.GetBehaviour<SettingState>().TransitionToIdle,
+            onFalseValue: stateAnimator.GetBehaviour<IdleState>().TransitionToSettingState
+        );
+    }
+
+    private void ToggleState(StateParameter stateParameter, Action onTrueValue, Action onFalseValue)
+    {
+        bool value = stateAnimator.GetStateBool(stateParameter);
+        if (value)
         {
-            stateAnimator.GetBehaviour<PauseState>().TransitionToIdle();
+            onTrueValue();
         }
         else
         {
-            stateAnimator.GetBehaviour<IdleState>().TransitionToPauseState();
+            onFalseValue();
         }
     }
 
