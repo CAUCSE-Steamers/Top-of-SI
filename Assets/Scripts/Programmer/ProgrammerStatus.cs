@@ -11,6 +11,11 @@ namespace Model
 
         private int health;
 
+        public string Name
+        {
+            get; set;
+        }
+
         public ProgrammerStatus()
         {
             FullHealth = Health;

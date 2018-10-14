@@ -9,6 +9,20 @@ public class StageUiPresenter : MonoBehaviour
     private Animator stateAnimator;
     [SerializeField]
     private ObjectInformationPresenter objectInformationPresenter;
+    [SerializeField]
+    private StageInformationPresenter stageInformationPresenter;
+
+    private void Start()
+    {
+        AddEnterEvent<IdleState>(StartUiSynchronizing);
+    }
+
+    private void StartUiSynchronizing()
+    {
+        RemoveEnterEvent<IdleState>(StartUiSynchronizing);
+
+        stageInformationPresenter.StartSynchronizing();
+    }
 
     public void GoToSelectingMoveCell()
     {
@@ -31,11 +45,41 @@ public class StageUiPresenter : MonoBehaviour
         moveState.TransitionToIdle();
     }
 
+    public void GoToVacation()
+    {
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
+
+        if (idleState.IsProgrammerSelected)
+        {
+            var programmer = idleState.SelectedObject.GetComponent<Programmer>();
+
+            idleState.TransitionToMoveState();
+        }
+    }
+
+    public void ConfirmVacation()
+    {
+
+    }
+
+    public void CancelVacation()
+    {
+
+    }
+
     public void AddEnterEvent<T>(Action action) where T : DispatchableState
     {
         foreach (var behaviour in stateAnimator.GetBehaviours<T>())
         {
             behaviour.OnEntered += action;
+        }
+    }
+
+    public void RemoveEnterEvent<T>(Action action) where T : DispatchableState
+    {
+        foreach (var behaviour in stateAnimator.GetBehaviours<T>())
+        {
+            behaviour.OnEntered -= action;
         }
     }
 

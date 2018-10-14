@@ -66,7 +66,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
         Status = new ProgrammerStatus
         {
             FullHealth = 100,
-            Health = 4
+            Health = 4,
+            Name = "테스트 보스"
         };
 
         Ability = new ProgrammerAbility();

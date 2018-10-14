@@ -282,7 +282,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -1634,48 +1634,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 219810251}
---- !u!1 &226187755
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 226187757}
-  - component: {fileID: 226187756}
-  m_Layer: 0
-  m_Name: UiPresenter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &226187756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 226187755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 301fa0cf5a1eb6940bd942e54d4c7843, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stateAnimator: {fileID: 403914965}
-  objectInformationPresenter: {fileID: 0}
---- !u!4 &226187757
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 226187755}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 400371151}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &234194017
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,7 +2009,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -2202,7 +2160,6 @@ Transform:
   - {fileID: 920565259}
   - {fileID: 654518455}
   - {fileID: 900699071}
-  - {fileID: 226187757}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2218,7 +2175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusManager: {fileID: 900699072}
-  uiPresenter: {fileID: 226187756}
+  uiPresenter: {fileID: 0}
   unitManager: {fileID: 654518456}
   fieldSpawner: {fileID: 920565258}
   programmers:
@@ -2241,6 +2198,8 @@ GameObject:
   - component: {fileID: 403914962}
   - component: {fileID: 403914961}
   - component: {fileID: 403914965}
+  - component: {fileID: 403914966}
+  - component: {fileID: 403914967}
   m_Layer: 5
   m_Name: GameUi
   m_TagString: Untagged
@@ -2346,6 +2305,35 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &403914966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 403914960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b6a9c47bae834428e700174c73791f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elapsedDayText: {fileID: 1013551690}
+  bossNameText: {fileID: 463453700}
+  bossHealthText: {fileID: 742928155}
+  bossHealthSlider: {fileID: 1005006141}
+--- !u!114 &403914967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 403914960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 301fa0cf5a1eb6940bd942e54d4c7843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateAnimator: {fileID: 403914965}
+  objectInformationPresenter: {fileID: 0}
+  stageInformationPresenter: {fileID: 403914966}
 --- !u!1 &409404291
 GameObject:
   m_ObjectHideFlags: 0
@@ -2441,7 +2429,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -2972,7 +2960,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -3113,7 +3101,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -3262,8 +3250,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: -0.3500061, y: 0}
+  m_SizeDelta: {x: -10.71, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &606601043
 GameObject:
@@ -4811,7 +4799,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 403914967}
         m_MethodName: CancelMove
         m_Mode: 1
         m_Arguments:
@@ -6166,7 +6154,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 403914967}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -6930,7 +6918,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.304
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7530,7 +7518,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -7754,7 +7742,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -10227,7 +10215,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -12052,7 +12040,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -12434,7 +12422,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
@@ -12466,7 +12454,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: f86ae0097f28cb8439bba6cde49b3daa, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 994076e12fb620c4fafd0e23f06da1dc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12958,7 +12946,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226187756}
+      - m_Target: {fileID: 0}
         m_MethodName: GoToSelectingMoveCell
         m_Mode: 1
         m_Arguments:
