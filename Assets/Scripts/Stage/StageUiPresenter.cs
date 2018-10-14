@@ -45,26 +45,17 @@ public class StageUiPresenter : MonoBehaviour
         moveState.TransitionToIdle();
     }
 
-    public void GoToVacation()
+    public void TogglePause()
     {
-        var idleState = stateAnimator.GetBehaviour<IdleState>();
-
-        if (idleState.IsProgrammerSelected)
+        var isPaused = stateAnimator.GetStateBool(StateParameter.Pause);
+        if (isPaused)
         {
-            var programmer = idleState.SelectedObject.GetComponent<Programmer>();
-
-            idleState.TransitionToMoveState();
+            stateAnimator.GetBehaviour<PauseState>().TransitionToIdle();
         }
-    }
-
-    public void ConfirmVacation()
-    {
-
-    }
-
-    public void CancelVacation()
-    {
-
+        else
+        {
+            stateAnimator.GetBehaviour<IdleState>().TransitionToPauseState();
+        }
     }
 
     public void AddEnterEvent<T>(Action action) where T : DispatchableState
