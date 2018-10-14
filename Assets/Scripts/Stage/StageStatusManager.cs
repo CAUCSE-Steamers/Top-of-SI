@@ -97,7 +97,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
     {
         var selectedProgrammerStatus = unitManager.CurrentSelectedProgrammer.Status;
 
-        if (selectedProgrammerStatus.StartVacationDay != null)
+        if (selectedProgrammerStatus.IsOnVacation)
         {
             DebugLogger.LogWarningFormat("프로그래머 '{0}'는 이미 휴가를 떠난 상태지만, 또 휴가를 떠나려고 합니다.", unitManager.CurrentSelectedProgrammer.name);
         }
@@ -109,7 +109,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
     {
         var selectedProgrammerStatus = unitManager.CurrentSelectedProgrammer.Status;
 
-        if (selectedProgrammerStatus.StartVacationDay == null)
+        if (selectedProgrammerStatus.IsOnVacation == false)
         {
             DebugLogger.LogWarningFormat("프로그래머 '{0}'는 휴가를 떠나지 않은 상태에서 복귀하려고 합니다.", unitManager.CurrentSelectedProgrammer.name);
         }

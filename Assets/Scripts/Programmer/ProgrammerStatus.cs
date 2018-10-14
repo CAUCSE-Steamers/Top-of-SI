@@ -21,6 +21,14 @@ namespace Model
             get; set;
         }
 
+        public bool IsOnVacation
+        {
+            get
+            {
+                return StartVacationDay != null;
+            }
+        }
+
         public int FullHealth
         {
             get; set;

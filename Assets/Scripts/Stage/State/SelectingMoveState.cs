@@ -36,7 +36,7 @@ public class SelectingMoveState : DispatchableState
         }
     }
 
-    private void DisableCellEffect(GameObject selectedObject)
+    public void DisableCellEffect(GameObject selectedObject)
     {
         Manager.StageField.SetAllCellEffectOff();
     }

@@ -24,6 +24,13 @@ public class StageUiPresenter : MonoBehaviour
         }
     }
 
+    public void CancelMove()
+    {
+        var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
+        moveState.DisableCellEffect(gameObject);
+        moveState.TransitionToIdle();
+    }
+
     public void AddEnterEvent<T>(Action action) where T : DispatchableState
     {
         foreach (var behaviour in stateAnimator.GetBehaviours<T>())
