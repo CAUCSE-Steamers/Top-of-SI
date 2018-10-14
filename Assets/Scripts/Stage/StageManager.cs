@@ -7,7 +7,10 @@ using Model;
 
 public class StageManager : MonoBehaviour, IDisposable
 {
-    public static StageManager Instance = null;
+    public static StageManager Instance
+    {
+        get; private set;
+    }
 
     [SerializeField]
     private StageStatusManager statusManager;
@@ -66,17 +69,9 @@ public class StageManager : MonoBehaviour, IDisposable
         }
     }
 
-    public StageUiPresenter UiPresenter
+    public Field StageField
     {
-        get
-        {
-            if (uiPresenter == null)
-            {
-                DebugLogger.LogError("UnitManager::UiPresenter => UiPresenter가 Null입니다!");
-            }
-
-            return uiPresenter;
-        }
+        get; private set;
     }
 
     [SerializeField]
@@ -92,10 +87,10 @@ public class StageManager : MonoBehaviour, IDisposable
     {
         // TODO : Remove hard-coding
         CommonLogger.Log("StageManager::SetStage => 초기화 시작");
+        StageField = fieldSpawner.SpawnField();
 
-        UiPresenter.SetPresenter(Status, Unit);
         Status.InitializeStageStatus(maximumDayLimit: 10, unitManager: Unit);
-        Unit.SetUnits(programmers, boss, fieldSpawner.SpawnField());
+        Unit.SetUnits(programmers, boss, StageField);
     }
     
     public void Dispose()

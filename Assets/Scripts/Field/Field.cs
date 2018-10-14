@@ -117,6 +117,14 @@ public class Field : MonoBehaviour
     {
         var cellSize = GetCell(0, 0).Size;
 
-        return new Vector3(deltaIndices.y * cellSize.y, 0, deltaIndices.x * cellSize.x);
+        return new Vector3(deltaIndices.x * cellSize.x, 0, deltaIndices.y * cellSize.y);
+    }
+
+    public void SetAllCellEffectOff()
+    {
+        foreach (var cell in Cells)
+        {
+            cell.SetEffectActiveState(false);
+        }
     }
 }

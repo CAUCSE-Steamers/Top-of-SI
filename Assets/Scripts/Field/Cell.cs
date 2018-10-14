@@ -1,12 +1,21 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+using Model;
 
-public class Cell : MonoBehaviour
+public class Cell : MonoBehaviour, IEventDisposable
 {
+    public event Action<GameObject> OnMouseClicked = delegate { };
+
     [SerializeField]
     private Vector2Int size;
     [SerializeField]
     private int layerMaskOnlyForProgrammer;
+
+    private void OnMouseDown()
+    {
+        OnMouseClicked(gameObject);
+    }
 
     public GameObject Effect
     {
@@ -51,5 +60,10 @@ public class Cell : MonoBehaviour
         {
             Effect.gameObject.SetActive(newState);
         }
+    }
+
+    public void DisposeRegisteredEvents()
+    {
+        OnMouseClicked = delegate { };
     }
 }

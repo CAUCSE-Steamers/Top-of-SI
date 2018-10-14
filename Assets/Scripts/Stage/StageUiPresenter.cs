@@ -1,35 +1,50 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class StageUiPresenter : MonoBehaviour
 {
-    private const string ElapsedDayFormat = "{0}일 째";
-
     [SerializeField]
-    private Text elapsedDayText;
+    private Animator stateAnimator;
     [SerializeField]
-    private Text bossHealthText;
-    [SerializeField]
-    private Slider bossHealthSlider;
+    private ObjectInformationPresenter objectInformationPresenter;
 
-    private StageStatusManager statusManager;
-    private UnitManager unitManager;
-
-    private GameObject currentSelectedObject;
-    public void SetPresenter(StageStatusManager statusManager, UnitManager unitManager)
+    public void GoToSelectingMoveCell()
     {
-        CommonLogger.Log("StageUiPresenter::SetPresenter => 초기화 시작.");
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
 
-        this.statusManager = statusManager;
-        this.unitManager = unitManager;
+        if (idleState.IsProgrammerSelected)
+        {
+            var programmer = idleState.SelectedObject.GetComponent<Programmer>();
+            var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
+            moveState.SetSelectedProgrammer(programmer);
 
-        statusManager.OnElapsedDayChanged += RefreshElapsedDayUi;
-        CommonLogger.Log("StageUiPresenter::SetPresenter => 초기화 완료.");
+            idleState.TransitionToMoveState();
+        }
     }
 
-    private void RefreshElapsedDayUi(int newElapsedDay)
+    public void AddEnterEvent<T>(Action action) where T : DispatchableState
     {
-        elapsedDayText.text = string.Format(ElapsedDayFormat, newElapsedDay.ToString());
+        foreach (var behaviour in stateAnimator.GetBehaviours<T>())
+        {
+            behaviour.OnEntered += action;
+        }
+    }
+
+    public void AddUpdateEvent<T>(Action action) where T : DispatchableState
+    {
+        foreach (var behaviour in stateAnimator.GetBehaviours<T>())
+        {
+            behaviour.OnUpdated += action;
+        }
+    }
+
+    public void AddExitEvent<T>(Action action) where T : DispatchableState
+    {
+        foreach (var behaviour in stateAnimator.GetBehaviours<T>())
+        {
+            behaviour.OnExit += action;
+        }
     }
 }

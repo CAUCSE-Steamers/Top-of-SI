@@ -30,14 +30,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     private TurnState currentTurn;
     private Field stageField;
 
-    public void ResetCells()
-    {
-        foreach (var cell in stageField.Cells)
-        {
-            cell.SetEffectActiveState(false);
-        }
-    }
-
     public IEnumerable<Programmer> Programmers
     {
         get
@@ -122,7 +114,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     public Programmer CurrentSelectedProgrammer;
     private void Register(Programmer programmer)
     {
-        programmer.OnMouseClicked += () =>
+        programmer.OnMouseClicked += obj =>
         {
             CurrentSelectedProgrammer = programmer;
         };
