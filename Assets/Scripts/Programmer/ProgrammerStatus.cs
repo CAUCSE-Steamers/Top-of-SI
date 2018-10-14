@@ -5,8 +5,12 @@ using System.Text;
 
 namespace Model
 {
-    public class ProgrammerStatus
+    public class ProgrammerStatus : IEventDisposable
     {
+        public event Action<int> OnHealthChanged = delegate { };
+
+        private int health;
+
         public ProgrammerStatus()
         {
             FullHealth = Health;
@@ -24,7 +28,20 @@ namespace Model
 
         public int Health
         {
-            get; set;
+            get
+            {
+                return health;
+            }
+            set
+            {
+                health = value;
+                OnHealthChanged(health);
+            }
+        }
+
+        public void DisposeRegisteredEvents()
+        {
+            OnHealthChanged = delegate { };
         }
     }
 }
