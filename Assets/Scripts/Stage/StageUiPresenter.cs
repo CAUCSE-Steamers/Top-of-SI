@@ -15,6 +15,14 @@ public class StageUiPresenter : MonoBehaviour
     private void Start()
     {
         AddEnterEvent<IdleState>(StartUiSynchronizing);
+
+        AddEnterEvent<IdleState>(() =>
+        {
+            var idleState = stateAnimator.GetBehaviour<IdleState>();
+            idleState.OnSelected += objectInformationPresenter.SetObjectInformation;
+        });
+
+        AddExitEvent<IdleState>(objectInformationPresenter.ClearInformationUi);
     }
 
     private void StartUiSynchronizing()
