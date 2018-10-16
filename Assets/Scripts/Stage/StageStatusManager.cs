@@ -92,31 +92,4 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
 
         CommonLogger.Log("StageStatusManager::DisposeRegisteredEvents => 이벤트 Disposing 완료.");
     }
-
-    public void GoVacation()
-    {
-        var selectedProgrammerStatus = unitManager.CurrentSelectedProgrammer.Status;
-
-        if (selectedProgrammerStatus.IsOnVacation)
-        {
-            DebugLogger.LogWarningFormat("프로그래머 '{0}'는 이미 휴가를 떠난 상태지만, 또 휴가를 떠나려고 합니다.", unitManager.CurrentSelectedProgrammer.name);
-        }
-
-        selectedProgrammerStatus.StartVacationDay = ElapsedDays;
-    }
-
-    public void ReturnFromVacation()
-    {
-        var selectedProgrammerStatus = unitManager.CurrentSelectedProgrammer.Status;
-
-        if (selectedProgrammerStatus.IsOnVacation == false)
-        {
-            DebugLogger.LogWarningFormat("프로그래머 '{0}'는 휴가를 떠나지 않은 상태에서 복귀하려고 합니다.", unitManager.CurrentSelectedProgrammer.name);
-        }
-
-        int deltaDays = (ElapsedDays - selectedProgrammerStatus.StartVacationDay).Value;
-        int healQuantity = (int) ((selectedProgrammerStatus.FullHealth * (0.05 * deltaDays * deltaDays)));
-        unitManager.CurrentSelectedProgrammer.Heal(healQuantity);
-        selectedProgrammerStatus.StartVacationDay = null;
-    }
 }
