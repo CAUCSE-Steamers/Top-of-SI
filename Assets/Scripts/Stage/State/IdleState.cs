@@ -64,6 +64,11 @@ public class IdleState : DispatchableState
         PlayingAnimator.SetStateTrigger(StateParameter.SelectMove);
     }
 
+    public void TransitionToVacationState()
+    {
+        PlayingAnimator.SetStateTrigger(StateParameter.StartVacation);
+    }
+
     public void TransitionToPauseState()
     {
         PlayingAnimator.SetStateBool(StateParameter.Pause, true);
