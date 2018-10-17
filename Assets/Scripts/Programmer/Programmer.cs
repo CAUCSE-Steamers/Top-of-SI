@@ -182,17 +182,18 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
     {
         if (Status.IsOnVacation)
         {
-            DebugLogger.LogWarningFormat("프로그래머 '{0}'는 이미 휴가를 떠난 상태지만, 또 휴가를 떠나려고 합니다.", name);
+            DebugLogger.LogWarningFormat("Programmer::GoVacation => 프로그래머 '{0}'는 이미 휴가를 떠난 상태지만, 또 휴가를 떠나려고 합니다.", name);
         }
 
         Status.StartVacationDay = elapsedDays;
+        CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가를 떠납니다.", name, elapsedDays);
     }
 
     public void ReturnFromVacation(int elapsedDays)
     {
         if (Status.IsOnVacation == false)
         {
-            DebugLogger.LogWarningFormat("프로그래머 '{0}'는 휴가를 떠나지 않은 상태에서 복귀하려고 합니다.", name);
+            DebugLogger.LogWarningFormat("Programmer::GoVacation => 프로그래머 '{0}'는 휴가를 떠나지 않은 상태에서 복귀하려고 합니다.", name);
         }
 
         int deltaDays = (elapsedDays - Status.StartVacationDay).Value;
@@ -200,5 +201,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
 
         Heal(healQuantity);
         Status.StartVacationDay = null;
+
+        CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
     }
 }

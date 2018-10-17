@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using System.Linq;
 
 public class StageUiPresenter : MonoBehaviour
 {
@@ -19,10 +20,12 @@ public class StageUiPresenter : MonoBehaviour
         AddEnterEvent<IdleState>(() =>
         {
             var idleState = stateAnimator.GetBehaviour<IdleState>();
+            objectInformationPresenter.ClearInformationUi();
             idleState.OnSelected += objectInformationPresenter.SetObjectInformation;
         });
 
-        AddExitEvent<IdleState>(objectInformationPresenter.ClearInformationUi);
+        AddEnterEvent<SelectingMoveState>(objectInformationPresenter.ClearInformationUi);
+        AddExitEvent<VacationStartState>(objectInformationPresenter.ClearInformationUi);
     }
 
     private void StartUiSynchronizing()
@@ -44,6 +47,32 @@ public class StageUiPresenter : MonoBehaviour
 
             idleState.TransitionToMoveState();
         }
+    }
+
+    public void SelectToVacation()
+    {
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
+
+        if (idleState.IsProgrammerSelected)
+        {
+            var programmer = idleState.SelectedObject.GetComponent<Programmer>();
+            var vacationState = stateAnimator.GetBehaviour<VacationStartState>();
+
+            idleState.TransitionToVacationState();
+            vacationState.SetSelectedProgrammer(programmer);
+        }
+    }
+
+    public void ReturnFromVacationToIdle(bool confirmingVacation)
+    {
+        var vacationState = stateAnimator.GetBehaviour<VacationStartState>();
+
+        if (confirmingVacation)
+        {
+            vacationState.ConfirmVacation();
+        }
+
+        vacationState.TransitionToIdle();
     }
 
     public void CancelMove()
@@ -116,5 +145,27 @@ public class StageUiPresenter : MonoBehaviour
         {
             behaviour.OnExit += action;
         }
+    }
+
+    // TODO: Delete
+    public void TempSkillUse()
+    {
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
+        var CurrentSelectedProgrammer = idleState.SelectedObject.GetComponent<Programmer>();
+        var skill = CurrentSelectedProgrammer.Ability.AcquiredActiveSkills.First();
+
+        if (skill is Model.IEffectProducible)
+        {
+            var effectObject = (skill as Model.IEffectProducible).MakeEffect(CurrentSelectedProgrammer.transform);
+
+            CurrentSelectedProgrammer.OnSkillEnded += () =>
+            {
+                Destroy(effectObject);
+            };
+        }
+
+        var boss = StageManager.Instance.Unit.Boss;
+        CurrentSelectedProgrammer.UseSkill();
+        skill.ApplySkill(boss, Model.ProjectType.Application, Model.RequiredTechType.Web);
     }
 }
