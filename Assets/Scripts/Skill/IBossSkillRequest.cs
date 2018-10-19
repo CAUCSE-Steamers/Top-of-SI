@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Assets
+namespace Model
 {
-    public interface IPassive
+    interface IBossSkillRequest
     {
-        float SkilledCoolTime(float cooltime);
+        void Invoke(Animator animator);
     }
 }
