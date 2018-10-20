@@ -10,9 +10,10 @@ namespace Model
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.Burf,
-            Technique = TechniqueType.Common,
+            Technique = RequiredTechType.Common,
             Name = "RequirementChanged",
-            MaximumLevel = 1
+            MaximumLevel = 1,
+            Animation = "Shout"
         };
 
         public RequirementChanged() : base(information, 0.1, 3)

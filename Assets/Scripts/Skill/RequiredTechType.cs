@@ -19,6 +19,7 @@ namespace Model
         Ui = 256,
         Compiler = 512,
         Multiprogramming = 1024,
-        Graphic = 2048
+        Graphic = 2048, 
+        Common = 4096
     }
 }

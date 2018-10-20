@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    public abstract class ProjectSkill : ICooldownRequired, IComparable<ProjectSkill>
+    public abstract class ProjectSkill : ICooldownRequired
     {
         private double cooldown;
 
@@ -33,12 +33,7 @@ namespace Model
                 cooldown -= 1.0;
             }
         }
-
-        public int CompareTo(ProjectSkill other)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public ProjectSkillInformation Information
         {
             get; private set;
@@ -54,6 +49,13 @@ namespace Model
             get; private set;
         }
 
+        public double Priority
+        {
+            get
+            {
+                return DefaultCooldown - cooldown;
+            }
+        }
         
     }
 }

@@ -10,9 +10,10 @@ namespace Model
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.MultiAttack,
-            Technique = TechniqueType.Common,
+            Technique = RequiredTechType.Common,
             Name = "VersionUpdate",
-            MaximumLevel = 1
+            MaximumLevel = 1,
+            Animation = "Attack"
         };
 
         public VersionUpdate() : base(information, 10.0, 0)

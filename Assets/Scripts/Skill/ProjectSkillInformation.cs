@@ -7,12 +7,12 @@ namespace Model
 {
     public class ProjectSkillInformation
     {
-        public BossSkillType Type
+        public ProjectSkillType Type
         {
             get; set;
         }
 
-        public TechniqueType Technique
+        public RequiredTechType Technique
         {
             get; set;
         }
@@ -23,6 +23,11 @@ namespace Model
         }
 
         public int MaximumLevel
+        {
+            get; set;
+        }
+
+        public String Animation
         {
             get; set;
         }
