@@ -21,6 +21,8 @@ namespace Model
 
         }
 
+        //TODO: TechniqueType도 추가할 것.
+
         protected override double CalculateProjectTypeAppliedDamage(ProjectType projectType)
         {
             return BaseDamage;
