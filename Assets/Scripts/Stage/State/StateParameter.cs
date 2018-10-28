@@ -7,7 +7,9 @@ public enum StateParameter
     SelectMove,
     Pause,
     Setting,
-    StartVacation
+    StartVacation,
+    Failure,
+    Victory,
 }
 
 public static class StateParameterConverter
@@ -26,6 +28,10 @@ public static class StateParameterConverter
                 return "Setting";
             case StateParameter.StartVacation:
                 return "StartVacation";
+            case StateParameter.Failure:
+                return "Failure";
+            case StateParameter.Victory:
+                return "Victory";
             default:
                 DebugLogger.LogWarningFormat("StateParameterConverter::ParameterToName => 알 수 없는 매개변수 {0}이 주어졌습니다.", parameter);
                 return string.Empty;

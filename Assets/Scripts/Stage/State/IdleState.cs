@@ -78,4 +78,14 @@ public class IdleState : DispatchableState
     {
         PlayingAnimator.SetStateBool(StateParameter.Setting, true);
     }
+
+    public void TransitionToFailureState()
+    {
+        PlayingAnimator.SetStateBool(StateParameter.Failure, true);
+    }
+
+    public void TransitionToVictoryState()
+    {
+        PlayingAnimator.SetStateBool(StateParameter.Victory, true);
+    }
 }
