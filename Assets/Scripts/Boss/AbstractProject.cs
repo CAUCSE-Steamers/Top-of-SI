@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Model;
 
 public abstract class AbstractProject : MonoBehaviour, IHurtable, IInvokeSkills
 {
+    public event Action OnActionFinished = delegate { };
+
     protected Animator anim;
     public ProjectStatus Status
     {
@@ -22,6 +25,8 @@ public abstract class AbstractProject : MonoBehaviour, IHurtable, IInvokeSkills
     {
         ProjectSkill ret = Ability.InvokedSkill;
         anim.Play(ret.Information.Animation);
+
+        OnActionFinished();
         return ret;
     }
 }

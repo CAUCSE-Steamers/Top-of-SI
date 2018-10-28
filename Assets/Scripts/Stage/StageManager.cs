@@ -82,7 +82,7 @@ public class StageManager : MonoBehaviour, IDisposable
     [SerializeField]
     private Programmer[] programmers;
     [SerializeField]
-    private Programmer boss; // TODO: Changed to boss
+    private AbstractProject boss;
     private void TempSetStage()
     {
         var tempStage = new GameStage
@@ -102,7 +102,7 @@ public class StageManager : MonoBehaviour, IDisposable
         SetStage(tempStage, programmers, boss);
     }
 
-    public void SetStage(GameStage stage, IEnumerable<Programmer> programmers, Programmer boss)
+    public void SetStage(GameStage stage, IEnumerable<Programmer> programmers, AbstractProject boss)
     {
         CommonLogger.Log("StageManager::SetStage => 초기화 시작");
         CurrentStage = stage;

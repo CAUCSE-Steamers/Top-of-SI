@@ -7,6 +7,7 @@ namespace Model
 {
     public class ProjectStatus
     {
+        public event Action<int> OnHealthChanged = delegate { };
         private int health;
 
         public ProjectStatus()
@@ -33,6 +34,7 @@ namespace Model
             set
             {
                 health = value;
+                OnHealthChanged(health);
             }
         }
     }
