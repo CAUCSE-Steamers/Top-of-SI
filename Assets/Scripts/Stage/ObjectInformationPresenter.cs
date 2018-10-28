@@ -5,8 +5,6 @@ using System.Collections;
 public class ObjectInformationPresenter : MonoBehaviour
 {
     [SerializeField]
-    private Image objectImage;
-    [SerializeField]
     private GameObject selectedEffectObject;
 
     public void SetObjectInformation(GameObject objectToView)

@@ -2426,7 +2426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 781d9731d873f5f4699b95d972fe4ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectImage: {fileID: 0}
   selectedEffectObject: {fileID: 977591907}
 --- !u!1 &409404291
 GameObject:
@@ -9837,7 +9836,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 654518456}
+      - m_Target: {fileID: 403914967}
         m_MethodName: TempSkillUse
         m_Mode: 1
         m_Arguments:

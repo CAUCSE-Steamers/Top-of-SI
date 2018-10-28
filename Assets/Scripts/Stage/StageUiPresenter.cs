@@ -150,6 +150,8 @@ public class StageUiPresenter : MonoBehaviour
     // TODO: Delete
     public void TempSkillUse()
     {
+        objectInformationPresenter.ClearInformationUi();
+
         var idleState = stateAnimator.GetBehaviour<IdleState>();
         var CurrentSelectedProgrammer = idleState.SelectedObject.GetComponent<Programmer>();
         var skill = CurrentSelectedProgrammer.Ability.AcquiredActiveSkills.First();
