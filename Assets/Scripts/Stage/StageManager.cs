@@ -69,6 +69,11 @@ public class StageManager : MonoBehaviour, IDisposable
         }
     }
 
+    public GameStage CurrentStage
+    {
+        get; set;
+    }
+
     public Field StageField
     {
         get; private set;
@@ -80,16 +85,30 @@ public class StageManager : MonoBehaviour, IDisposable
     private Programmer boss; // TODO: Changed to boss
     private void TempSetStage()
     {
-        SetStage(programmers, boss);
+        var tempStage = new GameStage
+        {
+            Title = "Project Test - Title",
+            ElapsedDayLimit = 2,
+        };
+
+        tempStage.AddObjectives(new List<IStageObjective>
+            {
+                new ElapsedDayObjective(tempStage),
+                new StringObjective("테스트 목표 1"),
+                new StringObjective("테스트 목표 2"),
+                new StringObjective("테스트 목표 3"),
+            });
+
+        SetStage(tempStage, programmers, boss);
     }
 
-    public void SetStage(IEnumerable<Programmer> programmers, Programmer boss)
+    public void SetStage(GameStage stage, IEnumerable<Programmer> programmers, Programmer boss)
     {
-        // TODO : Remove hard-coding
         CommonLogger.Log("StageManager::SetStage => 초기화 시작");
+        CurrentStage = stage;
         StageField = fieldSpawner.SpawnField();
-
-        Status.InitializeStageStatus(maximumDayLimit: 10, unitManager: Unit);
+        
+        Status.InitializeStageStatus(maximumDayLimit: CurrentStage.ElapsedDayLimit, unitManager: Unit);
         Unit.SetUnits(programmers, boss, StageField);
     }
     
