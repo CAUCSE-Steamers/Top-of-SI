@@ -12,11 +12,12 @@ namespace Model
             Name = "NormalAttack",
             Type = SkillType.None,
             AcquisitionLevel = 1,
-            MaximumLevel = 1
+            MaximumLevel = 1,
+            IconName = "Cpp"
         };
 
         public NormalAttack() 
-            : base(information, Enumerable.Empty<PassiveSkill>(), 33.0, 1.0)
+            : base(information, Enumerable.Empty<PassiveSkill>(), 33.0, 3.0)
         {
 
         }

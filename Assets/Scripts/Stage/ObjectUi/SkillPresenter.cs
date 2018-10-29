@@ -48,7 +48,7 @@ public class SkillPresenter : MonoBehaviour
 
     public void RenderSkill(ActiveSkill activeSkill)
     {
-        //skillActivateButton.GetComponent<Image>().sprite = null;
+        skillActivateButton.GetComponent<Image>().sprite = activeSkill.Information.Image;
         skillActivateButton.interactable = activeSkill.IsTriggerable;
 
         if (activeSkill.IsTriggerable == false)

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,19 @@ namespace Model
 {
     public class SkillBasicInformation
     {
+        public Sprite Image
+        {
+            get
+            {
+                return ResourceLoadUtility.LoadSprite(IconName);
+            }
+        }
+
+        public string IconName
+        {
+            get; set;
+        }
+
         public SkillType Type
         {
             get; set;
