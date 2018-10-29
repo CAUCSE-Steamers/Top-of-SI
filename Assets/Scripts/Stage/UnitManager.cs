@@ -26,7 +26,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     // Programmer (Key) => Programmer has performed any action? (Value)
     private IDictionary<Programmer, bool> programmerActingDictionary;
-    private Programmer boss; // TODO : Convert to boss
+    private AbstractProject boss;
     private TurnState currentTurn;
     private Field stageField;
 
@@ -44,8 +44,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         }
     }
 
-    // TODO: Convert to boss
-    public Programmer Boss
+    public AbstractProject Boss
     {
         get
         {
@@ -58,7 +57,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         }
     }
 
-    public void SetUnits(IEnumerable<Programmer> programmers, Programmer boss, Field stageField)
+    public void SetUnits(IEnumerable<Programmer> programmers, AbstractProject boss, Field stageField)
     {
         CommonLogger.Log("UnitManager::SetUnits => 초기화 시작.");
 
@@ -168,7 +167,12 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         {
             CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청함.");
 
-            boss.UseSkill();
+            var usedSkill = boss.Invoke();
+
+            foreach (var programmer in Programmers)
+            {
+                programmer.Hurt((int) usedSkill.BaseDamage);
+            }
         }
     }
 

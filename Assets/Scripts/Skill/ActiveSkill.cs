@@ -8,8 +8,6 @@ namespace Model
 {
     public abstract class ActiveSkill : ICooldownRequired
     {
-        private double cooldown;
-
         public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double baseDamage, double defaultCooldown)
         {
             Information = information;
@@ -17,35 +15,40 @@ namespace Model
             BaseDamage = baseDamage;
             DefaultCooldown = defaultCooldown;
 
-            cooldown = DefaultCooldown;
+            RemainingCooldown = 0.0;
+        }
+
+        public double RemainingCooldown
+        {
+            get; private set;
         }
 
         public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType)
         {
             if (IsTriggerable == false)
             {
-                DebugLogger.LogWarningFormat("ActiveSkill::ApplySkill => Skill '{0}'의 쿨타임이 {1} 남아있는 상태에서 발동되려고 합니다.", Information.Name, cooldown);
+                DebugLogger.LogWarningFormat("ActiveSkill::ApplySkill => Skill '{0}'의 쿨타임이 {1} 남아있는 상태에서 발동되려고 합니다.", Information.Name, RemainingCooldown);
             }
 
             double damage = CalculateDamage(projectType, techType);
             hurtable.Hurt((int) damage);
 
-            cooldown = DefaultCooldown;
+            RemainingCooldown = DefaultCooldown;
         }
 
         public bool IsTriggerable
         {
             get
             {
-                return cooldown < double.Epsilon;
+                return RemainingCooldown < double.Epsilon;
             }
         }
 
         public void DecreaseCooldown()
         {
-            if (cooldown >= 1.0)
+            if (RemainingCooldown >= 1.0)
             {
-                cooldown -= 1.0;
+                RemainingCooldown -= 1.0;
             }
         }
 

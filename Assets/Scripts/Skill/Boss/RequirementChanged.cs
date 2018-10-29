@@ -16,7 +16,7 @@ namespace Model
             Animation = "Shout"
         };
 
-        public RequirementChanged() : base(information, 0.1, 3)
+        public RequirementChanged() : base(information, 2.1, 3)
         {
 
         }

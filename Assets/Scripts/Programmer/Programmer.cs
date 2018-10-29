@@ -54,10 +54,18 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
 
         CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 {1}의 데미지를 입음. 남은 체력은 {2}.", name, damage, Status.Health);
 
-        if (Status.Health <= 0)
+        if (IsAlive == false)
         {
             CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 사망함!", name);
             OnDeath();
+        }
+    }
+
+    public bool IsAlive
+    {
+        get
+        {
+            return Status.Health > 0;
         }
     }
 
@@ -65,6 +73,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
     {
         Status = new ProgrammerStatus
         {
+            PortraitName = "UnityChan",
             FullHealth = 100,
             Health = 4,
             Name = "테스트 보스"
@@ -89,7 +98,10 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
 
     private void OnMouseDown()
     {
-        OnMouseClicked(this.gameObject);
+        if (IsAlive)
+        {
+            OnMouseClicked(this.gameObject);
+        }
     }
 
     public void Move(Vector3 deltaPosition)
@@ -187,6 +199,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
 
         Status.StartVacationDay = elapsedDays;
         CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가를 떠납니다.", name, elapsedDays);
+
+        OnActionFinished();
     }
 
     public void ReturnFromVacation(int elapsedDays)
@@ -203,5 +217,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
         Status.StartVacationDay = null;
 
         CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
+
+        OnActionFinished();
     }
 }

@@ -15,11 +15,11 @@ public class StageManager : MonoBehaviour, IDisposable
     [SerializeField]
     private StageStatusManager statusManager;
     [SerializeField]
-    private StageUiPresenter uiPresenter;
-    [SerializeField]
     private UnitManager unitManager;
     [SerializeField]
     private FieldSpawner fieldSpawner;
+    [SerializeField]
+    private StageUiPresenter uiPresenter;
 
     private void Awake()
     {
@@ -69,6 +69,11 @@ public class StageManager : MonoBehaviour, IDisposable
         }
     }
 
+    public GameStage CurrentStage
+    {
+        get; set;
+    }
+
     public StageUiPresenter StageUi
     {
         get
@@ -90,19 +95,33 @@ public class StageManager : MonoBehaviour, IDisposable
     [SerializeField]
     private Programmer[] programmers;
     [SerializeField]
-    private Programmer boss; // TODO: Changed to boss
+    private AbstractProject boss;
     private void TempSetStage()
     {
-        SetStage(programmers, boss);
+        var tempStage = new GameStage
+        {
+            Title = "Project Test - Title",
+            ElapsedDayLimit = 2,
+        };
+
+        tempStage.AddObjectives(new List<IStageObjective>
+            {
+                new ElapsedDayObjective(tempStage),
+                new StringObjective("테스트 목표 1"),
+                new StringObjective("테스트 목표 2"),
+                new StringObjective("테스트 목표 3"),
+            });
+
+        SetStage(tempStage, programmers, boss);
     }
 
-    public void SetStage(IEnumerable<Programmer> programmers, Programmer boss)
+    public void SetStage(GameStage stage, IEnumerable<Programmer> programmers, AbstractProject boss)
     {
-        // TODO : Remove hard-coding
         CommonLogger.Log("StageManager::SetStage => 초기화 시작");
+        CurrentStage = stage;
         StageField = fieldSpawner.SpawnField();
-
-        Status.InitializeStageStatus(maximumDayLimit: 10, unitManager: Unit);
+        
+        Status.InitializeStageStatus(maximumDayLimit: CurrentStage.ElapsedDayLimit, unitManager: Unit);
         Unit.SetUnits(programmers, boss, StageField);
     }
     

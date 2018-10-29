@@ -8,6 +8,8 @@ public class StageInformationPresenter : MonoBehaviour
     private const string BossHealthTextFormat = "{0} / {1}";
 
     [SerializeField]
+    private Text projectTitleText;
+    [SerializeField]
     private Text elapsedDayText;
     [SerializeField]
     private Text bossNameText;
@@ -25,6 +27,8 @@ public class StageInformationPresenter : MonoBehaviour
 
     public void StartSynchronizing()
     {
+        projectTitleText.text = manager.CurrentStage.Title;
+
         var boss = manager.Unit.Boss;
         bossNameText.text = boss.Status.Name;
 

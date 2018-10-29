@@ -4,6 +4,8 @@ using System;
 
 public class SelectingMoveState : DispatchableState
 {
+    public event Action OnMovingStarted = delegate { };
+
     private Programmer selectedProgrammer;
 
     protected override void ProcessExitState()
@@ -43,6 +45,8 @@ public class SelectingMoveState : DispatchableState
 
     private void MoveProgrammerToCell(GameObject selectedObject)
     {
+        OnMovingStarted();
+
         var cellComponent = selectedObject.GetComponent<Cell>();
 
         if (cellComponent != null)

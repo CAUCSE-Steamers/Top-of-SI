@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets;
 
 namespace Model
 {
@@ -31,8 +30,17 @@ namespace Model
 
         public override void Hurt(int damage)
         {
-            anim.Play("Get_Hit");
-            Status.Health -= damage;
+            Status.Health = Mathf.Clamp(Status.Health - damage, 0, int.MaxValue);
+
+            if (Status.Health <= 0)
+            {
+                anim.Play("Dead");
+                InvokeDeathEvent();
+            }
+            else
+            {
+                anim.Play("Get_Hit");
+            }
         }
     }
 }
