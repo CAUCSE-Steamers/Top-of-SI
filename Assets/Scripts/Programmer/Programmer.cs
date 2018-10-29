@@ -54,10 +54,18 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
 
         CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 {1}의 데미지를 입음. 남은 체력은 {2}.", name, damage, Status.Health);
 
-        if (Status.Health <= 0)
+        if (IsAlive == false)
         {
             CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 사망함!", name);
             OnDeath();
+        }
+    }
+
+    public bool IsAlive
+    {
+        get
+        {
+            return Status.Health > 0;
         }
     }
 
@@ -90,7 +98,10 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
 
     private void OnMouseDown()
     {
-        OnMouseClicked(this.gameObject);
+        if (IsAlive)
+        {
+            OnMouseClicked(this.gameObject);
+        }
     }
 
     public void Move(Vector3 deltaPosition)
