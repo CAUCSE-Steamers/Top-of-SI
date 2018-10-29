@@ -30,8 +30,17 @@ namespace Model
 
         public override void Hurt(int damage)
         {
-            anim.Play("Get_Hit");
             Status.Health -= damage;
+
+            if (Status.Health <= 0)
+            {
+                anim.Play("Dead");
+                InvokeDeathEvent();
+            }
+            else
+            {
+                anim.Play("Get_Hit");
+            }
         }
     }
 }
