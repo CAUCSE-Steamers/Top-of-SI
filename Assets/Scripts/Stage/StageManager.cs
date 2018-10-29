@@ -123,6 +123,7 @@ public class StageManager : MonoBehaviour, IDisposable
         
         Status.InitializeStageStatus(maximumDayLimit: CurrentStage.ElapsedDayLimit, unitManager: Unit);
         Unit.SetUnits(programmers, boss, StageField);
+        Status.RegisterEventAfterInit(unitManager: Unit);
     }
     
     public void Dispose()

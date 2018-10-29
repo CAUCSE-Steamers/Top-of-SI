@@ -30,6 +30,11 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         CommonLogger.Log("StageStatusManager::InitializeStageStatus => 초기화 완료");
     }
 
+    public void RegisterEventAfterInit(UnitManager unitManager)
+    {
+        unitManager.Boss.OnDeath += SetToStageClear;
+    }
+
     private void SetToGameOverIfDayExceeded(int currentDays)
     {
         if (currentDays > maximumDayLimit)
@@ -48,6 +53,11 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
             CurrentStatus = StageStatus.Failure;
             StageManager.Instance.StageUi.TransitionToFailure();
         }
+    }
+
+    private void SetToStageClear()
+    {
+        StageManager.Instance.StageUi.TransitionToVictory();
     }
 
     public StageStatus CurrentStatus
