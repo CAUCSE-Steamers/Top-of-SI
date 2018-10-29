@@ -199,6 +199,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
 
         Status.StartVacationDay = elapsedDays;
         CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가를 떠납니다.", name, elapsedDays);
+
+        OnActionFinished();
     }
 
     public void ReturnFromVacation(int elapsedDays)
@@ -215,5 +217,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
         Status.StartVacationDay = null;
 
         CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
+
+        OnActionFinished();
     }
 }

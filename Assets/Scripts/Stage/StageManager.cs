@@ -15,8 +15,6 @@ public class StageManager : MonoBehaviour, IDisposable
     [SerializeField]
     private StageStatusManager statusManager;
     [SerializeField]
-    private StageUiPresenter uiPresenter;
-    [SerializeField]
     private UnitManager unitManager;
     [SerializeField]
     private FieldSpawner fieldSpawner;

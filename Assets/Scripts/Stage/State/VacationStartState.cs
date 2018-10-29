@@ -3,7 +3,10 @@ using System.Collections;
 
 public class VacationStartState : DispatchableState
 {
-    private Programmer selectedProgrammer;
+    public Programmer SelectedProgrammer
+    {
+        get; private set;
+    }
 
     public void SetSelectedProgrammer(Programmer programmer)
     {
@@ -12,14 +15,14 @@ public class VacationStartState : DispatchableState
             DebugLogger.LogError("SelectMovingCellState::SetSelectedProgrammer => 주어진 프로개르머가 Null입니다.");
         }
 
-        selectedProgrammer = programmer;
+        SelectedProgrammer = programmer;
     }
 
     public void ConfirmVacation()
     {
-        if (selectedProgrammer != null)
+        if (SelectedProgrammer != null)
         {
-            selectedProgrammer.GoVacation(Manager.Status.ElapsedDays);
+            SelectedProgrammer.GoVacation(Manager.Status.ElapsedDays);
         }
     }
 
