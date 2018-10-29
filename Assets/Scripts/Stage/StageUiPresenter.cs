@@ -25,9 +25,6 @@ public class StageUiPresenter : MonoBehaviour
             idleState.OnSelected += objectInformationPresenter.SetObjectInformation;
         });
 
-        AddEnterEvent<SelectingMoveState>(objectInformationPresenter.ResetInformationUi);
-        AddExitEvent<VacationStartState>(objectInformationPresenter.ResetInformationUi);
-
         objectInformationPresenter.OnSkillInvoked += InvokeSkill;
     }
 
