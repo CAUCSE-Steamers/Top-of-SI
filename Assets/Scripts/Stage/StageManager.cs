@@ -18,6 +18,8 @@ public class StageManager : MonoBehaviour, IDisposable
     private UnitManager unitManager;
     [SerializeField]
     private FieldSpawner fieldSpawner;
+    [SerializeField]
+    private StageUiPresenter uiPresenter;
 
     private void Awake()
     {
@@ -70,6 +72,19 @@ public class StageManager : MonoBehaviour, IDisposable
     public GameStage CurrentStage
     {
         get; set;
+    }
+
+    public StageUiPresenter StageUi
+    {
+        get
+        {
+            if (uiPresenter == null)
+            {
+                DebugLogger.LogError("StageUiPresenter::Ui => StageUiPresenter가 Null입니다!");
+            }
+
+            return uiPresenter;
+        }
     }
 
     public Field StageField

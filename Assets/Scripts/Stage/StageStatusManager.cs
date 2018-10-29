@@ -12,7 +12,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
     private int elapsedDays;
     private StageStatus currentStatus;
     private UnitManager unitManager;
-    
+
     public void InitializeStageStatus(int maximumDayLimit, UnitManager unitManager)
     {
         CommonLogger.Log("StageStatusManager::InitializeStageStatus => 초기화 시작");
@@ -26,16 +26,17 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
 
         CurrentStatus = StageStatus.InProgress;
         ElapsedDays = 0;
-        
+
         CommonLogger.Log("StageStatusManager::InitializeStageStatus => 초기화 완료");
     }
-    
+
     private void SetToGameOverIfDayExceeded(int currentDays)
     {
         if (currentDays > maximumDayLimit)
         {
             CommonLogger.LogFormat("StageStatusManager::SetToGameOverIfDayExceeded => 진행 일시가 {0}일을 초과함. 게임 오버!", maximumDayLimit);
             CurrentStatus = StageStatus.Failure;
+            StageManager.Instance.StageUi.TransitionToFailure();
         }
     }
 
@@ -44,6 +45,8 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         if (turn == TurnState.Boss && ElapsedDays == maximumDayLimit)
         {
             CommonLogger.LogFormat("StageStatusManager::SetToGameOverIfDayExceeded => 진행 일시가 최대 제한 일수인 {0}일과 같은 상태에서 플레이어 턴이 종료됨. 게임 오버!", ElapsedDays);
+            CurrentStatus = StageStatus.Failure;
+            StageManager.Instance.StageUi.TransitionToFailure();
         }
     }
 
@@ -56,7 +59,6 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         set
         {
             CommonLogger.LogFormat("StageStatusManager::CurrentStatus => 스테이지 상태가 '{0}'으로 바뀌려 함.", value);
-
             currentStatus = value;
             OnStatusChanged(currentStatus);
         }
@@ -69,7 +71,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
             ElapsedDays += 1;
         }
     }
-    
+
     public int ElapsedDays
     {
         get
