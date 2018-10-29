@@ -11,6 +11,11 @@ namespace Model
 
         private int health;
 
+        public string PortraitName
+        {
+            get; set;
+        }
+
         public string Name
         {
             get; set;

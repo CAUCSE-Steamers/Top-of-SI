@@ -12,7 +12,7 @@ namespace Model
         {
             get
             {
-                return ResourceLoadUtility.LoadSprite(IconName);
+                return ResourceLoadUtility.LoadIcon(IconName);
             }
         }
 

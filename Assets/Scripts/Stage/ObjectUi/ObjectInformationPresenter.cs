@@ -9,6 +9,10 @@ public class ObjectInformationPresenter : MonoBehaviour
     public event Action<ActiveSkill> OnSkillInvoked = delegate { };
 
     [SerializeField]
+    private Image programmerImage;
+    [SerializeField]
+    private StatusPresenter statusPresenter;
+    [SerializeField]
     private Transform skillPanelObject;
     [SerializeField]
     private SkillPresenter skillPresenterTemplate;
@@ -17,10 +21,6 @@ public class ObjectInformationPresenter : MonoBehaviour
 
     [SerializeField]
     private GameObject selectedEffectObject;
-
-    private void Start()
-    {
-    }
 
     public void SetObjectInformation(GameObject objectToView)
     {
@@ -57,6 +57,9 @@ public class ObjectInformationPresenter : MonoBehaviour
                 childButton.gameObject.SetActive(newState);
             }
         }
+
+        programmerImage.gameObject.SetActive(newState);
+        statusPresenter.Disable();
     }
 
     private void RenderObject(GameObject objectToView)
@@ -72,8 +75,16 @@ public class ObjectInformationPresenter : MonoBehaviour
     {
         SetDefaultActionState(true);
 
+        RenderStatus(programmer);
         RenderSelectionEffect(programmer);
         RenderSkillPanel(programmer);
+    }
+
+    private void RenderStatus(Programmer programmer)
+    {
+        programmerImage.sprite = ResourceLoadUtility.LoadPortrait(programmer.Status.PortraitName);
+
+        statusPresenter.Present(programmer.Status);
     }
 
     private void RenderSelectionEffect(Programmer programmer)
