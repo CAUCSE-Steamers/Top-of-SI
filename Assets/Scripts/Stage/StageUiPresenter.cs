@@ -102,6 +102,22 @@ public class StageUiPresenter : MonoBehaviour
         );
     }
 
+    public void GivoUpStage()
+    {
+        ToggleState
+        (
+            StateParameter.Pause,
+            onTrueValue: stateAnimator.GetBehaviour<PauseState>().TransitionToIdle,
+            onFalseValue: delegate { }
+        );
+        stateAnimator.GetBehaviour<IdleState>().TransitionToFailureState();
+    }
+
+    public void TransitionToFailure()
+    {
+        stateAnimator.GetBehaviour<IdleState>().TransitionToFailureState();
+    }
+
     private void ToggleState(StateParameter stateParameter, Action onTrueValue, Action onFalseValue)
     {
         bool value = stateAnimator.GetStateBool(stateParameter);
