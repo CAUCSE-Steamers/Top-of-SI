@@ -6,6 +6,11 @@ public class IdleState : DispatchableState
 {
     public event Action<GameObject> OnSelected = delegate { };
 
+    public void ResetSelectedObject()
+    {
+        SelectedObject = null;
+    }
+
     public GameObject SelectedObject
     {
         get; private set;
@@ -29,7 +34,7 @@ public class IdleState : DispatchableState
 
     protected override void ProcessEnterState()
     {
-        SelectedObject = null;
+        ResetSelectedObject();
 
         foreach (var programmer in Manager.Unit.Programmers)
         {

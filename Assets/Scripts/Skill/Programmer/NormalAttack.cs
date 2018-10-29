@@ -16,7 +16,7 @@ namespace Model
         };
 
         public NormalAttack() 
-            : base(information, Enumerable.Empty<PassiveSkill>(), 1.0, 1.0)
+            : base(information, Enumerable.Empty<PassiveSkill>(), 33.0, 1.0)
         {
 
         }

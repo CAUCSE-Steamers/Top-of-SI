@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 using System.Linq;
+using Model;
 
 public class StageUiPresenter : MonoBehaviour
 {
@@ -20,12 +21,14 @@ public class StageUiPresenter : MonoBehaviour
         AddEnterEvent<IdleState>(() =>
         {
             var idleState = stateAnimator.GetBehaviour<IdleState>();
-            objectInformationPresenter.ClearInformationUi();
+            objectInformationPresenter.ResetInformationUi();
             idleState.OnSelected += objectInformationPresenter.SetObjectInformation;
         });
 
-        AddEnterEvent<SelectingMoveState>(objectInformationPresenter.ClearInformationUi);
-        AddExitEvent<VacationStartState>(objectInformationPresenter.ClearInformationUi);
+        AddEnterEvent<SelectingMoveState>(objectInformationPresenter.ResetInformationUi);
+        AddExitEvent<VacationStartState>(objectInformationPresenter.ResetInformationUi);
+
+        objectInformationPresenter.OnSkillInvoked += InvokeSkill;
     }
 
     private void StartUiSynchronizing()
@@ -147,27 +150,26 @@ public class StageUiPresenter : MonoBehaviour
         }
     }
 
-    // TODO: Delete
-    public void TempSkillUse()
+    public void InvokeSkill(ActiveSkill skill)
     {
-        objectInformationPresenter.ClearInformationUi();
-
         var idleState = stateAnimator.GetBehaviour<IdleState>();
-        var CurrentSelectedProgrammer = idleState.SelectedObject.GetComponent<Programmer>();
-        var skill = CurrentSelectedProgrammer.Ability.AcquiredActiveSkills.First();
+        var currentSelectedProgrammer = idleState.SelectedObject.GetComponent<Programmer>();
 
-        if (skill is Model.IEffectProducible)
+        if (skill is IEffectProducible)
         {
-            var effectObject = (skill as Model.IEffectProducible).MakeEffect(CurrentSelectedProgrammer.transform);
+            var effectObject = (skill as IEffectProducible).MakeEffect(currentSelectedProgrammer.transform);
 
-            CurrentSelectedProgrammer.OnSkillEnded += () =>
+            currentSelectedProgrammer.OnSkillEnded += () =>
             {
                 Destroy(effectObject);
             };
         }
 
         var boss = StageManager.Instance.Unit.Boss;
-        CurrentSelectedProgrammer.UseSkill();
-        skill.ApplySkill(boss, Model.ProjectType.Application, Model.RequiredTechType.Web);
+        currentSelectedProgrammer.UseSkill();
+        skill.ApplySkill(boss, ProjectType.Application, RequiredTechType.Web);
+
+        objectInformationPresenter.ResetInformationUi();
+        idleState.ResetSelectedObject();
     }
 }
