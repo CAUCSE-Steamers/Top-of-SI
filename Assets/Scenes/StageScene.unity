@@ -2253,7 +2253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusManager: {fileID: 900699072}
-  uiPresenter: {fileID: 0}
+  uiPresenter: {fileID: 403914967}
   unitManager: {fileID: 654518456}
   fieldSpawner: {fileID: 920565258}
   programmers:

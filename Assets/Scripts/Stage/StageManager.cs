@@ -69,6 +69,19 @@ public class StageManager : MonoBehaviour, IDisposable
         }
     }
 
+    public StageUiPresenter StageUi
+    {
+        get
+        {
+            if (uiPresenter == null)
+            {
+                DebugLogger.LogError("StageUiPresenter::Ui => StageUiPresenter가 Null입니다!");
+            }
+
+            return uiPresenter;
+        }
+    }
+
     public Field StageField
     {
         get; private set;
