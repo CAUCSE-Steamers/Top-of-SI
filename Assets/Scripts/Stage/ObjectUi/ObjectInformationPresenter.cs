@@ -34,9 +34,9 @@ public class ObjectInformationPresenter : MonoBehaviour
 
     public void ResetInformationUi()
     {
-        selectedEffectObject.SetActive(false);
         actionBlockingObject.SetActive(false);
 
+        SetEffectActiveState(false);
         SetDefaultActionState(false);
 
         foreach (var childButton in skillPanelObject.GetComponentsInChildren<Button>())
@@ -46,6 +46,11 @@ public class ObjectInformationPresenter : MonoBehaviour
                 Destroy(childButton.gameObject);
             }
         }
+    }
+
+    public void SetEffectActiveState(bool newState)
+    {
+        selectedEffectObject.SetActive(newState);
     }
 
     private void SetDefaultActionState(bool newState)
