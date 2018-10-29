@@ -121,6 +121,11 @@ public class StageUiPresenter : MonoBehaviour
         stateAnimator.GetBehaviour<IdleState>().TransitionToFailureState();
     }
 
+    public void TransitionToVictory()
+    {
+        stateAnimator.GetBehaviour<IdleState>().TransitionToVictoryState();
+    }
+
     private void ToggleState(StateParameter stateParameter, Action onTrueValue, Action onFalseValue)
     {
         bool value = stateAnimator.GetStateBool(stateParameter);
