@@ -101,7 +101,7 @@ public class StageManager : MonoBehaviour, IDisposable
         var tempStage = new GameStage
         {
             Title = "Project Test - Title",
-            ElapsedDayLimit = 2,
+            ElapsedDayLimit = 1000,
         };
 
         tempStage.AddObjectives(new List<IStageObjective>

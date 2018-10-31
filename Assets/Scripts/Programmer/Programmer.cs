@@ -74,8 +74,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
         Status = new ProgrammerStatus
         {
             PortraitName = "UnityChan",
-            FullHealth = 100,
-            Health = 4,
+            FullHealth = 1000,
+            Health = 1000,
             Name = "테스트 보스"
         };
 
