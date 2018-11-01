@@ -37,6 +37,13 @@ namespace Model
             get
             {
                 ProjectSkills = ProjectSkills.OrderByDescending(ProjectSkill => ProjectSkill.Priority);
+                foreach (ProjectSkill iter in ProjectSkills)
+                {
+                    if (iter.IsTriggerable)
+                    {
+                        return iter;
+                    }
+                }
                 return ProjectSkills.First();
             }
         }

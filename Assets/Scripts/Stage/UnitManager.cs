@@ -167,6 +167,11 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         {
             CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청함.");
 
+            foreach(ProjectSkill iter in Boss.Ability.ProjectSkills)
+            {
+                iter.DecreaseCooldown();
+            }
+
             var usedSkill = boss.Invoke();
 
             foreach (var programmer in Programmers)
