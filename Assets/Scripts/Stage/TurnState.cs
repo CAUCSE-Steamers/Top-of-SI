@@ -9,6 +9,6 @@ namespace Model
     {
         Player,
         Boss,
-        System,
+        GameEnd,
     }
 }
