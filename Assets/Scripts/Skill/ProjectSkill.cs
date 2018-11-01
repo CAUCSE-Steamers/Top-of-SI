@@ -28,10 +28,12 @@ namespace Model
 
         public void DecreaseCooldown()
         {
-            if(cooldown >= 1.0)
-            {
-                cooldown -= 1.0;
-            }
+            cooldown -= 1.0;
+        }
+
+        public void ResetCoolDown()
+        {
+            cooldown = DefaultCooldown;
         }
         
         public ProjectSkillInformation Information

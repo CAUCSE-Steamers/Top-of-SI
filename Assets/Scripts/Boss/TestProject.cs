@@ -13,8 +13,8 @@ namespace Model
             Status = new ProjectStatus
             {
                 Name = "TestBoss",
-                FullHealth = 100,
-                Health = 100
+                FullHealth = 1000,
+                Health = 1000
             };
             List<ProjectSkill> skill_list = new List<ProjectSkill>();
             skill_list.Add(new VersionUpdate());
