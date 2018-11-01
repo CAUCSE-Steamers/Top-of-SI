@@ -7,11 +7,26 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
 {
     public event Action<StageStatus> OnStatusChanged = delegate { };
     public event Action<int> OnElapsedDayChanged = delegate { };
+    public event Action<Direction> OnStageDirectionChanged = delegate { };
 
     private int maximumDayLimit;
     private int elapsedDays;
     private StageStatus currentStatus;
+    private Direction stageDirection;
     private UnitManager unitManager;
+
+    public Direction StageDirection
+    {
+        get
+        {
+            return stageDirection;
+        }
+        set
+        {
+            stageDirection = value;
+            OnStageDirectionChanged(stageDirection);
+        }
+    }
 
     public void InitializeStageStatus(int maximumDayLimit, UnitManager unitManager)
     {
@@ -24,7 +39,9 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         this.maximumDayLimit = maximumDayLimit;
         this.unitManager = unitManager;
 
+        StageDirection = Direction.Right;
         CurrentStatus = StageStatus.InProgress;
+
         ElapsedDays = 0;
 
         CommonLogger.Log("StageStatusManager::InitializeStageStatus => 초기화 완료");
@@ -101,6 +118,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
     {
         OnStatusChanged = delegate { };
         OnElapsedDayChanged = delegate { };
+        OnStageDirectionChanged = delegate { };
 
         CommonLogger.Log("StageStatusManager::DisposeRegisteredEvents => 이벤트 Disposing 완료.");
     }
