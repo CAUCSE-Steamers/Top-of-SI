@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using Model;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using Model;
+using System.Linq;
+using UnityEngine;
 
 public class UnitManager : MonoBehaviour, IEventDisposable
 {
@@ -70,7 +70,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         OnTurnChanged += RequestBossActionIfTurnChangedToBoss;
         OnTurnChanged += PermitProgrammersActionIfTurnChangedToPlayer;
         OnTurnChanged += DecreaseActiveSkillCooldownIfTurnChangedToPlayer;
-        programmerActingDictionary = 
+        programmerActingDictionary =
             programmers.ToDictionary(keySelector: programmer => programmer,
                                      elementSelector: programmer => false);
 
@@ -159,6 +159,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     private void SubscribeToBoss()
     {
         boss.OnActionFinished += () => Turn = TurnState.Player;
+        boss.OnDeath += () => Turn = TurnState.System;
     }
 
     private void RequestBossActionIfTurnChangedToBoss(TurnState turn)
@@ -167,7 +168,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         {
             CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청함.");
 
-            foreach(ProjectSkill iter in Boss.Ability.ProjectSkills)
+            foreach (ProjectSkill iter in Boss.Ability.ProjectSkills)
             {
                 iter.DecreaseCooldown();
             }
@@ -176,7 +177,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
             foreach (var programmer in Programmers)
             {
-                programmer.Hurt((int) usedSkill.BaseDamage);
+                programmer.Hurt((int)usedSkill.BaseDamage);
             }
         }
     }
@@ -209,7 +210,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                                                         .Where(passiveSkill => passiveSkill is ICooldownRequired)
                                                         .Select(passiveSkill => passiveSkill as ICooldownRequired))
                 {
-                    passiveSkill.DecreaseCooldown();    
+                    passiveSkill.DecreaseCooldown();
                 }
             }
         }

@@ -8,6 +8,7 @@ namespace Model
     public enum TurnState
     {
         Player,
-        Boss
+        Boss,
+        System,
     }
 }
