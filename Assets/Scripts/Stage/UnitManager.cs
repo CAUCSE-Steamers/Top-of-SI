@@ -101,11 +101,15 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void ChangeTurnToBossIfAllProgrammersPerformAction()
     {
-        if (programmerActingDictionary.Values.All(actingState => actingState))
+        if (programmerActingDictionary.Values.All(actingState => actingState) && currentTurn != TurnState.System)
         {
             CommonLogger.Log("UnitManager::ChangeTurnToBossIfAllProgrammersPerformAction => 모든 프로그래머가 행동을 수행해 턴이 보스로 넘어감.");
 
             Turn = TurnState.Boss;
+        }
+        else if (currentTurn == TurnState.System)
+        {
+            CommonLogger.Log("UnitManager::ChangeTurnToBossIfAllProgrammersPerformAction => 모든 프로그래머가 행동을 수행했고, 보스가 사망함.");
         }
     }
 
