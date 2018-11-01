@@ -124,8 +124,36 @@ public class StageManager : MonoBehaviour, IDisposable
         Status.InitializeStageStatus(maximumDayLimit: CurrentStage.ElapsedDayLimit, unitManager: Unit);
         Unit.SetUnits(programmers, boss, StageField);
         Status.RegisterEventAfterInit(unitManager: Unit);
+
+        Status.OnStageDirectionChanged += AdjustStageDirectionView;
     }
-    
+
+    private void AdjustStageDirectionView(Direction newStageDirection)
+    {
+        AdjustCameraView(newStageDirection);
+        AdjustUnitView(newStageDirection);
+    }
+
+    private void AdjustCameraView(Direction stageDirection)
+    {
+        var sceneCamera = GameObject.Find("Main Camera");
+
+        float cameraDeltaX = stageDirection == Direction.Left ? 8.0f : -8.0f;
+        sceneCamera.transform.Translate(new Vector3(cameraDeltaX, 0f, 0f), Space.World);
+    }
+
+    private void AdjustUnitView(Direction stageDirection)
+    {
+        foreach (var programmer in Unit.Programmers)
+        {
+            programmer.transform.Rotate(Vector3.up * 180.0f, Space.World);
+        }
+
+        float bossDeltaX = stageDirection == Direction.Left ? 25.0f : -25.0f;
+        boss.transform.Translate(new Vector3(bossDeltaX, 0f, 0f), Space.World);
+        boss.transform.Rotate(Vector3.up * 180.0f, Space.World);
+    }
+
     public void Dispose()
     {
         Unit.DisposeRegisteredEvents();
