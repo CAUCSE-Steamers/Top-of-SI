@@ -74,6 +74,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
 
     private void SetToStageClear()
     {
+        CurrentStatus = StageStatus.Victory;
         StageManager.Instance.StageUi.TransitionToVictory();
     }
 
