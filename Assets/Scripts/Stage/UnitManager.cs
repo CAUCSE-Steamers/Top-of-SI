@@ -179,12 +179,38 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
             var usedSkill = boss.Invoke();
 
-            //TODO : Make Overload function and Do eacn type's invoke.
-            foreach (var programmer in Programmers)
-            {
-                programmer.Hurt((int)usedSkill.BaseDamage);
-            }
+            //TODO : Find the way to cast upper class type to lower class type.
+            //InvokeSkill(usedSkill);
         }
+    }
+
+    private void InvokeSkill(ProjectSingleAttackSkill skill)
+    {
+        //TODO : need to know how to find selected programmer
+        //Programmer.Hurt((int)skill.Damage);
+    }
+    private void InvokeSkill(ProjectMultiAttackSkill skill)
+    {
+        foreach(var programmer in Programmers)
+        {
+            programmer.Hurt((int)skill.Damage);
+        }
+    }
+    private void InvokeSkill(ProjectSingleDeburfSkill skill)
+    {
+        //TODO : need to know how to find selected programmer
+        //Programmer.Deburf((int)skill.Damage);
+    }
+    private void InvokeSkill(ProjectMultiDeburfSkill skill)
+    {
+        foreach (var programmer in Programmers)
+        {
+            programmer.Deburf(skill.Deburf);
+        }
+    }
+    private void InvokeSkill(ProjectBurfSkill skill)
+    {
+        Boss.Burf(skill.Burf);
     }
 
     private void PermitProgrammersActionIfTurnChangedToPlayer(TurnState turn)
