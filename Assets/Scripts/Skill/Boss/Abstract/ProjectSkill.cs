@@ -9,10 +9,9 @@ namespace Model
     {
         private double cooldown;
 
-        public ProjectSkill(ProjectSkillInformation information, double baseDamage, double defaultCooldown)
+        public ProjectSkill(ProjectSkillInformation information, double defaultCooldown)
         {
             Information = information;
-            BaseDamage = baseDamage;
             DefaultCooldown = defaultCooldown;
 
             cooldown = 0;
@@ -37,11 +36,6 @@ namespace Model
         }
         
         public ProjectSkillInformation Information
-        {
-            get; private set;
-        }
-
-        public double BaseDamage
         {
             get; private set;
         }
