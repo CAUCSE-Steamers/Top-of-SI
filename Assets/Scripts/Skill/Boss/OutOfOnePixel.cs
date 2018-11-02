@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    public class OutOfOnePixel : ProjectSkill, ISoloAttack
+    public class OutOfOnePixel : ProjectSingleAttackSkill
     {
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
@@ -16,7 +16,7 @@ namespace Model
             Animation = "Shout"
         };
 
-        public OutOfOnePixel() : base(information, 30, 2)
+        public OutOfOnePixel() : base(30, information, 2)
         {
 
         }

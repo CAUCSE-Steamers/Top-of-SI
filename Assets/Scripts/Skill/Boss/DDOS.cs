@@ -5,10 +5,8 @@ using System.Text;
 
 namespace Model
 {
-    public class DDOS : ProjectSkill, IBurf
+    public class DDOS : ProjectBurfSkill
     {
-        public int turn = 2;
-
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.Burf,
@@ -18,7 +16,12 @@ namespace Model
             Animation = "Shout"
         };
 
-        public DDOS() : base(information, 0, 3)
+        private static List<BurfStructure> burf = new List<BurfStructure>
+        {
+            new BurfStructure(BurfType.Overwhelming, 2, 0)
+        };
+
+        public DDOS() : base(burf, information, 3)
         {
 
         }

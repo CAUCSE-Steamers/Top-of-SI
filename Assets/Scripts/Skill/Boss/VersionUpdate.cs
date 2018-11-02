@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    public class VersionUpdate : ProjectSkill, IMultiAttack
+    public class VersionUpdate : ProjectMultiAttackSkill
     {
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
@@ -16,7 +16,7 @@ namespace Model
             Animation = "Attack"
         };
 
-        public VersionUpdate() : base(information, 10.0, 0)
+        public VersionUpdate() : base(10.0, information, 0)
         {
 
         }

@@ -5,16 +5,11 @@ using System.Text;
 
 namespace Model
 {
-    public class ProjectburfSkill : ProjectSkill
+    public class ProjectBurfSkill : ProjectSkill
     {
-        public ProjectburfSkill(List<BurfStructure> burf, ProjectSkillInformation information, double defaultCooldown) : base(information, defaultCooldown)
+        public ProjectBurfSkill(List<BurfStructure> burf, ProjectSkillInformation information, double defaultCooldown) : base(information, defaultCooldown)
         {
             Burf = burf;
-        }
-
-        public double Damage
-        {
-            get; private set;
         }
 
         public List<BurfStructure> Burf

@@ -5,11 +5,8 @@ using System.Text;
 
 namespace Model
 {
-    public class IEServiceDecision : ProjectSkill, IMultiDeburf
+    public class IEServiceDecision : ProjectMultiDeburfSkill
     {
-        public double IncreaseMentalUsage = 2;
-        public DeburfType deburfType = DeburfType.IncreaseMentalUsage;
-
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.MultiDeburf,
@@ -19,7 +16,12 @@ namespace Model
             Animation = "Shout"
         };
 
-        public IEServiceDecision() : base(information, 0, 3)
+        private static List<DeBurfStructure> deburf = new List<DeBurfStructure>
+        {
+            new DeBurfStructure(DeburfType.IncreaseMentalUsage, Int32.MaxValue, 1)
+        };
+
+        public IEServiceDecision() : base(deburf, information, 3)
         {
 
         }

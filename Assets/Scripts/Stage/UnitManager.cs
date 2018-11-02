@@ -179,6 +179,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
             var usedSkill = boss.Invoke();
 
+            //TODO : Make Overload function and Do eacn type's invoke.
             foreach (var programmer in Programmers)
             {
                 programmer.Hurt((int)usedSkill.BaseDamage);

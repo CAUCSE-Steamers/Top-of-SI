@@ -5,10 +5,8 @@ using System.Text;
 
 namespace Model
 {
-    public class OSUpdate : ProjectSkill, IBurf
+    public class OSUpdate : ProjectBurfSkill
     {
-        public double decreaseDamage = 0.666666;
-        public int decreaseTurn = 2;
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.Burf,
@@ -18,7 +16,12 @@ namespace Model
             Animation = "Shout"
         };
 
-        public OSUpdate() : base(information, 0, 3)
+        private static List<BurfStructure> burf = new List<BurfStructure>
+        {
+            new BurfStructure(BurfType.DecreaseDamage, 2, 0.33333)
+        };
+
+        public OSUpdate() : base(burf, information, 3)
         {
 
         }

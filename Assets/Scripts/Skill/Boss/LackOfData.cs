@@ -5,12 +5,8 @@ using System.Text;
 
 namespace Model
 {
-    public class LackOfData : ProjectSkill, IMultiDeburf
+    public class LackOfData : ProjectMultiDeburfSkill
     {
-        public double DecreaseDamage = 0.5;
-        public int DecreaseTurn = 2;
-        public DeburfType deburfType = DeburfType.DecreaseDamage;
-
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.MultiDeburf,
@@ -20,7 +16,12 @@ namespace Model
             Animation = "Shout"
         };
 
-        public LackOfData() : base(information, 0, 3)
+        private static List<DeBurfStructure> deburf = new List<DeBurfStructure>
+        {
+            new DeBurfStructure(DeburfType.DecreaseAttack, 2, 0.5)
+        };
+
+        public LackOfData() : base(deburf, information, 3)
         {
 
         }

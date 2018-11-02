@@ -5,12 +5,8 @@ using System.Text;
 
 namespace Model
 {
-    public class DeadLineChanged : ProjectSkill, IMultiDeburf
+    public class DeadLineChanged : ProjectMultiDeburfSkill
     {
-        public double shortenDeadline = 0.8;
-        public double IncreaseMentalUsage = 0.75;
-        public DeburfType deburfType = DeburfType.IncreaseMentalUsage & DeburfType.ShortenDeadLine;
-
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.MultiDeburf,
@@ -20,7 +16,13 @@ namespace Model
             Animation = "Shout"
         };
 
-        public DeadLineChanged() : base(information, 0, 3)
+        private static List<DeBurfStructure> deburf = new List<DeBurfStructure>
+        {
+            new DeBurfStructure(DeburfType.ShortenDeadLine, Int32.MaxValue, 0.8),
+            new DeBurfStructure(DeburfType.IncreaseMentalUsage, Int32.MaxValue, 25)
+        };
+
+        public DeadLineChanged() : base(deburf, information, 3)
         {
 
         }

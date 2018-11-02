@@ -12,11 +12,6 @@ namespace Model
             Deburf = deburf;
         }
 
-        public double Damage
-        {
-            get; private set;
-        }
-
         public List<DeBurfStructure> Deburf
         {
             get; private set;

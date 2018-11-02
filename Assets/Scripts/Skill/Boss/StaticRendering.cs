@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Model
 {
-    public class StaticRendering : ProjectSkill, ISoloDeburf
+    public class StaticRendering : ProjectSingleDeburfSkill
     {
-        public DeburfType deburftype = DeburfType.DisableMovement;
+        
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.SingleDeburf,
@@ -17,7 +17,12 @@ namespace Model
             Animation = "Shout"
         };
 
-        public StaticRendering() : base(information, 0, 4)
+        private static List<DeBurfStructure> deburf = new List<DeBurfStructure>
+        {
+            new DeBurfStructure(DeburfType.DisableMovement, Int32.MaxValue, 0)
+        };
+
+        public StaticRendering() : base(deburf, information, 4)
         {
 
         }

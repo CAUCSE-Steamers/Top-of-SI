@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    public class LackOfComputingPerformance : ProjectSkill, IMultiAttack
+    public class LackOfComputingPerformance : ProjectMultiAttackSkill
     {
 
         private static ProjectSkillInformation information = new ProjectSkillInformation
@@ -17,7 +17,7 @@ namespace Model
             Animation = "Shout"
         };
 
-        public LackOfComputingPerformance() : base(information, 20, 2)
+        public LackOfComputingPerformance() : base(20, information, 2)
         {
 
         }
