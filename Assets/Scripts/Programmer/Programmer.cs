@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Model;
 
-public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
+public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
 {
     public event Action OnActionFinished = delegate { };
 
@@ -155,6 +155,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
     private ParticleSystem testEffect;
     [SerializeField]
     private GameObject skillSpellPositionObject;
+    private bool isMovable;
+    private bool isSplash;
 
     private IEnumerator StartUseSkill()
     {
@@ -219,5 +221,47 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable
         CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
 
         OnActionFinished();
+    }
+
+    public DeburfType Deburf(List<DeBurfStructure> deburf)
+    {
+        DeburfType ret = DeburfType.None;
+        foreach(var iter in deburf)
+        {
+            if(OutOfProgrammer(iter.Type))
+            {
+                ret |= iter.Type;
+            }
+            else
+            {
+                switch (iter.Type)
+                {
+                    case DeburfType.DecreaseAttack:
+                        //TODO : find the way to decrease attack
+                        break;
+                    case DeburfType.DisableMovement:
+                        //Please Check this before show weather Player can move or not
+                        isMovable = false;
+                        break;
+                    case DeburfType.IncreaseDamage:
+                        //TODO : find the way to increase damage
+                        break;
+                    case DeburfType.IncreaseMentalUsage:
+                        //TODO : find the way to increase mental usage
+                        break;
+                    case DeburfType.Splash:
+                        //Please Check this when Affect Boss's Attack or damage
+                        isSplash = true;
+                        break;
+                }
+            }
+        }
+        return ret;
+    }
+
+    private bool OutOfProgrammer(DeburfType type)
+    {
+        //If new Deburf type which need to control out of programmer, add it to this.
+        return ((type & DeburfType.ShortenDeadLine) != 0);
     }
 }
