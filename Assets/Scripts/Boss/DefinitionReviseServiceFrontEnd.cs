@@ -19,8 +19,14 @@ namespace Model
                 FullHealth = 1000,
                 Health = 1000
             };
-            List<ProjectSkill> skill_list = new List<ProjectSkill>();
-            //TODO : Add Skills
+            List<ProjectSkill> skill_list = new List<ProjectSkill>()
+            {
+                new VersionUpdate(),
+                new RequirementChanged(),
+                new DeadLineChanged(),
+                new IEServiceDecision(),
+                new OutOfOnePixel()
+            };
             Ability = new ProjectAbility(skill_list, ProjectType.Client);
         }
 

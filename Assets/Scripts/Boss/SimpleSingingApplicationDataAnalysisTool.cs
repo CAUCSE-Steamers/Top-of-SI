@@ -19,8 +19,17 @@ namespace Model
                 FullHealth = 1000,
                 Health = 1000
             };
-            List<ProjectSkill> skill_list = new List<ProjectSkill>();
-            //TODO : Add Skills
+            List<ProjectSkill> skill_list = new List<ProjectSkill>()
+            {
+                new VersionUpdate(),
+                new RequirementChanged(),
+                new DeadLineChanged(), 
+                new DDOS(), 
+                new LackOfData(), 
+                new LackOfComputingPerformance(), 
+                new StaticRendering(), 
+                new OSUpdate()
+            };
             Ability = new ProjectAbility(skill_list, ProjectType.Application);
         }
         public override void Hurt(int damage)

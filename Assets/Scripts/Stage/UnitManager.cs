@@ -196,8 +196,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                     InvokeSkill((ProjectBurfSkill)usedSkill);
                     break;
             }
-            //TODO : Find the way to cast upper class type to lower class type.
-            //InvokeSkill(usedSkill);
         }
     }
 
