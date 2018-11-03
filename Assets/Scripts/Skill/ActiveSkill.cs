@@ -72,6 +72,12 @@ namespace Model
             get; private set;
         }
 
+        // if random double number is smaller than accuracy, skill correct.
+        public double Accuracy
+        {
+            get; set;
+        }
+
         public IEnumerable<PassiveSkill> FlattenContainingPassiveSkills()
         {
             var passiveSkills = new List<PassiveSkill>();

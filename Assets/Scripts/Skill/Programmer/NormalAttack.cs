@@ -20,7 +20,7 @@ namespace Model
         public NormalAttack() 
             : base(information, Enumerable.Empty<PassiveSkill>(), 33.0, 3.0)
         {
-
+            Accuracy = 1.0;
         }
 
         //TODO: TechniqueType도 추가할 것.

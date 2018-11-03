@@ -45,7 +45,7 @@ public abstract class AbstractProject : MonoBehaviour, IHurtable, IInvokeSkills
         }
     }
 
-        public ProjectSkill Invoke()
+    public ProjectSkill Invoke()
     {
         ProjectSkill ret = Ability.InvokedSkill;
         anim.Play(ret.Information.Animation);
