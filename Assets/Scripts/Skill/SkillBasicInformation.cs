@@ -40,5 +40,10 @@ namespace Model
         {
             get; set;
         }
+
+        public int RequiredUpgradeCost
+        {
+            get; set;
+        }
     }
 }

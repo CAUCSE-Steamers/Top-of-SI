@@ -13,7 +13,8 @@ namespace Model
             Type = SkillType.None,
             AcquisitionLevel = 1,
             MaximumLevel = 1,
-            IconName = "Cpp"
+            IconName = "Cpp",
+            RequiredUpgradeCost = 0
         };
 
         public NormalAttack() 
