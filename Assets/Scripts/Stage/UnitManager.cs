@@ -178,7 +178,24 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             }
 
             var usedSkill = boss.Invoke();
-
+            switch (usedSkill.Information.Type)
+            {
+                case ProjectSkillType.SingleAttack:
+                    InvokeSkill((ProjectSingleAttackSkill)usedSkill);
+                    break;
+                case ProjectSkillType.MultiAttack:
+                    InvokeSkill((ProjectMultiAttackSkill)usedSkill);
+                    break;
+                case ProjectSkillType.SingleDeburf:
+                    InvokeSkill((ProjectSingleDeburfSkill)usedSkill);
+                    break;
+                case ProjectSkillType.MultiDeburf:
+                    InvokeSkill((ProjectMultiDeburfSkill)usedSkill);
+                    break;
+                case ProjectSkillType.Burf:
+                    InvokeSkill((ProjectBurfSkill)usedSkill);
+                    break;
+            }
             //TODO : Find the way to cast upper class type to lower class type.
             //InvokeSkill(usedSkill);
         }
