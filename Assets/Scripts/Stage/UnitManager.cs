@@ -176,6 +176,15 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             {
                 iter.DecreaseCooldown();
             }
+            for(int i = 0, delete = 0; i < Boss.Status.Burf.Count; i++)
+            {
+                Boss.Status.Burf[i - delete].DecreaseTurn();
+                if (Boss.Status.Burf[i - delete].Turn < 1)
+                {
+                    Boss.Status.Burf.RemoveAt(i - delete);
+                    delete++;
+                }
+            }
 
             var usedSkill = boss.Invoke();
             switch (usedSkill.Information.Type)
@@ -214,7 +223,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     private void InvokeSkill(ProjectSingleDeburfSkill skill)
     {
         //TODO : need to know how to find selected programmer
-        //Programmer.Deburf((int)skill.Damage);
+        //Programmer.Deburf(skill.Deburf);
     }
     private void InvokeSkill(ProjectMultiDeburfSkill skill)
     {
@@ -235,6 +244,20 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             foreach (var programmer in programmerActingDictionary.Keys.ToArray())
             {
                 programmerActingDictionary[programmer] = false;
+            }
+            
+            //Burf Turn Decrease and Remove expired Burf
+            foreach (var iter in Programmers)
+            {
+                for (int i = 0, delete = 0; i < iter.Status.Deburf.Count; i++)
+                {
+                    iter.Status.Deburf[i - delete].DecreaseTurn();
+                    if(iter.Status.Deburf[i - delete].Turn < 1)
+                    {
+                        iter.Status.Deburf.RemoveAt(i - delete);
+                        delete++;
+                    }
+                }
             }
 
             CommonLogger.Log("UnitManager::PermitProgrammersActionIfTurnChangedToPlayer => 모든 프로그래머의 행동 여부가 초기화됨.");

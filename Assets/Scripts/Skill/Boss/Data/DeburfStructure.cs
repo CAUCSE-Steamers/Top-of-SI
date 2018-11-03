@@ -28,5 +28,9 @@ namespace Model
             get; private set;
         }
 
+        public void DecreaseTurn()
+        {
+            Turn--;
+        }
     }
 }
