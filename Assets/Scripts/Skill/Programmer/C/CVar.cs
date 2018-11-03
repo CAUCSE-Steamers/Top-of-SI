@@ -11,7 +11,7 @@ namespace Model
         {
             Name = "CVar",
             Type = SkillType.C,
-            AcquisitionLevel = 1,
+            AcquisitionLevel = 0,
             MaximumLevel = 100,
             IconName = "C", 
             RequiredUpgradeCost = 3
@@ -21,6 +21,20 @@ namespace Model
             : base(information, Enumerable.Empty<PassiveSkill>(), 1, 5)
         {
             Accuracy = 0.9;
+            //TODO: Add Auxilirary Passive Skill
+        }
+
+        public override void LevelUP()
+        {
+            Information.AcquisitionLevel++;
+            if(Information.AcquisitionLevel == 10)
+            {
+                //TODO: Enable NoteDown
+            }
+            else if(Information.AcquisitionLevel == 40)
+            {
+                //TODO: Enable ConterEvolution.
+            }
         }
 
         protected override double CalculateProjectTypeAppliedDamage(ProjectType projectType)

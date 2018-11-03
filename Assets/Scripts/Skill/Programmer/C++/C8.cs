@@ -21,6 +21,16 @@ namespace Model
             : base(information, Enumerable.Empty<PassiveSkill>(), 1, 4)
         {
             Accuracy = 0.9;
+            //TODO: Add Auxilirary Passive Skill
+        }
+
+        public override void LevelUP()
+        {
+            Information.AcquisitionLevel++;
+            if(Information.AcquisitionLevel == 5)
+            {
+                //TODO: Enable Overload
+            }
         }
 
         protected override double CalculateProjectTypeAppliedDamage(ProjectType projectType)

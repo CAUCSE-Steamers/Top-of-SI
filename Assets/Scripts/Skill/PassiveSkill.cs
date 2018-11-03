@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    public abstract class PassiveSkill
+    public abstract class PassiveSkill : ILevelUp
     {
         public PassiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> auxiliaryPassiveSkills)
         {
@@ -18,9 +18,16 @@ namespace Model
             get; private set;
         }
 
+        public bool EnableToLearn
+        {
+            get; set;
+        }
+
         public IEnumerable<PassiveSkill> AuxiliaryPassiveSkills
         {
             get; private set;
         }
+
+        public abstract void LevelUP();
     }
 }

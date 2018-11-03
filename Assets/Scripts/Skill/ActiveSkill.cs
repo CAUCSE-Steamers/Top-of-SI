@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Model
 {
-    public abstract class ActiveSkill : ICooldownRequired
+    public abstract class ActiveSkill : ICooldownRequired, ILevelUp
     {
         public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double baseDamage, double defaultCooldown)
         {
@@ -138,5 +138,7 @@ namespace Model
 
         protected abstract double CalculateProjectTypeAppliedDamage(ProjectType projectType);
         protected abstract double CalculateSkillLevelDamage(double projectTypeAppliedDamage);
+
+        public abstract void LevelUP();
     }
 }

@@ -21,6 +21,16 @@ namespace Model
             : base(information, Enumerable.Empty<PassiveSkill>(), 1, 1)
         {
             Accuracy = 0.8;
+            //TODO: Add Auxilirary Passive Skill
+        }
+
+        public override void LevelUP()
+        {
+            Information.AcquisitionLevel++;
+            if (Information.AcquisitionLevel == 5)
+            {
+                //TODO: Enable FastCode, Pypi
+            }
         }
 
         protected override double CalculateProjectTypeAppliedDamage(ProjectType projectType)
