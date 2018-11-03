@@ -6,7 +6,6 @@ using Model;
 
 public abstract class AbstractProject : MonoBehaviour, IHurtable, IInvokeSkills
 {
-    private Boolean isOverwhelming = false, isDecreaseDamage = false;
     public event Action OnActionFinished = delegate { };
     public event Action OnDeath = delegate { };
 
@@ -39,15 +38,8 @@ public abstract class AbstractProject : MonoBehaviour, IHurtable, IInvokeSkills
                     Status.Health += healedHP;
                     CommonLogger.Log("Boss Cured " + healedHP + "\n");
                     break;
-                case BurfType.DecreaseDamage:
-                    // Pleace Check this before apply damage
-                    isDecreaseDamage = true;
-                    CommonLogger.Log("Damage is decreased " + iter.Factor * 100 + "%\n");
-                    break;
-                case BurfType.Overwhelming:
-                    // Please Check this before apply damage
-                    isOverwhelming = true;
-                    CommonLogger.Log("Boss is Overwhelming during " + iter.Turn + "turns\n");
+                default:
+                    Status.Burf.Add(iter);
                     break;
             }
         }

@@ -155,8 +155,6 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
     private ParticleSystem testEffect;
     [SerializeField]
     private GameObject skillSpellPositionObject;
-    private bool isMovable;
-    private bool isSplash;
 
     private IEnumerator StartUseSkill()
     {
@@ -226,7 +224,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
     public DeburfType Deburf(List<DeBurfStructure> deburf)
     {
         DeburfType ret = DeburfType.None;
-        foreach(var iter in deburf)
+        foreach (var iter in deburf)
         {
             if(OutOfProgrammer(iter.Type))
             {
@@ -234,26 +232,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
             }
             else
             {
-                switch (iter.Type)
-                {
-                    case DeburfType.DecreaseAttack:
-                        //TODO : find the way to decrease attack
-                        break;
-                    case DeburfType.DisableMovement:
-                        //Please Check this before show weather Player can move or not
-                        isMovable = false;
-                        break;
-                    case DeburfType.IncreaseDamage:
-                        //TODO : find the way to increase damage
-                        break;
-                    case DeburfType.IncreaseMentalUsage:
-                        //TODO : find the way to increase mental usage
-                        break;
-                    case DeburfType.Splash:
-                        //Please Check this when Affect Boss's Attack or damage
-                        isSplash = true;
-                        break;
-                }
+                Status.Deburf.Add(iter);
             }
         }
         return ret;
