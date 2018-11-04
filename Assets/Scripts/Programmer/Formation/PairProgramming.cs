@@ -11,7 +11,7 @@ namespace Model.Formation
         private static readonly IEnumerable<Vector2Int> relativeFormationLocations = new List<Vector2Int>
         {
             new Vector2Int(0, 0),
-            new Vector2Int(-1, 0)
+            new Vector2Int(0, -1)
         };
 
         public PairProgramming() 
@@ -24,14 +24,6 @@ namespace Model.Formation
             get
             {
                 return relativeFormationLocations;
-            }
-        }
-
-        protected override IEnumerable<BurfStructure> FormationsBurfs
-        {
-            get
-            {
-                return null;
             }
         }
     }

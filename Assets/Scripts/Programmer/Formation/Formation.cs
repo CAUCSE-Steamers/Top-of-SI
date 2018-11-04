@@ -38,7 +38,7 @@ namespace Model.Formation
             get; private set;
         }
 
-        public void Attach(IEnumerable<Programmer> programmers)
+        public void Attach()
         {
 
         }
@@ -63,8 +63,17 @@ namespace Model.Formation
         private bool CanApplyFormationCentralFor(Programmer programmer)
         {
             var stageField = StageManager.Instance.StageField;
-            var programmers = StageManager.Instance.Unit.Programmers;
             var centralLocation = stageField.VectorToIndices(programmer.transform.position);
+            var relativePositions = FetchRelativePositionsFor(centralLocation);
+
+            return relativePositions.Distinct()
+                                    .All(position => RelativeFormation.Contains(position));
+        }
+
+        private IEnumerable<Vector2Int> FetchRelativePositionsFor(Vector2Int centralLocation)
+        {
+            var stageField = StageManager.Instance.StageField;
+            var programmers = StageManager.Instance.Unit.Programmers;
 
             var relativePositions = new List<Vector2Int>
             {
@@ -81,16 +90,10 @@ namespace Model.Formation
                 }
             }
 
-            return relativePositions.Distinct()
-                                    .All(position => RelativeFormation.Contains(position));
+            return relativePositions;
         }
 
         protected abstract IEnumerable<Vector2Int> RelativeFormation
-        {
-            get;
-        }
-
-        protected abstract IEnumerable<BurfStructure> FormationsBurfs
         {
             get;
         }

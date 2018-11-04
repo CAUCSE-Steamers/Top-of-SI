@@ -6,16 +6,17 @@ using UnityEngine;
 
 namespace Model.Formation
 {
-    public class SeniorAndJunior : Formation
+    public class Trinity : Formation
     {
         private static readonly IEnumerable<Vector2Int> relativeFormationLocations = new List<Vector2Int>
         {
             new Vector2Int(0, 0),
-            new Vector2Int(1, 0)
+            new Vector2Int(1, -1),
+            new Vector2Int(-1, -2)
         };
 
-        public SeniorAndJunior()
-            : base("사수제", 2)
+        public Trinity()
+            : base("트리니티", 3)
         {
         }
 

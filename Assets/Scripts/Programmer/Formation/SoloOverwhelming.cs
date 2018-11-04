@@ -25,13 +25,5 @@ namespace Model.Formation
                 return relativeFormationLocations;
             }
         }
-
-        protected override IEnumerable<BurfStructure> FormationsBurfs
-        {
-            get
-            {
-                return null;
-            }
-        }
     }
 }
