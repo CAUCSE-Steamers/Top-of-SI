@@ -183,6 +183,12 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             }
 
             var usedSkill = boss.Invoke();
+            if (usedSkill is ISoundProducible)
+            {
+                var clip = (usedSkill as ISoundProducible).EffectSound;
+                SoundManager.Instance.FetchAvailableSource().PlayOneShot(clip);
+            }
+
             CommonLogger.LogFormat("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스가 {0} 스킬을 사용함.", usedSkill.Information.Name);
 
             switch (usedSkill.Information.Type)

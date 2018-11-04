@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Model
 {
-    class RequirementChanged : ProjectBurfSkill
+    class RequirementChanged : ProjectBurfSkill, ISoundProducible
     {
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
@@ -24,6 +25,14 @@ namespace Model
         public RequirementChanged() : base(burf, information, 3)
         {
 
+        }
+
+        public AudioClip EffectSound
+        {
+            get
+            {
+                return ResourceLoadUtility.LoadEffectClip("Roar");
+            }
         }
     }
 }
