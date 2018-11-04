@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class RequirementChanged : ProjectSkill, IMultiAttack
+    class RequirementChanged : ProjectBurfSkill
     {
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
@@ -16,7 +16,12 @@ namespace Model
             Animation = "Shout"
         };
 
-        public RequirementChanged() : base(information, 2.1, 3)
+        private static List<BurfStructure> burf = new List<BurfStructure>
+        {
+            new BurfStructure(BurfType.Cure, 0, 0.1)
+        };
+
+        public RequirementChanged() : base(burf, information, 3)
         {
 
         }

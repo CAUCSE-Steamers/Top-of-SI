@@ -27,6 +27,24 @@ public abstract class AbstractProject : MonoBehaviour, IHurtable, IInvokeSkills
         OnDeath();
     }
 
+    public void Burf(List<BurfStructure> burf)
+    {
+        foreach (var iter in burf)
+        {
+            switch (iter.Type)
+            {
+                case BurfType.Cure:
+                    int healedHP = (int)(Status.FullHealth * iter.Factor);
+                    Status.Health += healedHP;
+                    CommonLogger.Log("Boss Cured " + healedHP + "\n");
+                    break;
+                default:
+                    Status.Burf.Add(iter);
+                    break;
+            }
+        }
+    }
+
     public ProjectSkill Invoke()
     {
         ProjectSkill ret = Ability.InvokedSkill;

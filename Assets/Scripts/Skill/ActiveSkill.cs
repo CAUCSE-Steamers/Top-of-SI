@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Model
 {
-    public abstract class ActiveSkill : ICooldownRequired
+    public abstract class ActiveSkill : ICooldownRequired, ILevelUp
     {
         public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double baseDamage, double defaultCooldown)
         {
@@ -72,6 +72,12 @@ namespace Model
             get; private set;
         }
 
+        // if random double number is smaller than accuracy, skill correct.
+        public double Accuracy
+        {
+            get; set;
+        }
+
         public IEnumerable<PassiveSkill> FlattenContainingPassiveSkills()
         {
             var passiveSkills = new List<PassiveSkill>();
@@ -132,5 +138,7 @@ namespace Model
 
         protected abstract double CalculateProjectTypeAppliedDamage(ProjectType projectType);
         protected abstract double CalculateSkillLevelDamage(double projectTypeAppliedDamage);
+
+        public abstract void LevelUP();
     }
 }

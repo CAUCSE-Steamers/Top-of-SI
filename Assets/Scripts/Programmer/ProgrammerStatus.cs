@@ -8,8 +8,9 @@ namespace Model
     public class ProgrammerStatus : IEventDisposable
     {
         public event Action<int> OnHealthChanged = delegate { };
-
+        
         private int health;
+        private List<DeBurfStructure> deburf = new List<DeBurfStructure>();
 
         public string PortraitName
         {
@@ -55,6 +56,30 @@ namespace Model
                 health = value;
                 OnHealthChanged(health);
             }
+        }
+
+        public List<DeBurfStructure> Deburf
+        {
+            get
+            {
+                return deburf;
+            }
+            set
+            {
+                deburf.AddRange(value);
+            }
+        }
+
+        public bool OnDeburf(DeburfType status)
+        {
+                foreach(var iter in deburf)
+                {
+                    if((iter.Type & status) > 0)
+                    {
+                        return true;
+                    }
+                }
+                return false;
         }
 
         public void DisposeRegisteredEvents()
