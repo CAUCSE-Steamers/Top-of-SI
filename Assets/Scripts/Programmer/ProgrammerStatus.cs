@@ -72,14 +72,14 @@ namespace Model
 
         public bool OnDeburf(DeburfType status)
         {
-                foreach(var iter in deburf)
+            foreach (var iter in deburf)
+            {
+                if ((iter.Type & status) > 0)
                 {
-                    if((iter.Type & status) > 0)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                return false;
+            }
+            return false;
         }
 
         public void DisposeRegisteredEvents()

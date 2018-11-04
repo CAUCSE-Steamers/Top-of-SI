@@ -90,20 +90,38 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         foreach (var programmer in programmerActingDictionary.Keys)
         {
-            programmer.OnMovingEnded += position =>
+            programmer.OnMovingStarted += position =>
             {
-                foreach (var formation in Formation.formations)
-                {
-                    Debug.LogFormat("{0} : {1}", formation.Name, formation.CanApplyFormation());
-                }
+                CurrentAppliedFormation = null;
             };
 
+            programmer.OnMovingEnded += CheckProgrammerFormation;
             programmer.OnActionFinished += () =>
             {
                 programmerActingDictionary[programmer] = true;
                 ChangeTurnToBossIfAllProgrammersPerformAction();
             };
         }
+    }
+
+    private void CheckProgrammerFormation(Vector3 position)
+    {
+        foreach (var formation in Formation.formations)
+        {
+            if (formation.CanApplyFormation())
+            {
+                CurrentAppliedFormation = formation;
+
+                Debug.LogFormat("UnitManager::CheckProgrammerFormation => 진형 '{0}'가 적용됨.", CurrentAppliedFormation.Name);
+                break;
+            }
+        }
+
+    }
+
+    public Formation CurrentAppliedFormation
+    {
+        get; private set;
     }
 
     private void ChangeTurnToBossIfAllProgrammersPerformAction()
