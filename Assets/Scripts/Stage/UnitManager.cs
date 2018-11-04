@@ -94,8 +94,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 programmerActingDictionary[programmer] = true;
                 ChangeTurnToBossIfAllProgrammersPerformAction();
             };
-
-            Register(programmer);
         }
     }
 
@@ -111,35 +109,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         {
             CommonLogger.Log("UnitManager::ChangeTurnToBossIfAllProgrammersPerformAction => 모든 프로그래머가 행동을 수행했고, 보스가 사망함.");
         }
-    }
-
-    // TODO: Delete
-    public Programmer CurrentSelectedProgrammer;
-    private void Register(Programmer programmer)
-    {
-        programmer.OnMouseClicked += obj =>
-        {
-            CurrentSelectedProgrammer = programmer;
-        };
-    }
-
-    // TODO: Delete
-    public void TempSkillUse()
-    {
-        var skill = CurrentSelectedProgrammer.Ability.AcquiredActiveSkills.First();
-
-        if (skill is IEffectProducible)
-        {
-            var effectObject = (skill as IEffectProducible).MakeEffect(CurrentSelectedProgrammer.transform);
-
-            CurrentSelectedProgrammer.OnSkillEnded += () =>
-            {
-                Destroy(effectObject);
-            };
-        }
-
-        CurrentSelectedProgrammer.UseSkill();
-        skill.ApplySkill(boss, ProjectType.Application, RequiredTechType.Web);
     }
 
     public IEnumerable<Cell> CurrentMovableCellFor(Programmer programmer)
