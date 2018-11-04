@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Model
 {
-    public class CVar : ActiveSkill
+    public class CVar : ActiveSkill, ISoundProducible
     {
         private static SkillBasicInformation information = new SkillBasicInformation
         {
@@ -22,6 +23,14 @@ namespace Model
         {
             Accuracy = 0.9;
             //TODO: Add Auxilirary Passive Skill
+        }
+
+        public AudioClip EffectSound
+        {
+            get
+            {
+                return ResourceLoadUtility.LoadEffectClip("Cannon");
+            }
         }
 
         public override void LevelUP()

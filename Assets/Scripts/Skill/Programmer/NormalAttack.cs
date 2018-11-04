@@ -19,7 +19,7 @@ namespace Model
         };
 
         public NormalAttack() 
-            : base(information, Enumerable.Empty<PassiveSkill>(), 33.0, 3.0)
+            : base(information, Enumerable.Empty<PassiveSkill>(), 1.0, 1.0)
         {
             Accuracy = 1.0;
         }
@@ -45,7 +45,7 @@ namespace Model
 
         protected override double CalculateSkillLevelDamage(double projectTypeAppliedDamage)
         {
-            return projectTypeAppliedDamage * Information.AcquisitionLevel;
+            return projectTypeAppliedDamage;
         }
     }
 }
