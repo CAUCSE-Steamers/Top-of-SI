@@ -23,8 +23,12 @@ namespace Model
             Accuracy = 1.0;
         }
 
-        //TODO: TechniqueType도 추가할 것.
+        public override void LevelUP()
+        {
+            // Do nothing
+        }
 
+        //TODO: TechniqueType도 추가할 것.
         protected override double CalculateProjectTypeAppliedDamage(ProjectType projectType)
         {
             return BaseDamage;
