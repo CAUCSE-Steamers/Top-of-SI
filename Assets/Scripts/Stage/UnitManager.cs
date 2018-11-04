@@ -1,4 +1,5 @@
 ﻿using Model;
+using Model.Formation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,6 +90,14 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         foreach (var programmer in programmerActingDictionary.Keys)
         {
+            programmer.OnMovingEnded += position =>
+            {
+                foreach (var formation in Formation.formations)
+                {
+                    Debug.LogFormat("{0} : {1}", formation.Name, formation.CanApplyFormation());
+                }
+            };
+
             programmer.OnActionFinished += () =>
             {
                 programmerActingDictionary[programmer] = true;
