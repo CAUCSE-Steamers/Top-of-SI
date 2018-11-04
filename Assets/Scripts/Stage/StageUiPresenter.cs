@@ -186,6 +186,14 @@ public class StageUiPresenter : MonoBehaviour
             };
         }
 
+        if (skill is ISoundProducible)
+        {
+            var effectSoundClip = (skill as ISoundProducible).EffectSound;
+
+            var audioSource = SoundManager.Instance.FetchAvailableSource();
+            audioSource.PlayOneShot(effectSoundClip);
+        }
+
         var boss = StageManager.Instance.Unit.Boss;
         currentSelectedProgrammer.UseSkill();
         skill.ApplySkill(boss, ProjectType.Application, RequiredTechType.Web);
