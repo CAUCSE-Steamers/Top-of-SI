@@ -110,13 +110,14 @@ namespace Model
             return DefaultCooldown + additionCooldown;
         }
 
-        private double AdditionalValueFromPassive<T>(double baseValue, Func<T, double> valueApplyingFunction)
+        private double AdditionalValueFromPassive<T>(double baseValue, Func<T, double> valueApplyingFunction) where T : PassiveSkill
         {
             double additionalValue = 0.0;
 
             if (AuxiliaryPassiveSkills != null)
             {
-                foreach (var passiveSkill in AuxiliaryPassiveSkills.OfType<T>())
+                foreach (var passiveSkill in AuxiliaryPassiveSkills.OfType<T>()
+                                                                   .Where(passiveSkill => passiveSkill.Information.AcquisitionLevel > 0))
                 {
                     additionalValue += (baseValue - valueApplyingFunction(passiveSkill));
                 }
