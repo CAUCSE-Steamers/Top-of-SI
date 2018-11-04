@@ -165,6 +165,8 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             }
 
             var usedSkill = boss.Invoke();
+            CommonLogger.LogFormat("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스가 {0} 스킬을 사용함.", usedSkill.Information.Name);
+
             switch (usedSkill.Information.Type)
             {
                 case ProjectSkillType.SingleAttack:
@@ -183,6 +185,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                     InvokeSkill((ProjectBurfSkill)usedSkill);
                     break;
             }
+
         }
     }
 
