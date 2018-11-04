@@ -35,7 +35,7 @@ public abstract class AbstractProject : MonoBehaviour, IHurtable, IInvokeSkills
             {
                 case BurfType.Cure:
                     int healedHP = (int)(Status.FullHealth * iter.Factor);
-                    Status.Health += healedHP;
+                    Status.Health = Mathf.Clamp(Status.Health + healedHP, 0, Status.FullHealth);
                     CommonLogger.Log("Boss Cured " + healedHP + "\n");
                     break;
                 default:
