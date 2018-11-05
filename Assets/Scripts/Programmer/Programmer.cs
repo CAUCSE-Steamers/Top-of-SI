@@ -50,10 +50,12 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
             DebugLogger.LogWarningFormat("Programmer::Hurt => {0} 프로그래머가 음수의 데미지를 입음.", name);
         }
 
-        Status.Health -= (int) (damage * (1 + Status.AdditionalDamageRatio));
+        int totalDamage = (int) (damage * (1 + Status.AdditionalDamageRatio));
+
+        Status.Health -= totalDamage;
         OnDamaged(damage);
 
-        CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 {1}의 데미지를 입음. 남은 체력은 {2}.", name, damage, Status.Health);
+        CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 {1}의 데미지를 입음. 남은 체력은 {2}.", name, totalDamage, Status.Health);
 
         if (IsAlive == false)
         {
@@ -221,20 +223,13 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
 
         OnActionFinished();
     }
-
-    public void ApplyStatusBurfs()
+    
+    public void ApplyPersistentStatusBurfs()
     {
-        foreach (var statusBurf in Status.Burfs.OfType<IStatusModificationCommand>())
+        foreach (var statusBurf in Status.Burfs.Where(burf => burf.IsPersistent)
+                                               .OfType<IStatusModificationCommand>())
         {
             statusBurf.Modify(Status);
-        }
-    }
-
-    public void ResetStatusBurfs()
-    {
-        foreach (var statusBurf in Status.Burfs.OfType<IStatusModificationCommand>())
-        {
-            statusBurf.Unmodify(Status);
         }
     }
 

@@ -11,10 +11,7 @@ namespace Model
         
         private int health;
 
-        private List<KeyValuePair<IBurf, int>> burfs = new List<KeyValuePair<IBurf, int>>
-        {
-            new KeyValuePair<IBurf, int>(new HealBurf(100, 100), 2)
-        };
+        private List<KeyValuePair<IBurf, int>> burfs = new List<KeyValuePair<IBurf, int>>();
         private List<DeBurfStructure> deburf = new List<DeBurfStructure>();
 
         public string PortraitName
@@ -31,6 +28,10 @@ namespace Model
         {
             FullHealth = Health;
             AdditionalDamageRatio = 0.0;
+
+
+            RegisterBurf(new HealBurf(10, 50), 3);
+            RegisterBurf(new HurtDamageBurf(10.0), 2);
         }
 
         public int? StartVacationDay
@@ -72,6 +73,12 @@ namespace Model
         public void RegisterBurf(IBurf newBurf, int persistentTurn)
         {
             burfs.Add(new KeyValuePair<IBurf, int>(newBurf, persistentTurn));
+
+            var statusModificationCommand = newBurf as IStatusModificationCommand;
+            if (statusModificationCommand != null && newBurf.IsPersistent == false)
+            {
+                statusModificationCommand.Modify(this);
+            }
         }
 
         public void RemoveBurf(IBurf targetBurf)
@@ -90,8 +97,16 @@ namespace Model
 
         public void DecayBurfs()
         {
-            burfs = burfs.Select(burfInformation => new KeyValuePair<IBurf, int>(burfInformation.Key, burfInformation.Value - 1))
-                         .Where(burfInformation => burfInformation.Value > 0)
+            var expiredBurfs = burfs.Where(burfInformation => burfInformation.Value <= 1);
+
+            foreach (var expireBurf in expiredBurfs.Select(burfInformation => burfInformation.Key)
+                                                   .OfType<IStatusModificationCommand>())
+            {
+                expireBurf.Unmodify(this);
+            }
+
+            burfs = burfs.Except(expiredBurfs)
+                         .Select(burfInformation => new KeyValuePair<IBurf, int>(burfInformation.Key, burfInformation.Value - 1))
                          .ToList();
         }
 

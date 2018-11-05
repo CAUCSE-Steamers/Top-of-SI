@@ -70,7 +70,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
         OnTurnChanged += RequestBossActionIfTurnChangedToBoss;
         OnTurnChanged += PermitProgrammersActionIfTurnChangedToPlayer;
-        OnTurnChanged += ResetBurfsIfTurnChangedToPlayer;
         OnTurnChanged += ApplyBurfsIfTurnChangedToPlayer;
         OnTurnChanged += DecreaseActiveSkillCooldownIfTurnChangedToPlayer;
         programmerActingDictionary =
@@ -88,25 +87,13 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         CommonLogger.Log("UnitManager::SetUnits => 초기화 완료.");
     }
 
-    private void ResetBurfsIfTurnChangedToPlayer(TurnState turn)
-    {
-        if (turn == TurnState.Player)
-        {
-            foreach (var programmer in Programmers)
-            {
-                programmer.ResetStatusBurfs();
-            }
-        }
-    }
-
     private void ApplyBurfsIfTurnChangedToPlayer(TurnState turn)
     {
         if (turn == TurnState.Player)
         {
             foreach (var programmer in Programmers)
             {
-                programmer.ApplyStatusBurfs();
-
+                programmer.ApplyPersistentStatusBurfs();
                 programmer.Status.DecayBurfs();
             }
         }
@@ -138,11 +125,10 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             {
                 CurrentAppliedFormation = formation;
 
-                Debug.LogFormat("UnitManager::CheckProgrammerFormation => 진형 '{0}'가 적용됨.", CurrentAppliedFormation.Name);
+                CommonLogger.LogFormat("UnitManager::CheckProgrammerFormation => 진형 '{0}'가 적용됨.", CurrentAppliedFormation.Name);
                 break;
             }
         }
-
     }
 
     public Formation CurrentAppliedFormation
