@@ -8,6 +8,9 @@ namespace Model
 {
     public abstract class ActiveSkill : ICooldownRequired, ILevelUp
     {
+        private double baseDamage;
+        private double defaultCooldown;
+
         public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double baseDamage, double defaultCooldown)
         {
             Information = information;
@@ -16,6 +19,8 @@ namespace Model
             DefaultCooldown = defaultCooldown;
 
             RemainingCooldown = 0.0;
+            AdditionalDamageRatio = 0.0;
+            AdditionlCooldownRatio = 0.0;
         }
 
         public double RemainingCooldown
@@ -62,14 +67,38 @@ namespace Model
             get; private set;
         }
 
+        public double AdditionalDamageRatio
+        {
+            get; set;
+        }
+
         public double BaseDamage
         {
-            get; private set;
+            get
+            {
+                return baseDamage * (1.0 + AdditionlCooldownRatio);
+            }
+            private set
+            {
+                baseDamage = value;
+            }
+        }
+
+        public double AdditionlCooldownRatio
+        {
+            get; set;
         }
 
         public double DefaultCooldown
         {
-            get; private set;
+            get
+            {
+                return defaultCooldown * (1.0 + AdditionlCooldownRatio);
+            }
+            private set
+            {
+                defaultCooldown = value;
+            }
         }
 
         // if random double number is smaller than accuracy, skill correct.
