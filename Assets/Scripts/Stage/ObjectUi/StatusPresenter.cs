@@ -16,7 +16,7 @@ public class StatusPresenter : MonoBehaviour
         PresentFormationStatus();
 
         SetTextsActiveState(true);
-        statusUiList[0].SetText(string.Format("정신력 : {0}", status.Health));
+        statusUiList[0].SetText(string.Format("정신력 : {0} / {1}", status.Health, status.FullHealth));
     }
 
     private void PresentFormationStatus()
