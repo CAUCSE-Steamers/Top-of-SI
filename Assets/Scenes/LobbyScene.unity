@@ -394,6 +394,7 @@ GameObject:
   - component: {fileID: 406295455}
   - component: {fileID: 406295454}
   - component: {fileID: 406295453}
+  - component: {fileID: 406295456}
   m_Layer: 5
   m_Name: Project Button
   m_TagString: Untagged
@@ -458,7 +459,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 406295454}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 406295456}
+        m_MethodName: ForceMoveToScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: StageScene
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &406295454
@@ -494,6 +506,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 406295451}
+--- !u!114 &406295456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 406295451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4908a9c0aed414ab59878b654ea2e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &452649566
 GameObject:
   m_ObjectHideFlags: 0
