@@ -42,10 +42,13 @@ public class SoundManager : MonoBehaviour
     private AudioSource CreateNewSource()
     {
         var newSource = new GameObject();
-        newSource.AddComponent<AudioSource>().outputAudioMixerGroup = mixerGroup;
+        var audioComponent = newSource.AddComponent<AudioSource>();
+        audioComponent.outputAudioMixerGroup = mixerGroup;
+        audioComponent.spatialBlend = 0f;
+
         newSource.transform.parent = this.gameObject.transform;
 
-        return newSource.GetComponent<AudioSource>();
+        return audioComponent;
     }
 
     public AudioSource FetchAvailableSource()
