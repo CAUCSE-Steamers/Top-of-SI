@@ -86,8 +86,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
 
         RegisterBurf(new HealBurf(10, 50), 3);
         RegisterBurf(new HurtDamageBurf(10.0), 4);
-        RegisterBurf(new NormalAttackDamageBurf(9.0), 2);
-        RegisterBurf(new SkillDamageBurf(29.0), 3);
+        RegisterBurf(new NormalAttackDamageBurf(29.0), 5);
+        RegisterBurf(new SkillDamageBurf(59.0), 5);
 
         OnMovingStarted += Rotate;
     }

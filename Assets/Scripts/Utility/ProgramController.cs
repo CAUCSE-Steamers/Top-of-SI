@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEditor;
 using System.Diagnostics;
@@ -13,5 +14,10 @@ public class ProgramController : MonoBehaviour
 #else
         Process.GetCurrentProcess().Kill();
 #endif
+    }
+
+    public void ForceMoveToScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }
