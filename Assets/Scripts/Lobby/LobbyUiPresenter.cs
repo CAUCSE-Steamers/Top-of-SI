@@ -32,12 +32,7 @@ public class LobbyUiPresenter : MonoBehaviour
 
     }
 
-    public void updateMoney(int money)
-    {
-        moneyText.text = money.ToString();
-    }
-
-    public void updateProject(GameStage stage, bool isFirst, bool isLast)
+    public void UpdateProject(GameStage stage, bool isFirst, bool isLast)
     {
         projectTitleText.text = stage.Title;
         elapsedDayText.text = stage.ElapsedDayLimit.ToString();
@@ -61,8 +56,18 @@ public class LobbyUiPresenter : MonoBehaviour
         }
     }
 
+    public void UpdateMoney(int money)
+    {
+        moneyText.text = money.ToString();
+    }
+
     public void ChangeToNextProject()
     {
+        LobbyManager.Instance.ChangeToNextProject();
+    }
 
+    public void ChangeToPreviousProject()
+    {
+        LobbyManager.Instance.ChangeToPreviousProject();
     }
 }

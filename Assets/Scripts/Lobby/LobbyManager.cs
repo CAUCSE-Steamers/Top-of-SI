@@ -9,6 +9,11 @@ public class LobbyManager : MonoBehaviour
 {
     Player player;
 
+    public static LobbyManager Instance
+    {
+        get; private set;
+    }
+
     private GameStage selectedStage;
 
     public GameStage SelectedStage
@@ -33,6 +38,18 @@ public class LobbyManager : MonoBehaviour
     private LobbyUiPresenter lobbyUi;
 
     public event Action<GameStage, bool, bool> OnChangeStage = delegate { };
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            DebugLogger.LogWarning("LobbyManager::Awake => 이미 초기화된 LobbyManager가 메모리에 존재합니다.");
+            Destroy(this.gameObject);
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     private void TempLobby()
     {
@@ -80,9 +97,38 @@ public class LobbyManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        player = new Player();
         TempLobby();
-        OnChangeStage += lobbyUi.updateProject;
+        OnChangeStage += lobbyUi.UpdateProject;
         SelectedStage = stages[0];
+    }
+
+    public void ChangeToNextProject()
+    {
+        var index = stages.IndexOf(selectedStage);
+        
+        if (index == (stages.Count - 1))
+        {
+            return;
+        }
+        else
+        {
+            SelectedStage = stages[index + 1];
+        }
+    }
+
+    public void ChangeToPreviousProject()
+    {
+        var index = stages.IndexOf(selectedStage);
+
+        if (index == 0)
+        {
+            return;
+        }
+        else
+        {
+            SelectedStage = stages[index - 1];
+        }
     }
 
     bool isFirstProject(GameStage stage)
