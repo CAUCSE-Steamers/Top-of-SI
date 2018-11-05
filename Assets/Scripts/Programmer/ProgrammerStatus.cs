@@ -10,6 +10,8 @@ namespace Model
         public event Action<int> OnHealthChanged = delegate { };
         
         private int health;
+
+        private List<KeyValuePair<IBurf, int>> burfs = new List<KeyValuePair<IBurf, int>>();
         private List<DeBurfStructure> deburf = new List<DeBurfStructure>();
 
         public string PortraitName
@@ -25,6 +27,7 @@ namespace Model
         public ProgrammerStatus()
         {
             FullHealth = Health;
+            AdditionalDamageRatio = 0.0;
         }
 
         public int? StartVacationDay
@@ -38,6 +41,11 @@ namespace Model
             {
                 return StartVacationDay != null;
             }
+        }
+
+        public double AdditionalDamageRatio
+        {
+            get; set;
         }
 
         public int FullHealth
@@ -58,6 +66,36 @@ namespace Model
             }
         }
 
+        public void AddBurf(IBurf newBurf, int persistentTurn)
+        {
+            burfs.Add(new KeyValuePair<IBurf, int>(newBurf, persistentTurn));
+        }
+
+        public void RemoveBurf(IBurf targetBurf)
+        {
+            burfs = burfs.Where(burfInformation => burfInformation.Key.Equals(targetBurf) != false)
+                         .ToList();
+        }
+
+        public IEnumerable<IBurf> Burfs
+        {
+            get
+            {
+                return burfs.Select(burfInformation => burfInformation.Key);
+            }
+        }
+
+        public IEnumerable<IBurf> DecayBurfAndFetchExpiredBurfs()
+        {
+            var expiredBurfs = burfs.Where(burfInformation => burfInformation.Value <= 0);
+
+            burfs = burfs.Except(expiredBurfs)
+                         .Select(burfInformation => new KeyValuePair<IBurf, int>(burfInformation.Key, burfInformation.Value - 1))
+                         .ToList();
+
+            return expiredBurfs.Select(burfInformation => burfInformation.Key);
+        }
+
         public List<DeBurfStructure> Deburf
         {
             get
@@ -72,14 +110,14 @@ namespace Model
 
         public bool OnDeburf(DeburfType status)
         {
-                foreach(var iter in deburf)
+            foreach (var iter in deburf)
+            {
+                if ((iter.Type & status) > 0)
                 {
-                    if((iter.Type & status) > 0)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                return false;
+            }
+            return false;
         }
 
         public void DisposeRegisteredEvents()

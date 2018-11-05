@@ -12,4 +12,9 @@ public static class ResourceLoadUtility
     {
         return Resources.Load<Sprite>("Portraits/" + spriteName);
     }
+
+    public static AudioClip LoadEffectClip(string effectName)
+    {
+        return Resources.Load<AudioClip>("Sounds/" + effectName);
+    }
 }

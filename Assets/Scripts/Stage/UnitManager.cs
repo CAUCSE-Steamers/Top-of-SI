@@ -1,4 +1,5 @@
 ﻿using Model;
+using Model.Formation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
         OnTurnChanged += RequestBossActionIfTurnChangedToBoss;
         OnTurnChanged += PermitProgrammersActionIfTurnChangedToPlayer;
+        OnTurnChanged += ApplyBurfsIfTurnChangedToPlayer;
         OnTurnChanged += DecreaseActiveSkillCooldownIfTurnChangedToPlayer;
         programmerActingDictionary =
             programmers.ToDictionary(keySelector: programmer => programmer,
@@ -85,18 +87,53 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         CommonLogger.Log("UnitManager::SetUnits => 초기화 완료.");
     }
 
+    private void ApplyBurfsIfTurnChangedToPlayer(TurnState turn)
+    {
+        if (turn == TurnState.Player)
+        {
+            foreach (var programmer in Programmers)
+            {
+                programmer.ApplyPersistentStatusBurfs();
+                programmer.DecayBurfs();
+            }
+        }
+    }
+
     private void SubscribeToProgrammers()
     {
         foreach (var programmer in programmerActingDictionary.Keys)
         {
+            programmer.OnMovingStarted += position =>
+            {
+                CurrentAppliedFormation = null;
+            };
+
+            programmer.OnMovingEnded += CheckProgrammerFormation;
             programmer.OnActionFinished += () =>
             {
                 programmerActingDictionary[programmer] = true;
                 ChangeTurnToBossIfAllProgrammersPerformAction();
             };
-
-            Register(programmer);
         }
+    }
+
+    private void CheckProgrammerFormation(Vector3 position)
+    {
+        foreach (var formation in Formation.formations)
+        {
+            if (formation.CanApplyFormation())
+            {
+                CurrentAppliedFormation = formation;
+
+                CommonLogger.LogFormat("UnitManager::CheckProgrammerFormation => 진형 '{0}'가 적용됨.", CurrentAppliedFormation.Name);
+                break;
+            }
+        }
+    }
+
+    public Formation CurrentAppliedFormation
+    {
+        get; private set;
     }
 
     private void ChangeTurnToBossIfAllProgrammersPerformAction()
@@ -111,35 +148,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         {
             CommonLogger.Log("UnitManager::ChangeTurnToBossIfAllProgrammersPerformAction => 모든 프로그래머가 행동을 수행했고, 보스가 사망함.");
         }
-    }
-
-    // TODO: Delete
-    public Programmer CurrentSelectedProgrammer;
-    private void Register(Programmer programmer)
-    {
-        programmer.OnMouseClicked += obj =>
-        {
-            CurrentSelectedProgrammer = programmer;
-        };
-    }
-
-    // TODO: Delete
-    public void TempSkillUse()
-    {
-        var skill = CurrentSelectedProgrammer.Ability.AcquiredActiveSkills.First();
-
-        if (skill is IEffectProducible)
-        {
-            var effectObject = (skill as IEffectProducible).MakeEffect(CurrentSelectedProgrammer.transform);
-
-            CurrentSelectedProgrammer.OnSkillEnded += () =>
-            {
-                Destroy(effectObject);
-            };
-        }
-
-        CurrentSelectedProgrammer.UseSkill();
-        skill.ApplySkill(boss, ProjectType.Application, RequiredTechType.Web);
     }
 
     public IEnumerable<Cell> CurrentMovableCellFor(Programmer programmer)
@@ -187,6 +195,14 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             }
 
             var usedSkill = boss.Invoke();
+            if (usedSkill is ISoundProducible)
+            {
+                var clip = (usedSkill as ISoundProducible).EffectSound;
+                SoundManager.Instance.FetchAvailableSource().PlayOneShot(clip);
+            }
+
+            CommonLogger.LogFormat("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스가 {0} 스킬을 사용함.", usedSkill.Information.Name);
+
             switch (usedSkill.Information.Type)
             {
                 case ProjectSkillType.SingleAttack:
@@ -205,6 +221,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                     InvokeSkill((ProjectBurfSkill)usedSkill);
                     break;
             }
+
         }
     }
 

@@ -25,9 +25,6 @@ public class StageUiPresenter : MonoBehaviour
             idleState.OnSelected += objectInformationPresenter.SetObjectInformation;
         });
 
-        var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
-        moveState.OnMovingStarted += () => objectInformationPresenter.SetEffectActiveState(false);
-
         objectInformationPresenter.OnSkillInvoked += InvokeSkill;
     }
 
@@ -184,6 +181,14 @@ public class StageUiPresenter : MonoBehaviour
             {
                 Destroy(effectObject);
             };
+        }
+
+        if (skill is ISoundProducible)
+        {
+            var effectSoundClip = (skill as ISoundProducible).EffectSound;
+
+            var audioSource = SoundManager.Instance.FetchAvailableSource();
+            audioSource.PlayOneShot(effectSoundClip);
         }
 
         var boss = StageManager.Instance.Unit.Boss;

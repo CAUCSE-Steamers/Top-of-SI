@@ -12,8 +12,8 @@ namespace Model
             AcquiredActiveSkills = new List<ActiveSkill>
             {
                 new NormalAttack(),
-                new NormalAttack(),
-                new NormalAttack()
+                new JavaGrab(),
+                new CVar()
             };   
         }
 
