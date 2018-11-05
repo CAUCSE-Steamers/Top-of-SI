@@ -10,6 +10,11 @@ namespace Model
         public event Action<int> OnHealthChanged = delegate { };
         
         private int health;
+
+        private List<KeyValuePair<IBurf, int>> burfs = new List<KeyValuePair<IBurf, int>>
+        {
+            new KeyValuePair<IBurf, int>(new HealBurf(100, 100), 2)
+        };
         private List<DeBurfStructure> deburf = new List<DeBurfStructure>();
 
         public string PortraitName
@@ -25,6 +30,7 @@ namespace Model
         public ProgrammerStatus()
         {
             FullHealth = Health;
+            AdditionalDamageRatio = 0.0;
         }
 
         public int? StartVacationDay
@@ -38,6 +44,11 @@ namespace Model
             {
                 return StartVacationDay != null;
             }
+        }
+
+        public double AdditionalDamageRatio
+        {
+            get; set;
         }
 
         public int FullHealth
@@ -56,6 +67,32 @@ namespace Model
                 health = value;
                 OnHealthChanged(health);
             }
+        }
+
+        public void RegisterBurf(IBurf newBurf, int persistentTurn)
+        {
+            burfs.Add(new KeyValuePair<IBurf, int>(newBurf, persistentTurn));
+        }
+
+        public void RemoveBurf(IBurf targetBurf)
+        {
+            burfs = burfs.Where(burfInformation => burfInformation.Key.Equals(targetBurf) != false)
+                         .ToList();
+        }
+
+        public IEnumerable<IBurf> Burfs
+        {
+            get
+            {
+                return burfs.Select(burfInformation => burfInformation.Key);
+            }
+        }
+
+        public void DecayBurfs()
+        {
+            burfs = burfs.Select(burfInformation => new KeyValuePair<IBurf, int>(burfInformation.Key, burfInformation.Value - 1))
+                         .Where(burfInformation => burfInformation.Value > 0)
+                         .ToList();
         }
 
         public List<DeBurfStructure> Deburf

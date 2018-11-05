@@ -70,6 +70,8 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
         OnTurnChanged += RequestBossActionIfTurnChangedToBoss;
         OnTurnChanged += PermitProgrammersActionIfTurnChangedToPlayer;
+        OnTurnChanged += ResetBurfsIfTurnChangedToPlayer;
+        OnTurnChanged += ApplyBurfsIfTurnChangedToPlayer;
         OnTurnChanged += DecreaseActiveSkillCooldownIfTurnChangedToPlayer;
         programmerActingDictionary =
             programmers.ToDictionary(keySelector: programmer => programmer,
@@ -84,6 +86,30 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         Turn = TurnState.Player;
 
         CommonLogger.Log("UnitManager::SetUnits => 초기화 완료.");
+    }
+
+    private void ResetBurfsIfTurnChangedToPlayer(TurnState turn)
+    {
+        if (turn == TurnState.Player)
+        {
+            foreach (var programmer in Programmers)
+            {
+                programmer.ResetStatusBurfs();
+            }
+        }
+    }
+
+    private void ApplyBurfsIfTurnChangedToPlayer(TurnState turn)
+    {
+        if (turn == TurnState.Player)
+        {
+            foreach (var programmer in Programmers)
+            {
+                programmer.ApplyStatusBurfs();
+
+                programmer.Status.DecayBurfs();
+            }
+        }
     }
 
     private void SubscribeToProgrammers()

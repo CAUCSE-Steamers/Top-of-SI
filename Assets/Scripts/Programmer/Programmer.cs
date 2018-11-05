@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using Model;
 
 public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
@@ -49,7 +50,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
             DebugLogger.LogWarningFormat("Programmer::Hurt => {0} 프로그래머가 음수의 데미지를 입음.", name);
         }
 
-        Status.Health -= damage;
+        Status.Health -= (int) (damage * (1 + Status.AdditionalDamageRatio));
         OnDamaged(damage);
 
         CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 {1}의 데미지를 입음. 남은 체력은 {2}.", name, damage, Status.Health);
@@ -219,6 +220,22 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
         CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
 
         OnActionFinished();
+    }
+
+    public void ApplyStatusBurfs()
+    {
+        foreach (var statusBurf in Status.Burfs.OfType<IStatusModificationCommand>())
+        {
+            statusBurf.Modify(Status);
+        }
+    }
+
+    public void ResetStatusBurfs()
+    {
+        foreach (var statusBurf in Status.Burfs.OfType<IStatusModificationCommand>())
+        {
+            statusBurf.Unmodify(Status);
+        }
     }
 
     public DeburfType Deburf(List<DeBurfStructure> deburf)
