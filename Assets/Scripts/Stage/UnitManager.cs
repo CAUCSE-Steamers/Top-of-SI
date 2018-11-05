@@ -94,7 +94,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             foreach (var programmer in Programmers)
             {
                 programmer.ApplyPersistentStatusBurfs();
-                programmer.Status.DecayBurfs();
+                programmer.DecayBurfs();
             }
         }
     }

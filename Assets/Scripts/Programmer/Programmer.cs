@@ -81,8 +81,13 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
             Health = 1000,
             Name = "테스트 보스"
         };
-
+        
         Ability = new ProgrammerAbility();
+
+        RegisterBurf(new HealBurf(10, 50), 3);
+        RegisterBurf(new HurtDamageBurf(10.0), 4);
+        RegisterBurf(new NormalAttackDamageBurf(9.0), 2);
+        RegisterBurf(new SkillDamageBurf(29.0), 3);
 
         OnMovingStarted += Rotate;
     }
@@ -230,6 +235,66 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
                                                .OfType<IStatusModificationCommand>())
         {
             statusBurf.Modify(Status);
+        }
+    }
+
+    public void RegisterBurf(IBurf newBurf, int persistentTurn)
+    {
+        Status.AddBurf(newBurf, persistentTurn);
+
+        if (newBurf.IsPersistent == false)
+        {
+            ApplyStatusBurf(newBurf as IStatusModificationCommand);
+        }
+
+        ApplySkillBurf(newBurf as ISkillModificationCommand);
+    }
+
+    public void DecayBurfs()
+    {
+        var expiredBurfs = Status.DecayBurfAndFetchExpiredBurfs();
+        foreach (var expiredBurf in expiredBurfs)
+        {
+            UnapplyStatusBurf(expiredBurf as IStatusModificationCommand);
+            UnapplySkillBurf(expiredBurf as ISkillModificationCommand);
+        }
+    }
+
+    private void ApplyStatusBurf(IStatusModificationCommand statusBurf)
+    {
+        if (statusBurf != null)
+        {
+            statusBurf.Modify(Status);
+        }
+    }
+
+    private void ApplySkillBurf(ISkillModificationCommand skillBurf)
+    {
+        if (skillBurf != null)
+        {
+            foreach (var activeSkill in Ability.AcquiredActiveSkills)
+            {
+                skillBurf.Modify(activeSkill);
+            }
+        }
+    }
+
+    private void UnapplyStatusBurf(IStatusModificationCommand statusBurf)
+    {
+        if (statusBurf != null)
+        {
+            statusBurf.Unmodify(Status);
+        }
+    }
+
+    private void UnapplySkillBurf(ISkillModificationCommand skillBurf)
+    {
+        if (skillBurf != null)
+        {
+            foreach (var activeSkill in Ability.AcquiredActiveSkills)
+            {
+                skillBurf.Unmodify(activeSkill);
+            }
         }
     }
 

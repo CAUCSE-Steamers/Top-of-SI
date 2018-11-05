@@ -28,10 +28,6 @@ namespace Model
         {
             FullHealth = Health;
             AdditionalDamageRatio = 0.0;
-
-
-            RegisterBurf(new HealBurf(10, 50), 3);
-            RegisterBurf(new HurtDamageBurf(10.0), 2);
         }
 
         public int? StartVacationDay
@@ -70,15 +66,9 @@ namespace Model
             }
         }
 
-        public void RegisterBurf(IBurf newBurf, int persistentTurn)
+        public void AddBurf(IBurf newBurf, int persistentTurn)
         {
             burfs.Add(new KeyValuePair<IBurf, int>(newBurf, persistentTurn));
-
-            var statusModificationCommand = newBurf as IStatusModificationCommand;
-            if (statusModificationCommand != null && newBurf.IsPersistent == false)
-            {
-                statusModificationCommand.Modify(this);
-            }
         }
 
         public void RemoveBurf(IBurf targetBurf)
@@ -95,19 +85,15 @@ namespace Model
             }
         }
 
-        public void DecayBurfs()
+        public IEnumerable<IBurf> DecayBurfAndFetchExpiredBurfs()
         {
-            var expiredBurfs = burfs.Where(burfInformation => burfInformation.Value <= 1);
-
-            foreach (var expireBurf in expiredBurfs.Select(burfInformation => burfInformation.Key)
-                                                   .OfType<IStatusModificationCommand>())
-            {
-                expireBurf.Unmodify(this);
-            }
+            var expiredBurfs = burfs.Where(burfInformation => burfInformation.Value <= 0);
 
             burfs = burfs.Except(expiredBurfs)
                          .Select(burfInformation => new KeyValuePair<IBurf, int>(burfInformation.Key, burfInformation.Value - 1))
                          .ToList();
+
+            return expiredBurfs.Select(burfInformation => burfInformation.Key);
         }
 
         public List<DeBurfStructure> Deburf

@@ -76,7 +76,7 @@ namespace Model
         {
             get
             {
-                return baseDamage * (1.0 + AdditionlCooldownRatio);
+                return baseDamage * (1.0 + AdditionalDamageRatio);
             }
             private set
             {
