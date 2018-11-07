@@ -35,7 +35,15 @@ namespace Model
                 DebugLogger.LogWarningFormat("ActiveSkill::ApplySkill => Skill '{0}'의 쿨타임이 {1} 남아있는 상태에서 발동되려고 합니다.", Information.Name, RemainingCooldown);
             }
 
-            double damage = CalculateDamage(projectType, techType);
+            double damage = CalculateDamage(projectType, techType) * SynastryCache.LanguageToProjectSynastry.GetValue(Information.Type)(projectType)
+                                                                   * SynastryCache.LanguageToTechSynastry.GetValue(Information.Type)(techType);
+
+            Debug.Log("대상 프로젝트 상성 : " + projectType);
+            Debug.Log("대상 요구스킬 : " + techType);
+            Debug.Log("원래 데미지 : " + CalculateDamage(projectType, techType));
+            Debug.Log("프로젝트 상성 보너스! : " + CalculateDamage(projectType, techType) * SynastryCache.LanguageToProjectSynastry.GetValue(Information.Type)(projectType));
+            Debug.Log("요구기술 상성 보너스! : " + CalculateDamage(projectType, techType) * SynastryCache.LanguageToTechSynastry.GetValue(Information.Type)(techType));
+            Debug.Log("총 데미지! : " + damage);
             hurtable.Hurt((int) damage);
 
             RemainingCooldown = DefaultCooldown;

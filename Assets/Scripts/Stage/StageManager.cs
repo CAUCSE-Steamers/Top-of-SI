@@ -128,6 +128,16 @@ public class StageManager : MonoBehaviour, IDisposable
         Status.OnStageDirectionChanged += AdjustStageDirectionView;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Status.StageDirection = Status.StageDirection == Direction.Left ?
+                                    Direction.Right :
+                                    Direction.Left;
+        }
+    }
+
     private void AdjustStageDirectionView(Direction newStageDirection)
     {
         AdjustCameraView(newStageDirection);

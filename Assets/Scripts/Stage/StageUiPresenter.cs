@@ -193,8 +193,12 @@ public class StageUiPresenter : MonoBehaviour
 
         var boss = StageManager.Instance.Unit.Boss;
         currentSelectedProgrammer.UseSkill();
+
+        // TODO: From Status
+        // skill.AdditionalDamageRatio += SynastryCache.KnowledgeToTechSynastry.GetValue(KnowledgeType.HtmlCss)(boss.Ability.Techtype);
         skill.ApplySkill(boss, ProjectType.Application, RequiredTechType.Web);
 
+        // skill.AdditionalDamageRatio -= SynastryCache.KnowledgeToTechSynastry.GetValue(KnowledgeType.HtmlCss)(boss.Ability.Techtype);
         objectInformationPresenter.ResetInformationUi();
         idleState.ResetSelectedObject();
     }
