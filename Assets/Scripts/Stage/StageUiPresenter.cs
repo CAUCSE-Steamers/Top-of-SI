@@ -196,7 +196,7 @@ public class StageUiPresenter : MonoBehaviour
 
         // TODO: From Status
         // skill.AdditionalDamageRatio += SynastryCache.KnowledgeToTechSynastry.GetValue(KnowledgeType.HtmlCss)(boss.Ability.Techtype);
-        skill.ApplySkill(boss, ProjectType.Application, RequiredTechType.Web);
+        skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype);
 
         // skill.AdditionalDamageRatio -= SynastryCache.KnowledgeToTechSynastry.GetValue(KnowledgeType.HtmlCss)(boss.Ability.Techtype);
         objectInformationPresenter.ResetInformationUi();
