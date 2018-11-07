@@ -1,33 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Synastry>
   <Key Name="C">
-    <Matched Name="Client" Value="0.5" />
-    <Matched Name="Server" Value="1" />
-    <Matched Name="Application" Value="1" />
-    <Matched Name="IoT" Value="1.5" />
+    <Matched Name="Client" Value="-0.5" />
+    <Matched Name="Server" Value="0" />
+    <Matched Name="Application" Value="0" />
+    <Matched Name="IoT" Value="0.5" />
   </Key>
   <Key Name="CPlusPlus">
-    <Matched Name="Client" Value="1" />
-    <Matched Name="Server" Value="1" />
-    <Matched Name="Application" Value="1.5" />
-    <Matched Name="IoT" Value="1.5" />
+    <Matched Name="Client" Value="0" />
+    <Matched Name="Server" Value="0" />
+    <Matched Name="Application" Value="0.5" />
+    <Matched Name="IoT" Value="0.5" />
   </Key>
   <Key Name="Java">
-    <Matched Name="Client" Value="1.5" />
-    <Matched Name="Server" Value="1" />
-    <Matched Name="Application" Value="1.5" />
-    <Matched Name="IoT" Value="1" />
+    <Matched Name="Client" Value="0.5" />
+    <Matched Name="Server" Value="0" />
+    <Matched Name="Application" Value="0.5" />
+    <Matched Name="IoT" Value="0" />
   </Key>
   <Key Name="Python">
-    <Matched Name="Client" Value="1" />
-    <Matched Name="Server" Value="1.5" />
-    <Matched Name="Application" Value="1.5" />
-    <Matched Name="IoT" Value="0.5" />
+    <Matched Name="Client" Value="0" />
+    <Matched Name="Server" Value="0.5" />
+    <Matched Name="Application" Value="0.5" />
+    <Matched Name="IoT" Value="-0.5" />
   </Key>
   <Key Name="JavaScript">
-    <Matched Name="Client" Value="1.5" />
-    <Matched Name="Server" Value="1.5" />
-    <Matched Name="Application" Value="1" />
-    <Matched Name="IoT" Value="0.5" />
+    <Matched Name="Client" Value="0.5" />
+    <Matched Name="Server" Value="0.5" />
+    <Matched Name="Application" Value="0" />
+    <Matched Name="IoT" Value="-0.5" />
   </Key>
 </Synastry>
