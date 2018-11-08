@@ -24,10 +24,16 @@ namespace Model
             get; set;
         }
 
+        public Money Cost
+        {
+            get; set;
+        }
+
         public ProgrammerStatus()
         {
             FullHealth = Health;
             AdditionalDamageRatio = 0.0;
+            Cost = new Money(30, 300, 200);
         }
 
         public int? StartVacationDay
