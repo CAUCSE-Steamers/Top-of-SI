@@ -9,7 +9,8 @@ namespace Model
     {
         public event Action<int> OnHealthChanged = delegate { };
         
-        private int health;
+        private int health, leadership = 0, sociality = 0;
+        private double healRate, critical;
 
         private List<KeyValuePair<IBurf, int>> burfs = new List<KeyValuePair<IBurf, int>>();
         private List<DeBurfStructure> deburf = new List<DeBurfStructure>();
@@ -34,6 +35,10 @@ namespace Model
             FullHealth = Health;
             AdditionalDamageRatio = 0.0;
             Cost = new Money(30, 300, 200);
+            critical = 0.03;
+            healRate = 0.1;
+            leadership = 10;
+            sociality = 10;
         }
 
         public int? StartVacationDay
@@ -70,6 +75,53 @@ namespace Model
                 health = value;
                 OnHealthChanged(health);
             }
+        }
+
+        public int Leadership
+        {
+            get
+            {
+                return leadership;
+            }
+            set
+            {
+                int var = value;
+                if((int)(leadership / 10) < (int)((leadership + value) / 10))
+                {
+                    Health += 3;
+                }
+                leadership += var;
+            }
+        }
+
+        public int Sociality
+        {
+            get
+            {
+                return sociality;
+            }
+            set
+            {
+                int var = value;
+                if ((int)(sociality / 10) < (int)((sociality + value) / 10))
+                {
+                    HealRate += 0.03;
+                }
+                sociality += var;
+            }
+        }
+
+        public double Critical
+        {
+            //TODO : when Attack, calculate rate and affect to damage.
+            get; set;
+        }
+
+        public double HealRate
+        {
+            //TODO : When heal other programmer, get rate from this.
+            // healing value = (object.FullHealth - object.Health) * healRate
+            get; set;
         }
 
         public void AddBurf(IBurf newBurf, int persistentTurn)
