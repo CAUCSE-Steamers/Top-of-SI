@@ -8,7 +8,6 @@ namespace Model
     public class GameStage
     {
         private List<IStageObjective> objectives;
-
         public GameStage()
         {
             objectives = new List<IStageObjective>();
@@ -30,6 +29,21 @@ namespace Model
             {
                 return objectives;
             }
+        }
+
+        public bool MainStage
+        {
+            get; set;
+        }
+
+        public AbstractProject Boss
+        {
+            get; set;
+        }
+
+        public int Reward
+        {
+            get; set;
         }
 
         public void AddObjectives(IEnumerable<IStageObjective> newObjectives)
