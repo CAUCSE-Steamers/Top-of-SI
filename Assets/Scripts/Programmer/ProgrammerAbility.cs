@@ -21,10 +21,5 @@ namespace Model
         {
             get; private set;
         }
-
-        public int MentalPower
-        {
-            get; set;
-        }
     }
 }
