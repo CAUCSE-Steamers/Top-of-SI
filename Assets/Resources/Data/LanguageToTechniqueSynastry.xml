@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Synastry>
+  <Key Name="C">
+    <Matched Name="Web" Value="0.5" />
+    <Matched Name="Server" Value="1.4" />
+    <Matched Name="Android" Value="0.5" />
+    <Matched Name="Network" Value="1.2" />
+    <Matched Name="Desktop" Value="1" />
+    <Matched Name="Embedded" Value="2" />
+    <Matched Name="Database" Value="1" />
+    <Matched Name="DataAnalysis" Value="0.8" />
+    <Matched Name="Ui" Value="0.5" />
+    <Matched Name="Ai" Value="1.1" />
+    <Matched Name="Compiler" Value="2" />
+    <Matched Name="MultiProgramming" Value="1.2" />
+    <Matched Name="Graphic" Value="1.6" />
+  </Key>
+  <Key Name="CPlusPlus">
+    <Matched Name="Web" Value="-0.4" />
+    <Matched Name="Server" Value="0.7" />
+    <Matched Name="Android" Value="0.2" />
+    <Matched Name="Network" Value="0.5" />
+    <Matched Name="Desktop" Value="0.3" />
+    <Matched Name="Embedded" Value="0.8" />
+    <Matched Name="Database" Value="0" />
+    <Matched Name="DataAnalysis" Value="0.1" />
+    <Matched Name="Ui" Value="-0.2" />
+    <Matched Name="Ai" Value="0.5" />
+    <Matched Name="Compiler" Value="0.8" />
+    <Matched Name="MultiProgramming" Value="0.6" />
+    <Matched Name="Graphic" Value="1" />
+  </Key>
+  <Key Name="Java">
+    <Matched Name="Web" Value="1" />
+    <Matched Name="Server" Value="0.3" />
+    <Matched Name="Android" Value="1" />
+    <Matched Name="Network" Value="0.8" />
+    <Matched Name="Desktop" Value="0.8" />
+    <Matched Name="Embedded" Value="0.5" />
+    <Matched Name="Database" Value="0" />
+    <Matched Name="DataAnalysis" Value="0.3" />
+    <Matched Name="Ui" Value="0.2" />
+    <Matched Name="Ai" Value="0.3" />
+    <Matched Name="Compiler" Value="0.3" />
+    <Matched Name="MultiProgramming" Value="0.5" />
+    <Matched Name="Graphic" Value="0.4" />
+  </Key>
+  <Key Name="Python">
+    <Matched Name="Web" Value="0.2" />
+    <Matched Name="Server" Value="0.3" />
+    <Matched Name="Android" Value="-0.5" />
+    <Matched Name="Network" Value="1" />
+    <Matched Name="Desktop" Value="0.5" />
+    <Matched Name="Embedded" Value="0.3" />
+    <Matched Name="Database" Value="0" />
+    <Matched Name="DataAnalysis" Value="1" />
+    <Matched Name="Ui" Value="0.2" />
+    <Matched Name="Ai" Value="1" />
+    <Matched Name="Compiler" Value="0.3" />
+    <Matched Name="MultiProgramming" Value="0.7" />
+    <Matched Name="Graphic" Value="0.3" />
+  </Key>
+  <Key Name="JavaScript">
+    <Matched Name="Web" Value="1" />
+    <Matched Name="Server" Value="0.2" />
+    <Matched Name="Android" Value="-0.5" />
+    <Matched Name="Network" Value="0.5" />
+    <Matched Name="Desktop" Value="0" />
+    <Matched Name="Embedded" Value="-0.5" />
+    <Matched Name="Database" Value="0" />
+    <Matched Name="DataAnalysis" Value="0.3" />
+    <Matched Name="Ui" Value="1" />
+    <Matched Name="Ai" Value="0.2" />
+    <Matched Name="Compiler" Value="0" />
+    <Matched Name="MultiProgramming" Value="-0.3" />
+    <Matched Name="Graphic" Value="0.3" />
+  </Key>
+</Synastry>

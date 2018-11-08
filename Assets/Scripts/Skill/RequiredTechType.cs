@@ -7,19 +7,20 @@ namespace Model
 {
     public enum RequiredTechType
     {
-        Web = 0,
-        Server = 1,
-        Android = 2,
-        Network = 4,
-        Desktop = 8,
-        Embedded = 16,
-        Database = 32,
-        DataAnalysis = 64,
-        Ai = 128,
-        Ui = 256,
-        Compiler = 512,
-        Multiprogramming = 1024,
-        Graphic = 2048, 
-        Common = 4096
+        None = 0,
+        Web = 1,
+        Server = 2,
+        Android = 4,
+        Network = 8,
+        Desktop = 16,
+        Embedded = 32,
+        Database = 64,
+        DataAnalysis = 128,
+        Ai = 256,
+        Ui = 512,
+        Compiler = 1024,
+        MultiProgramming = 2048,
+        Graphic = 4096, 
+        Common = 8192
     }
 }

@@ -17,4 +17,9 @@ public static class ResourceLoadUtility
     {
         return Resources.Load<AudioClip>("Sounds/" + effectName);
     }
+
+    public static TextAsset LoadData(string dataName)
+    {
+        return Resources.Load<TextAsset>("Data/" + dataName);
+    }
 }

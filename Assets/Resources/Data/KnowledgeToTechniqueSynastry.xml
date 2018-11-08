@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Synastry>
+  <Key Name="HtmlCss">
+    <Matched Name="Web" Value="0.5" />
+    <Matched Name="Android" Value="0.5" />
+    <Matched Name="Desktop" Value="0.3" />
+    <Matched Name="Ui" Value="1.0" />
+  </Key>
+  <Key Name="Embedded">
+    <Matched Name="Server" Value="0.2" />
+    <Matched Name="Network" Value="0.3" />
+    <Matched Name="Embedded" Value="1.0" />
+  </Key>
+  <Key Name="Sql">
+    <Matched Name="Web" Value="0.2" />
+    <Matched Name="Server" Value="0.5" />
+    <Matched Name="Android" Value="0.3" />
+    <Matched Name="Database" Value="1" />
+    <Matched Name="DataAnalysis" Value="0.8" />
+  </Key>
+  <Key Name="Assembly">
+    <Matched Name="Embedded" Value="0.3" />
+    <Matched Name="Compiler" Value="0.8" />
+  </Key>
+  <Key Name="SoftwareEngineering">
+    <Matched Name="Server" Value="0.5" />
+    <Matched Name="Android" Value="0.1" />
+    <Matched Name="Network" Value="0.2" />
+    <Matched Name="Desktop" Value="0.5" />
+    <Matched Name="Database" Value="0.3" />
+    <Matched Name="DataAnalysis" Value="0.5" />
+    <Matched Name="Ai" Value="0.4" />
+    <Matched Name="Compiler" Value="0.3" />
+    <Matched Name="MultiProgramming" Value="0.5" />
+  </Key>
+</Synastry>
