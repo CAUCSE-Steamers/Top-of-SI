@@ -8,10 +8,10 @@ namespace Model
 {
     public abstract class ActiveSkill : ICooldownRequired, ILevelUp
     {
-        private double baseDamage;
+        private double baseDamage = 1.0;
         private double defaultCooldown;
 
-        public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double baseDamage, double defaultCooldown)
+        public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double defaultCooldown)
         {
             Information = information;
             AuxiliaryPassiveSkills = passiveSkills;
