@@ -19,10 +19,9 @@ namespace Model
         };
 
         public CVar()
-            : base(information, Enumerable.Empty<PassiveSkill>(), 1, 5)
+            : base(information, new List<PassiveSkill>() { new NoteDown(), new CounterEvolution() }, 5)
         {
             Accuracy = 0.9;
-            //TODO: Add Auxilirary Passive Skill
         }
 
         public AudioClip EffectSound
@@ -38,18 +37,12 @@ namespace Model
             Information.AcquisitionLevel++;
             if(Information.AcquisitionLevel == 10)
             {
-                //TODO: Enable NoteDown
+                FlattenContainingPassiveSkills().Where(x => x.Information.Name.Equals("NoteDown")).ToArray()[0].EnableToLearn();
             }
             else if(Information.AcquisitionLevel == 40)
             {
-                //TODO: Enable ConterEvolution.
+                FlattenContainingPassiveSkills().Where(x => x.Information.Name.Equals("CounterEvolution")).ToArray()[0].EnableToLearn();
             }
-        }
-
-        protected override double CalculateProjectTypeAppliedDamage(ProjectType projectType)
-        {
-            //TODO: calculate Synastry.
-            return BaseDamage;
         }
 
         protected override double CalculateSkillLevelDamage(double projectTypeAppliedDamage)

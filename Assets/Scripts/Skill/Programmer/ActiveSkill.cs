@@ -8,10 +8,10 @@ namespace Model
 {
     public abstract class ActiveSkill : ICooldownRequired, ILevelUp
     {
-        private double baseDamage;
+        private double baseDamage = 1.0;
         private double defaultCooldown;
 
-        public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double baseDamage, double defaultCooldown)
+        public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double defaultCooldown)
         {
             Information = information;
             AuxiliaryPassiveSkills = passiveSkills;
@@ -30,20 +30,23 @@ namespace Model
 
         public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType)
         {
-            if (IsTriggerable == false)
+            System.Random random = new System.Random();
+            if(random.NextDouble() > Accuracy)
             {
-                DebugLogger.LogWarningFormat("ActiveSkill::ApplySkill => Skill '{0}'의 쿨타임이 {1} 남아있는 상태에서 발동되려고 합니다.", Information.Name, RemainingCooldown);
+                //TODO : Write Script that skill is not correct.
+                DebugLogger.LogWarningFormat("스킬이 빗나감.");
             }
+            else
+            {
+                if (IsTriggerable == false)
+                {
+                    DebugLogger.LogWarningFormat("ActiveSkill::ApplySkill => Skill '{0}'의 쿨타임이 {1} 남아있는 상태에서 발동되려고 합니다.", Information.Name, RemainingCooldown);
+                }
 
+                hurtable.Hurt((int)CalculateDamage(projectType, techType));
 
-            double synastryRatio = SynastryCache.LanguageToProjectSynastry.GetValue(Information.Type)(projectType) + 
-                                   SynastryCache.LanguageToTechSynastry.GetValue(Information.Type)(techType);
-
-            double damage = CalculateDamage(projectType, techType) * (1.0 + synastryRatio);
-
-            hurtable.Hurt((int) damage);
-
-            RemainingCooldown = DefaultCooldown;
+                RemainingCooldown = DefaultCooldown;
+            }
         }
 
         public bool IsTriggerable
@@ -163,15 +166,25 @@ namespace Model
         private double CalculateDamage(ProjectType projectType, RequiredTechType techType)
         {
             double typeAppliedDamage = CalculateProjectTypeAppliedDamage(projectType);
-            double additionalDamage = AdditionalValueFromPassive<IDamageConvertible>(typeAppliedDamage, damagePassive =>
+            double techAppliedDamage = CalculatetechTypeAppliedDamage(typeAppliedDamage, techType);
+            double additionalDamage = AdditionalValueFromPassive<IDamageConvertible>(techAppliedDamage, damagePassive =>
             {
-                return damagePassive.CalculateAppliedDamage(typeAppliedDamage, projectType, techType);
+                return damagePassive.CalculateAppliedDamage(techAppliedDamage, projectType, techType);
             });
 
-            return CalculateSkillLevelDamage(typeAppliedDamage) + additionalDamage;
+            return CalculateSkillLevelDamage(techAppliedDamage) + additionalDamage;
         }
 
-        protected abstract double CalculateProjectTypeAppliedDamage(ProjectType projectType);
+        protected double CalculateProjectTypeAppliedDamage(ProjectType projectType)
+        {
+            return BaseDamage * (1 + SynastryCache.LanguageToProjectSynastry.GetValue(Information.Type)(projectType));
+        }
+
+        protected double CalculatetechTypeAppliedDamage(double projectTypeAppliedDamage, RequiredTechType techType)
+        {
+            return projectTypeAppliedDamage * (1 + SynastryCache.LanguageToTechSynastry.GetValue(Information.Type)(techType));
+        }
+
         protected abstract double CalculateSkillLevelDamage(double projectTypeAppliedDamage);
 
         public abstract void LevelUP();

@@ -18,10 +18,9 @@ namespace Model
         };
 
         public snake()
-            : base(information, Enumerable.Empty<PassiveSkill>(), 1, 1)
+            : base(information, new List<PassiveSkill>() { new FastCode(), new Pypi() }, 1)
         {
             Accuracy = 0.8;
-            //TODO: Add Auxilirary Passive Skill
         }
 
         public override void LevelUP()
@@ -29,14 +28,9 @@ namespace Model
             Information.AcquisitionLevel++;
             if (Information.AcquisitionLevel == 5)
             {
-                //TODO: Enable FastCode, Pypi
+                FlattenContainingPassiveSkills().Where(x => x.Information.Name.Equals("FastCode")).ToArray()[0].EnableToLearn();
+                FlattenContainingPassiveSkills().Where(x => x.Information.Name.Equals("Pypi")).ToArray()[0].EnableToLearn();
             }
-        }
-
-        protected override double CalculateProjectTypeAppliedDamage(ProjectType projectType)
-        {
-            //TODO: calculate Synastry.
-            return BaseDamage;
         }
 
         protected override double CalculateSkillLevelDamage(double projectTypeAppliedDamage)
