@@ -7,6 +7,7 @@ namespace Model
 {
     public abstract class PassiveSkill : ILevelUp
     {
+        private bool enableToLearn = false;
         public PassiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> auxiliaryPassiveSkills)
         {
             Information = information;
@@ -18,9 +19,9 @@ namespace Model
             get; private set;
         }
 
-        public bool EnableToLearn
+        public void EnableToLearn()
         {
-            get; set;
+            enableToLearn = true;
         }
 
         public IEnumerable<PassiveSkill> AuxiliaryPassiveSkills
