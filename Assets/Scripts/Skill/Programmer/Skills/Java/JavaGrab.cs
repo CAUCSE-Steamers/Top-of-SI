@@ -19,10 +19,9 @@ namespace Model
         };
 
         public JavaGrab()
-            : base(information, Enumerable.Empty<PassiveSkill>(), 1, 2)
+            : base(information, new List<PassiveSkill>() { new Doctor(), new MachineLearning() }, 2)
         {
             Accuracy = 0.9;
-            //TODO: Add Auxilirary Passive Skill
         }
 
         public AudioClip EffectSound
@@ -38,11 +37,11 @@ namespace Model
             Information.AcquisitionLevel++;
             if (Information.AcquisitionLevel == 3)
             {
-                //TODO: Enable Doctor
+                FlattenContainingPassiveSkills().Where(x => x.Information.Name.Equals("Doctor")).ToArray()[0].EnableToLearn();
             }
             else if (Information.AcquisitionLevel == 7)
             {
-                //TODO: Enable MachineLearning
+                FlattenContainingPassiveSkills().Where(x => x.Information.Name.Equals("MachineLearning")).ToArray()[0].EnableToLearn();
             }
         }
 

@@ -18,10 +18,9 @@ namespace Model
         };
 
         public JShot()
-            : base(information, Enumerable.Empty<PassiveSkill>(), 1, 2)
+            : base(information, new List<PassiveSkill>() { new ReadableScript() }, 2)
         {
             Accuracy = 0.5;
-            //TODO: Add Auxilirary Passive Skill
         }
 
         public override void LevelUP()
@@ -29,7 +28,7 @@ namespace Model
             Information.AcquisitionLevel++;
             if (Information.AcquisitionLevel == 15)
             {
-                //TODO: Enable ReadableScript
+                FlattenContainingPassiveSkills().Where(x => x.Information.Name.Equals("ReadableScript")).ToArray()[0].EnableToLearn();
             }
         }
 

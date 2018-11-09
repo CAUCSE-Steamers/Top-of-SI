@@ -18,10 +18,9 @@ namespace Model
         };
 
         public C8()
-            : base(information, Enumerable.Empty<PassiveSkill>(), 1, 4)
+            : base(information, new List<PassiveSkill>() { new Overload() }, 4)
         {
             Accuracy = 0.9;
-            //TODO: Add Auxilirary Passive Skill
         }
 
         public override void LevelUP()
@@ -29,7 +28,7 @@ namespace Model
             Information.AcquisitionLevel++;
             if(Information.AcquisitionLevel == 5)
             {
-                //TODO: Enable Overload
+                FlattenContainingPassiveSkills().Where(x => x.Information.Name.Equals("Overload")).ToArray()[0].EnableToLearn();
             }
         }
 
