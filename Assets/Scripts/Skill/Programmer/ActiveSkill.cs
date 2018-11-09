@@ -171,7 +171,10 @@ namespace Model
             return CalculateSkillLevelDamage(typeAppliedDamage) + additionalDamage;
         }
 
-        protected abstract double CalculateProjectTypeAppliedDamage(ProjectType projectType);
+        protected double CalculateProjectTypeAppliedDamage(ProjectType projectType)
+        {
+            return BaseDamage * SynastryCache.LanguageToProjectSynastry.GetValue(Information.Type)(projectType);
+        }
         protected abstract double CalculateSkillLevelDamage(double projectTypeAppliedDamage);
 
         public abstract void LevelUP();

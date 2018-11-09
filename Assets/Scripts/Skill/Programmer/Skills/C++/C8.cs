@@ -32,12 +32,6 @@ namespace Model
             }
         }
 
-        protected override double CalculateProjectTypeAppliedDamage(ProjectType projectType)
-        {
-            //TODO: calculate Synastry.
-            return BaseDamage;
-        }
-
         protected override double CalculateSkillLevelDamage(double projectTypeAppliedDamage)
         {
             return projectTypeAppliedDamage * Information.AcquisitionLevel * 3;
