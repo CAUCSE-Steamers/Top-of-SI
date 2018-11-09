@@ -30,14 +30,23 @@ namespace Model
 
         public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType)
         {
-            if (IsTriggerable == false)
+            System.Random random = new System.Random();
+            if(random.NextDouble() > Accuracy)
             {
-                DebugLogger.LogWarningFormat("ActiveSkill::ApplySkill => Skill '{0}'의 쿨타임이 {1} 남아있는 상태에서 발동되려고 합니다.", Information.Name, RemainingCooldown);
+                //TODO : Write Script that skill is not correct.
+                DebugLogger.LogWarningFormat("스킬이 빗나감.");
             }
+            else
+            {
+                if (IsTriggerable == false)
+                {
+                    DebugLogger.LogWarningFormat("ActiveSkill::ApplySkill => Skill '{0}'의 쿨타임이 {1} 남아있는 상태에서 발동되려고 합니다.", Information.Name, RemainingCooldown);
+                }
 
-            hurtable.Hurt((int)CalculateDamage(projectType, techType));
+                hurtable.Hurt((int)CalculateDamage(projectType, techType));
 
-            RemainingCooldown = DefaultCooldown;
+                RemainingCooldown = DefaultCooldown;
+            }
         }
 
         public bool IsTriggerable
@@ -168,18 +177,12 @@ namespace Model
 
         protected double CalculateProjectTypeAppliedDamage(ProjectType projectType)
         {
-            return BaseDamage * SynastryCache.LanguageToProjectSynastry.GetValue(Information.Type)(projectType);
+            return BaseDamage * (1 + SynastryCache.LanguageToProjectSynastry.GetValue(Information.Type)(projectType));
         }
 
         protected double CalculatetechTypeAppliedDamage(double projectTypeAppliedDamage, RequiredTechType techType)
         {
-            foreach(var iter in (RequiredTechType[])Enum.GetValues(typeof(RequiredTechType))){
-                if((techType & iter) == iter)
-                {
-                    projectTypeAppliedDamage *= SynastryCache.LanguageToTechSynastry.GetValue(Information.Type)(iter);
-                }
-            }
-            return projectTypeAppliedDamage;
+            return projectTypeAppliedDamage * (1 + SynastryCache.LanguageToTechSynastry.GetValue(Information.Type)(techType));
         }
 
         protected abstract double CalculateSkillLevelDamage(double projectTypeAppliedDamage);
