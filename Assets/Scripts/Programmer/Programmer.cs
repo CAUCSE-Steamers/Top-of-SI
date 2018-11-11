@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Model;
+using System.Xml.Linq;
 
-public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
+public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, IXmlConvertible, IXmlStateRecoverable
 {
     public event Action OnActionFinished = delegate { };
 
@@ -319,5 +320,19 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
     {
         //If new Deburf type which need to control out of programmer, add it to this.
         return ((type & DeburfType.ShortenDeadLine) != 0);
+    }
+
+    public XElement ToXmlElement()
+    {
+        return new XElement("Programmer", Status.ToXmlElement(),
+                                          Ability.ToXmlElement());
+    }
+
+    public void RecoverStateFromXml(string rawXml)
+    {
+        var element = XElement.Parse(rawXml);
+
+        Status.RecoverStateFromXml(element.Element("Status").ToString());
+        Ability.RecoverStateFromXml(element.Element("Ability").ToString());
     }
 }

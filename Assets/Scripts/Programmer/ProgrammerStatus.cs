@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Model
 {
-    public class ProgrammerStatus : IEventDisposable
+    public class ProgrammerStatus : IEventDisposable, IXmlConvertible, IXmlStateRecoverable
     {
         public event Action<int> OnHealthChanged = delegate { };
         
-        private int health, leadership = 0, sociality = 0;
-        private double healRate, critical;
+        private int health;
 
         private List<KeyValuePair<IBurf, int>> burfs = new List<KeyValuePair<IBurf, int>>();
         private List<DeBurfStructure> deburf = new List<DeBurfStructure>();
@@ -35,10 +35,10 @@ namespace Model
             FullHealth = Health;
             AdditionalDamageRatio = 0.0;
             Cost = new Money(30, 300, 200);
-            critical = 0.03;
-            healRate = 0.1;
-            leadership = 10;
-            sociality = 10;
+            Critical = 0.03;
+            HealRate = 0.1;
+            Leadership = 10;
+            Sociality = 10;
         }
 
         public int? StartVacationDay
@@ -77,38 +77,32 @@ namespace Model
             }
         }
 
+        public void AddLeadership(int quantity)
+        {
+            if ((int)(Leadership / 10) < (int)((Leadership + quantity) / 10))
+            {
+                Health += 3;
+            }
+
+            Leadership += quantity;
+        }
+
         public int Leadership
         {
-            get
+            get; private set;
+        }
+
+        public void AddSociality(int quantity)
+        {
+            if ((int)(Sociality / 10) < (int)((Sociality + quantity) / 10))
             {
-                return leadership;
-            }
-            set
-            {
-                int var = value;
-                if((int)(leadership / 10) < (int)((leadership + value) / 10))
-                {
-                    Health += 3;
-                }
-                leadership += var;
+                HealRate += 0.03;
             }
         }
 
         public int Sociality
         {
-            get
-            {
-                return sociality;
-            }
-            set
-            {
-                int var = value;
-                if ((int)(sociality / 10) < (int)((sociality + value) / 10))
-                {
-                    HealRate += 0.03;
-                }
-                sociality += var;
-            }
+            get; private set;
         }
 
         public double Critical
@@ -181,6 +175,36 @@ namespace Model
         public void DisposeRegisteredEvents()
         {
             OnHealthChanged = delegate { };
+        }
+
+        public XElement ToXmlElement()
+        {
+            return new XElement("Status",
+                    new XAttribute("Portrait", PortraitName),
+                    new XAttribute("Name", Name),
+                    new XAttribute("FullHealth", FullHealth),
+                    new XAttribute("Health", Health),
+                    new XAttribute("Leadership", Leadership),
+                    new XAttribute("Sociality", Sociality),
+                    new XAttribute("Critical", Critical),
+                    new XAttribute("HealRate", HealRate), 
+                    Cost.ToXmlElement());
+        }
+
+        public void RecoverStateFromXml(string rawXml)
+        {
+            var element = XElement.Parse(rawXml);
+
+            PortraitName = element.AttributeValue("Portrait");
+            Name = element.AttributeValue("Name");
+            FullHealth = element.AttributeValue("FullHealth", int.Parse);
+            Health = element.AttributeValue("Health", int.Parse);
+            Leadership = element.AttributeValue("Leadership", int.Parse);
+            Sociality = element.AttributeValue("Sociality", int.Parse);
+            Critical = element.AttributeValue("Critical", double.Parse);
+            HealRate = element.AttributeValue("HealRate", double.Parse);
+
+            Cost.RecoverStateFromXml(element.Element("Money").ToString());
         }
     }
 }
