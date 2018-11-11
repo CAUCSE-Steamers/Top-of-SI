@@ -14,7 +14,7 @@ namespace Model
             Type = SkillType.None,
             AcquisitionLevel = 1,
             MaximumLevel = 1,
-            IconName = "Cpp",
+            IconName = "Typing",
             RequiredUpgradeCost = 0
         };
 
