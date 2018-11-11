@@ -19,7 +19,7 @@ namespace Model
         };
 
         public NormalAttack() 
-            : base(information, Enumerable.Empty<PassiveSkill>(), 1.0, 1.0)
+            : base(information, Enumerable.Empty<PassiveSkill>(), 1.0)
         {
             Accuracy = 1.0;
         }
@@ -35,12 +35,6 @@ namespace Model
         public override void LevelUP()
         {
             // Do nothing
-        }
-
-        //TODO: TechniqueType도 추가할 것.
-        protected override double CalculateProjectTypeAppliedDamage(ProjectType projectType)
-        {
-            return BaseDamage;
         }
 
         protected override double CalculateSkillLevelDamage(double projectTypeAppliedDamage)
