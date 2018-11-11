@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using Model;
-using System;
+using System.Linq;
 
 public class StatusPresenter : MonoBehaviour
 {
@@ -10,6 +10,10 @@ public class StatusPresenter : MonoBehaviour
     private ImageTextPair[] statusUiList;
     [SerializeField]
     private ImageTextPair formationUi;
+    [SerializeField]
+    private ImageTextPair burfUi;
+    [SerializeField]
+    private ImageTextPair deburfUi;
 
     public void Present(ProgrammerStatus status)
     {
@@ -17,6 +21,11 @@ public class StatusPresenter : MonoBehaviour
 
         SetTextsActiveState(true);
         statusUiList[0].SetText(string.Format("정신력 : {0} / {1}", status.Health, status.FullHealth));
+        statusUiList[1].SetText(string.Format("리더쉽 : {0}", status.Leadership));
+        statusUiList[2].SetText(string.Format("사교성 : {0}", status.Sociality));
+
+        burfUi.SetText(status.Burfs.Count().ToString());
+        deburfUi.SetText(status.Burfs.Count().ToString());
     }
 
     private void PresentFormationStatus()
@@ -35,11 +44,16 @@ public class StatusPresenter : MonoBehaviour
         {
             statusUi.SetActiveState(newState);
         }
+
+        burfUi.SetActiveState(true);
+        deburfUi.SetActiveState(true);
     }
 
     public void Disable()
     {
         SetTextsActiveState(false);
         formationUi.SetActiveState(false);
+        burfUi.SetActiveState(false);
+        deburfUi.SetActiveState(false);
     }
 }
