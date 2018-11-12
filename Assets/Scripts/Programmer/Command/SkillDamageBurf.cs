@@ -33,6 +33,27 @@ namespace Model
             }
         }
 
+        public string Description
+        {
+            get
+            {
+                return string.Format("모든 프로그래밍 공격 데미지가 {0}배 적용됩니다.", DamageBurfRatio);
+            }
+        }
+
+        public string IconName
+        {
+            get
+            {
+                return "Coffee";
+            }
+        }
+
+        public int RemainingTurn
+        {
+            get; set;
+        }
+
         public void Modify(ActiveSkill activeSkill)
         {
             if (activeSkill.Information.Type != SkillType.None)

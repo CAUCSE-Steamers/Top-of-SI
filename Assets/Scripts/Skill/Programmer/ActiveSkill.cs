@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace Model
 {
-    public abstract class ActiveSkill : ICooldownRequired, ILevelUp
+    public abstract class ActiveSkill : ICooldownRequired, ILevelUp, IXmlConvertible
     {
         private double baseDamage = 1.0;
         private double defaultCooldown;
@@ -188,5 +190,39 @@ namespace Model
         protected abstract double CalculateSkillLevelDamage(double projectTypeAppliedDamage);
 
         public abstract void LevelUP();
+
+        public static ActiveSkill ParseXml(XElement skillElement)
+        {
+            var skillType = typeof(ActiveSkill).Assembly
+                                               .GetTypes()
+                                               .Where(type => type.FullName == skillElement.AttributeValue("Type"))
+                                               .Single();
+
+            var recoveredSkill = skillType.GetConstructor(new Type[] { })
+                                         .Invoke(new object[] { }) as ActiveSkill;
+
+            recoveredSkill.Information.RecoverStateFromXml(skillElement.Element("SkillInfo").ToString());
+
+            var passiveSkills = new List<PassiveSkill>();
+            foreach (var passiveElement in skillElement.Element("Auxiliary").Elements())
+            {
+                passiveSkills.Add(PassiveSkill.ParseXml(passiveElement));
+            }
+
+            recoveredSkill.AuxiliaryPassiveSkills = passiveSkills;
+            return recoveredSkill;
+        }
+
+        public XElement ToXmlElement()
+        {
+            var activeRoot = new XElement("Skill",
+                                          new XAttribute("Type", GetType().FullName),
+                                          Information.ToXmlElement());
+
+            activeRoot.Add(new XElement("Auxiliary",
+                AuxiliaryPassiveSkills.Select(passiveSkill => passiveSkill.ToXmlElement())));
+
+            return activeRoot;
+        }
     }
 }
