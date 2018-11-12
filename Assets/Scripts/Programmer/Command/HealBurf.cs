@@ -40,6 +40,22 @@ namespace Model
             }
         }
 
+        public string Description
+        {
+            get
+            {
+                return string.Format("매 턴마다 체력을 {0} 회복하고, 최대 체력이 {1} 증가합니다.", HealQuantity, FullIncreasingQuantity);
+            }
+        }
+
+        public string IconName
+        {
+            get
+            {
+                return "Heal";
+            }
+        }
+
         public void Modify(ProgrammerStatus status)
         {
             status.FullHealth += FullIncreasingQuantity;

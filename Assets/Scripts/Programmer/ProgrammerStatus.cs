@@ -137,6 +137,22 @@ namespace Model
             }
         }
 
+        public IEnumerable<IBurf> PositiveBurfs
+        {
+            get
+            {
+                return Burfs.Where(burf => burf.IsPositiveBurf);
+            }
+        }
+
+        public IEnumerable<IBurf> NegativeBurfs
+        {
+            get
+            {
+                return Burfs.Where(burf => burf.IsPositiveBurf == false);
+            }
+        }
+
         public IEnumerable<IBurf> DecayBurfAndFetchExpiredBurfs()
         {
             var expiredBurfs = burfs.Where(burfInformation => burfInformation.Value <= 0);

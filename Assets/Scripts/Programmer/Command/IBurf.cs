@@ -7,6 +7,16 @@ namespace Model
 {
     public interface IBurf
     {
+        string Description
+        {
+            get;
+        }
+
+        string IconName
+        {
+            get;
+        }
+
         bool IsPersistent
         {
             get;
