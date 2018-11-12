@@ -12,7 +12,7 @@ namespace Model
         
         private int health;
 
-        private List<KeyValuePair<IBurf, int>> burfs = new List<KeyValuePair<IBurf, int>>();
+        private List<IBurf> burfs = new List<IBurf>();
         private List<DeBurfStructure> deburf = new List<DeBurfStructure>();
 
         public string PortraitName
@@ -118,14 +118,14 @@ namespace Model
             get; set;
         }
 
-        public void AddBurf(IBurf newBurf, int persistentTurn)
+        public void AddBurf(IBurf newBurf)
         {
-            burfs.Add(new KeyValuePair<IBurf, int>(newBurf, persistentTurn));
+            burfs.Add(newBurf);
         }
 
         public void RemoveBurf(IBurf targetBurf)
         {
-            burfs = burfs.Where(burfInformation => burfInformation.Key.Equals(targetBurf) != false)
+            burfs = burfs.Where(burf => burf.Equals(targetBurf) != false)
                          .ToList();
         }
 
@@ -133,7 +133,7 @@ namespace Model
         {
             get
             {
-                return burfs.Select(burfInformation => burfInformation.Key);
+                return burfs;
             }
         }
 
@@ -155,13 +155,13 @@ namespace Model
 
         public IEnumerable<IBurf> DecayBurfAndFetchExpiredBurfs()
         {
-            var expiredBurfs = burfs.Where(burfInformation => burfInformation.Value <= 0);
+            var expiredBurfs = burfs.Where(burf => burf.RemainingTurn <= 0);
 
             burfs = burfs.Except(expiredBurfs)
-                         .Select(burfInformation => new KeyValuePair<IBurf, int>(burfInformation.Key, burfInformation.Value - 1))
                          .ToList();
+            burfs.ForEach(burf => --burf.RemainingTurn);
 
-            return expiredBurfs.Select(burfInformation => burfInformation.Key);
+            return expiredBurfs;
         }
 
         public List<DeBurfStructure> Deburf

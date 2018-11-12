@@ -43,10 +43,12 @@ public class BurfPresenter : PointEventTrigger
         {
             var createdItem = Instantiate(burfItemTemplate, burfParentTransform);
             var imageComponent = createdItem.transform.GetComponentInChildren<Image>();
-            var textComponent = createdItem.transform.GetComponentInChildren<Text>();
+            var textComponent = createdItem.transform.GetComponentsInChildren<Text>();
 
             imageComponent.sprite = ResourceLoadUtility.LoadIcon(burf.IconName);
-            textComponent.text = burf.Description;
+
+            textComponent[0].text = burf.RemainingTurn.ToString();
+            textComponent[1].text = burf.Description;
         }
 
         totalPanelObject.SetActive(true);

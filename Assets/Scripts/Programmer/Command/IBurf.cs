@@ -7,6 +7,11 @@ namespace Model
 {
     public interface IBurf
     {
+        int RemainingTurn
+        {
+            get; set;
+        }
+
         string Description
         {
             get;

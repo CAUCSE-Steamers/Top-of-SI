@@ -85,10 +85,10 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         
         Ability = new ProgrammerAbility();
 
-        RegisterBurf(new HealBurf(10, 50), 3);
-        RegisterBurf(new HurtDamageBurf(10.0), 4);
-        RegisterBurf(new NormalAttackDamageBurf(29.0), 5);
-        RegisterBurf(new SkillDamageBurf(59.0), 5);
+        RegisterBurf(new HealBurf(10, 50) { RemainingTurn = 3 });
+        RegisterBurf(new HurtDamageBurf(10.0) { RemainingTurn = 4 });
+        RegisterBurf(new NormalAttackDamageBurf(29.0) { RemainingTurn = 5 });
+        RegisterBurf(new SkillDamageBurf(59.0) { RemainingTurn = 5 });
 
         OnMovingStarted += Rotate;
     }
@@ -239,9 +239,9 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         }
     }
 
-    public void RegisterBurf(IBurf newBurf, int persistentTurn)
+    public void RegisterBurf(IBurf newBurf)
     {
-        Status.AddBurf(newBurf, persistentTurn);
+        Status.AddBurf(newBurf);
 
         if (newBurf.IsPersistent == false)
         {

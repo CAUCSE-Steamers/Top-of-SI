@@ -49,6 +49,11 @@ namespace Model
             }
         }
 
+        public int RemainingTurn
+        {
+            get; set;
+        }
+
         public void Modify(ActiveSkill activeSkill)
         {
             if (activeSkill.Information.Type != SkillType.None)
