@@ -74,5 +74,6 @@ public class BurfPresenter : PointEventTrigger
     {
         DisableBurfPopup();
         burfUi.SetActiveState(false);
+        Burfs = null;
     }
 }
