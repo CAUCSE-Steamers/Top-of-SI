@@ -94,13 +94,23 @@ public class LobbyManager : MonoBehaviour
         selectedStage = stages[0];
     }
 
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
         player = new Player();
         TempLobby();
         OnChangeStage += lobbyUi.UpdateProject;
         SelectedStage = stages[0];
+
+        // TODO: Temporary Load/Save
+        // var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Save.xml";
+        
+        // Read
+        // var rootElement = System.Xml.Linq.XElement.Parse(System.IO.File.ReadAllText(path));
+        // player.RecoverStateFromXml(rootElement.ToString());
+        
+        // Write
+        // System.IO.File.WriteAllText(path, player.ToXmlElement().ToString());
+
     }
 
     public void ChangeToNextProject()

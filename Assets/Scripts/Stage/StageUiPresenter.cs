@@ -13,6 +13,8 @@ public class StageUiPresenter : MonoBehaviour
     private ObjectInformationPresenter objectInformationPresenter;
     [SerializeField]
     private StageInformationPresenter stageInformationPresenter;
+    [SerializeField]
+    private StageNoticeUiPresenter stageNoticeUiPresenter;
 
     private void Start()
     {
@@ -194,9 +196,13 @@ public class StageUiPresenter : MonoBehaviour
         var boss = StageManager.Instance.Unit.Boss;
         currentSelectedProgrammer.UseSkill();
         
-        //Implement All Synatry in ApplySkill
         skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype);
         objectInformationPresenter.ResetInformationUi();
         idleState.ResetSelectedObject();
+    }
+
+    public void RenderBossSkillNotice(ProjectSkill skill)
+    {
+        stageNoticeUiPresenter.RenderBossSkillNotice(skill);
     }
 }

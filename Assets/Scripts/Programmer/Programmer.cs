@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Model;
+using System.Xml.Linq;
 
-public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
+public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, IXmlConvertible, IXmlStateRecoverable
 {
     public event Action OnActionFinished = delegate { };
 
@@ -84,10 +85,10 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
         
         Ability = new ProgrammerAbility();
 
-        RegisterBurf(new HealBurf(10, 50), 3);
-        RegisterBurf(new HurtDamageBurf(10.0), 4);
-        RegisterBurf(new NormalAttackDamageBurf(29.0), 5);
-        RegisterBurf(new SkillDamageBurf(59.0), 5);
+        RegisterBurf(new HealBurf(10, 50) { RemainingTurn = 3 });
+        RegisterBurf(new HurtDamageBurf(10.0) { RemainingTurn = 4 });
+        RegisterBurf(new NormalAttackDamageBurf(29.0) { RemainingTurn = 5 });
+        RegisterBurf(new SkillDamageBurf(59.0) { RemainingTurn = 5 });
 
         OnMovingStarted += Rotate;
     }
@@ -238,9 +239,9 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
         }
     }
 
-    public void RegisterBurf(IBurf newBurf, int persistentTurn)
+    public void RegisterBurf(IBurf newBurf)
     {
-        Status.AddBurf(newBurf, persistentTurn);
+        Status.AddBurf(newBurf);
 
         if (newBurf.IsPersistent == false)
         {
@@ -319,5 +320,19 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf
     {
         //If new Deburf type which need to control out of programmer, add it to this.
         return ((type & DeburfType.ShortenDeadLine) != 0);
+    }
+
+    public XElement ToXmlElement()
+    {
+        return new XElement("Programmer", Status.ToXmlElement(),
+                                          Ability.ToXmlElement());
+    }
+
+    public void RecoverStateFromXml(string rawXml)
+    {
+        var element = XElement.Parse(rawXml);
+
+        Status.RecoverStateFromXml(element.Element("Status").ToString());
+        Ability.RecoverStateFromXml(element.Element("Ability").ToString());
     }
 }

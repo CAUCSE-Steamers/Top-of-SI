@@ -7,6 +7,21 @@ namespace Model
 {
     public interface IBurf
     {
+        int RemainingTurn
+        {
+            get; set;
+        }
+
+        string Description
+        {
+            get;
+        }
+
+        string IconName
+        {
+            get;
+        }
+
         bool IsPersistent
         {
             get;
