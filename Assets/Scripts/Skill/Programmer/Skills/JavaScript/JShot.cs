@@ -11,7 +11,7 @@ namespace Model
         {
             Name = "JShot",
             Type = SkillType.JavaScript,
-            AcquisitionLevel = 1,
+            AcquisitionLevel = 0,
             MaximumLevel = 30,
             IconName = "JavaScript",
             RequiredUpgradeCost = 2

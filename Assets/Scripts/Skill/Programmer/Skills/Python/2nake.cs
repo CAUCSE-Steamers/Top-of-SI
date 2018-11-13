@@ -11,7 +11,7 @@ namespace Model
         {
             Name = "2nake",
             Type = SkillType.Python,
-            AcquisitionLevel = 1,
+            AcquisitionLevel = 0,
             MaximumLevel = 10,
             IconName = "Python",
             RequiredUpgradeCost = 1
