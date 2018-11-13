@@ -9,13 +9,21 @@ public class ManagementPresenter : MonoBehaviour
     private Text moneyText;
     [SerializeField]
     private ProgrammerListPresenter programmerListPresenter;
+    [SerializeField]
+    private ManagementInformationPresenter informationPresenter;
 
     private Player currentPlayer;
 
     private void Start()
     {
         currentPlayer = LobbyManager.Instance.CurrentPlayer;
+        programmerListPresenter.OnCellButtonClicked += (sender, spec) =>
+        {
+            informationPresenter.Present(spec);
+        };
+
         Present();
+        informationPresenter.Disable();
     }
 
     private void Present()
