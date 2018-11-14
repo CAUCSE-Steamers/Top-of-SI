@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Model;
 using System.Linq;
+using UnityEngine.Events;
 
 public class ManagementInformationPresenter : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class ManagementInformationPresenter : MonoBehaviour
     private Transform skillCellPanelTransform;
     [SerializeField]
     private GameObject rootObject;
+    [SerializeField]
+    private SkillManagementPresenter skillManagementPresenter;
+    [SerializeField]
+    private UnityEvent onUpgradeClicked;
 
     private ProgrammerSpec currentPresentedSpec;
 
@@ -70,7 +75,11 @@ public class ManagementInformationPresenter : MonoBehaviour
             skillText.text = string.Format("{0} ({1} / {2})", activeSkill.Information.Name, activeSkill.Information.AcquisitionLevel, activeSkill.Information.MaximumLevel);
 
             var upgradeButton = createdCell.GetComponentInChildren<Button>();
-
+            upgradeButton.onClick.AddListener(() =>
+            {
+                onUpgradeClicked.Invoke();
+                skillManagementPresenter.Present(activeSkill);
+            });
         }
     }
 
