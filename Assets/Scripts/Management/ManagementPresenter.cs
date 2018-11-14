@@ -26,7 +26,7 @@ public class ManagementPresenter : MonoBehaviour
         informationPresenter.Disable();
     }
 
-    private void Present()
+    public void Present()
     {
         moneyText.text = currentPlayer.Money.ToString();
         programmerListPresenter.Present();

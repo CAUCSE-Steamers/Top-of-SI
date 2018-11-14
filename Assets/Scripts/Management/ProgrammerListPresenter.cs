@@ -12,7 +12,7 @@ public class ProgrammerListPresenter : MonoBehaviour
     private GameObject programmerCellTemplate;
     [SerializeField]
     private Transform programmerPanelObject;
-
+    
     public void Present()
     {
         RemoveExistingCells();

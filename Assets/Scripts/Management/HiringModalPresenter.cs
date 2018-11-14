@@ -7,8 +7,6 @@ using UnityEngine.UI;
 public class HiringModalPresenter : MonoBehaviour
 {
     [SerializeField]
-    private GameObject hireSelectingObject;
-    [SerializeField]
     private Text informationText;
     [SerializeField]
     private UnityEvent OnMoneyNotEnough;
