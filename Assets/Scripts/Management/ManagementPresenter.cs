@@ -30,5 +30,6 @@ public class ManagementPresenter : MonoBehaviour
     {
         moneyText.text = currentPlayer.Money.ToString();
         programmerListPresenter.Present();
+        informationPresenter.Refresh();
     }
 }

@@ -19,8 +19,11 @@ public class ManagementInformationPresenter : MonoBehaviour
     [SerializeField]
     private GameObject rootObject;
 
+    private ProgrammerSpec currentPresentedSpec;
+
     public void Present(ProgrammerSpec spec)
     {
+        currentPresentedSpec = spec;
         rootObject.SetActive(true);
 
         PresentProgrammerInformation(spec);
@@ -30,6 +33,15 @@ public class ManagementInformationPresenter : MonoBehaviour
     public void Disable()
     {
         rootObject.SetActive(false);
+        currentPresentedSpec = null;
+    }
+
+    public void Refresh()
+    {
+        if (currentPresentedSpec != null)
+        {
+            Present(currentPresentedSpec);
+        }
     }
 
     private void PresentProgrammerInformation(ProgrammerSpec spec)
