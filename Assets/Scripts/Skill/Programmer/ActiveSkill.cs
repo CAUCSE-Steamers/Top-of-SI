@@ -20,6 +20,7 @@ namespace Model
             BaseDamage = baseDamage;
             DefaultCooldown = defaultCooldown;
 
+            Information.LearnEnabled = true;
             RemainingCooldown = 0.0;
             AdditionalDamageRatio = 0.0;
             AdditionlCooldownRatio = 0.0;

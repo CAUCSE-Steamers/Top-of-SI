@@ -9,12 +9,22 @@ namespace Model
 {
     public class SkillBasicInformation : IXmlConvertible, IXmlStateRecoverable
     {
+        public SkillBasicInformation()
+        {
+            LearnEnabled = false;
+        }
+
         public Sprite Image
         {
             get
             {
                 return ResourceLoadUtility.LoadIcon(IconName);
             }
+        }
+
+        public bool LearnEnabled
+        {
+            get; set;
         }
 
         public string IconName
@@ -57,6 +67,7 @@ namespace Model
             AcquisitionLevel = element.AttributeValue("AcquisitionLevel", int.Parse);
             MaximumLevel = element.AttributeValue("MaximumLevel", int.Parse);
             RequiredUpgradeCost = element.AttributeValue("RequiredUpgradeCost", int.Parse);
+            LearnEnabled = element.AttributeValue("LearnEnabled", bool.Parse);
         }
 
         public XElement ToXmlElement()
@@ -67,7 +78,8 @@ namespace Model
                 new XAttribute("Name", Name),
                 new XAttribute("AcquisitionLevel", AcquisitionLevel),
                 new XAttribute("MaximumLevel", MaximumLevel),
-                new XAttribute("RequiredUpgradeCost", RequiredUpgradeCost));
+                new XAttribute("RequiredUpgradeCost", RequiredUpgradeCost),
+                new XAttribute("LearnEnabled", LearnEnabled));
         }
     }
 }

@@ -18,7 +18,6 @@ namespace Model
             var recoveredSkill = skillType.GetConstructor(new Type[] { })
                                          .Invoke(new object[] { }) as PassiveSkill;
 
-            recoveredSkill.enableToLearn = skillElement.AttributeValue("Enabled", bool.Parse);
             recoveredSkill.Information.RecoverStateFromXml(skillElement.Element("SkillInfo").ToString());
 
             var passiveSkills = new List<PassiveSkill>();
@@ -31,7 +30,6 @@ namespace Model
             return recoveredSkill;
         }
 
-        private bool enableToLearn = false;
         public PassiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> auxiliaryPassiveSkills)
         {
             Information = information;
@@ -45,7 +43,7 @@ namespace Model
 
         public void EnableToLearn()
         {
-            enableToLearn = true;
+            Information.LearnEnabled = true;
         }
 
         public IEnumerable<PassiveSkill> AuxiliaryPassiveSkills
@@ -59,7 +57,6 @@ namespace Model
         {
             var passiveRoot = new XElement("Passive",
                 new XAttribute("Type", GetType().FullName),
-                new XAttribute("Enabled", enableToLearn),
                 Information.ToXmlElement());
 
             passiveRoot.Add(new XElement("Auxiliary",
