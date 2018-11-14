@@ -16,7 +16,10 @@ namespace Model
             {
                 new NormalAttack(),
                 new JavaGrab(),
-                new CVar()
+                new CVar(),
+                new C8(),
+                new JShot(),
+                new snake(),
             };   
         }
 

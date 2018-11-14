@@ -11,7 +11,7 @@ namespace Model
         {
             Name = "C8",
             Type = SkillType.CPlusPlus,
-            AcquisitionLevel = 1,
+            AcquisitionLevel = 0,
             MaximumLevel = 20,
             IconName = "Cpp",
             RequiredUpgradeCost = 5

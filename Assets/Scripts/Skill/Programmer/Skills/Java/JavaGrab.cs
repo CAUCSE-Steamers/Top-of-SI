@@ -12,7 +12,7 @@ namespace Model
         {
             Name = "JavaGrab",
             Type = SkillType.Java,
-            AcquisitionLevel = 1,
+            AcquisitionLevel = 0,
             MaximumLevel = 10,
             IconName = "Java",
             RequiredUpgradeCost = 3
