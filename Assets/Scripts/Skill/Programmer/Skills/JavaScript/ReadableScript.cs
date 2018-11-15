@@ -18,7 +18,7 @@ namespace Model
             DescriptionFunc = level => string.Format("가독성 좋은 코드를 작성합니다. 스킬의 명중률이 {0}% 증가합니다.", level)
         };
 
-        public ReadableScript() : base(information, Enumerable.Empty<PassiveSkill>())
+        public ReadableScript() : base(information.Clone(), Enumerable.Empty<PassiveSkill>())
         {
 
         }

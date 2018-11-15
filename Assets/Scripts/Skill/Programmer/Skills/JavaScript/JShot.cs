@@ -19,7 +19,7 @@ namespace Model
         };
 
         public JShot()
-            : base(information, new List<PassiveSkill>() { new ReadableScript() }, 2)
+            : base(information.Clone(), new List<PassiveSkill>() { new ReadableScript() }, 2)
         {
             Accuracy = 0.5;
         }

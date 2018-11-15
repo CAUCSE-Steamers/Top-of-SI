@@ -20,7 +20,7 @@ namespace Model
         };
 
         public CVar()
-            : base(information, new List<PassiveSkill>() { new NoteDown(), new CounterEvolution() }, 5)
+            : base(information.Clone(), new List<PassiveSkill>() { new NoteDown(), new CounterEvolution() }, 5)
         {
             Accuracy = 0.9;
         }

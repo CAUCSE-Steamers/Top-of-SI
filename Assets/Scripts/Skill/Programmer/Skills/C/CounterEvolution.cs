@@ -18,7 +18,7 @@ namespace Model
             DescriptionFunc = level => string.Format("Low-Level C 언어를 배웁니다. 스킬 데미지가 {0}% 증가합니다.", level)
         };
 
-        public CounterEvolution() : base(information, Enumerable.Empty<PassiveSkill>())
+        public CounterEvolution() : base(information.Clone(), Enumerable.Empty<PassiveSkill>())
         {
 
         }

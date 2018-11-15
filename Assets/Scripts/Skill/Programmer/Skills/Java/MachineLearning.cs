@@ -18,7 +18,7 @@ namespace Model
             DescriptionFunc = level => string.Format("JVM을 공부합니다. 쿨타임이 {0}% 증가하지만, 명중률과 데미지가 {0}% 증가합니다.", level * 2, level)
         };
 
-        public MachineLearning() : base(information, Enumerable.Empty<PassiveSkill>())
+        public MachineLearning() : base(information.Clone(), Enumerable.Empty<PassiveSkill>())
         {
 
         }

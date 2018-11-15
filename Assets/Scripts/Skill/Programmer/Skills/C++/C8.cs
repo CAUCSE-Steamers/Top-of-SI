@@ -19,7 +19,7 @@ namespace Model
         };
 
         public C8()
-            : base(information, new List<PassiveSkill>() { new Overload() }, 4)
+            : base(information.Clone(), new List<PassiveSkill>() { new Overload() }, 4)
         {
             Accuracy = 0.9;
         }

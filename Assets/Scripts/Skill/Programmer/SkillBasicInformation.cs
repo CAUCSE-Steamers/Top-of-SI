@@ -14,6 +14,21 @@ namespace Model
             LearnEnabled = false;
         }
 
+        public SkillBasicInformation Clone()
+        {
+            return new SkillBasicInformation
+            {
+                LearnEnabled = this.LearnEnabled,
+                IconName = this.IconName,
+                Type = this.Type,
+                Name = this.Name,
+                AcquisitionLevel = this.AcquisitionLevel,
+                MaximumLevel = this.MaximumLevel,
+                RequiredUpgradeCost = this.RequiredUpgradeCost,
+                DescriptionFunc = this.DescriptionFunc
+            };
+        }
+
         public Sprite Image
         {
             get

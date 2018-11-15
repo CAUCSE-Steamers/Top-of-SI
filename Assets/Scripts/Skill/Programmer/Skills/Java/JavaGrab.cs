@@ -20,7 +20,7 @@ namespace Model
         };
 
         public JavaGrab()
-            : base(information, new List<PassiveSkill>() { new Doctor(), new MachineLearning() }, 2)
+            : base(information.Clone(), new List<PassiveSkill>() { new Doctor(), new MachineLearning() }, 2)
         {
             Accuracy = 0.9;
         }
