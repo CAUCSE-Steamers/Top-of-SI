@@ -21,7 +21,7 @@ namespace Model
         public NormalAttack() 
             : base(information, Enumerable.Empty<PassiveSkill>(), 1.0)
         {
-            Accuracy = 1.0;
+            Accuracy = 0.5;
         }
 
         public AudioClip EffectSound

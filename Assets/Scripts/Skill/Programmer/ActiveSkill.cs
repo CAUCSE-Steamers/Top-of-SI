@@ -6,10 +6,14 @@ using System.Xml.Linq;
 using System.Reflection;
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 namespace Model
 {
     public abstract class ActiveSkill : ICooldownRequired, ILevelUp, IXmlConvertible
     {
+        public event Action<ActiveSkill> OnSkillMissed = delegate { };
+
         private double baseDamage = 1.0;
         private double initialCooldown;
 
@@ -33,11 +37,9 @@ namespace Model
 
         public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType)
         {
-            System.Random random = new System.Random();
-            if(random.NextDouble() > Accuracy)
+            if (Random.Range(0f, 1f) > Accuracy)
             {
-                //TODO : Write Script that skill is not correct.
-                DebugLogger.LogWarningFormat("스킬이 빗나감.");
+                OnSkillMissed(this);
             }
             else
             {
@@ -143,7 +145,7 @@ namespace Model
                 return cooldownPassive.CalculateAppliedCooldown(initialCooldown);
             });
 
-            return DefaultCooldown + additionCooldown;
+            return initialCooldown + additionCooldown;
         }
 
         private double AdditionalValueFromPassive<T>(double baseValue, Func<T, double> valueApplyingFunction)
