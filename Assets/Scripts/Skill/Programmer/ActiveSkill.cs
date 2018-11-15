@@ -164,24 +164,18 @@ namespace Model
 
         private double CalculateDamage(ProjectType projectType, RequiredTechType techType)
         {
-            double typeAppliedDamage = CalculateProjectTypeAppliedDamage(projectType);
-            double techAppliedDamage = CalculatetechTypeAppliedDamage(typeAppliedDamage, techType);
-            double additionalDamage = AdditionalValueFromPassive<IDamageConvertible>(techAppliedDamage, damagePassive =>
+            double levelAppliedDamage = CalculateSkillLevelDamage(BaseDamage);
+            double additionalDamage = AdditionalValueFromPassive<IDamageConvertible>(levelAppliedDamage, damagePassive =>
             {
-                return damagePassive.CalculateAppliedDamage(techAppliedDamage, projectType, techType);
+                return damagePassive.CalculateAppliedDamage(levelAppliedDamage, projectType, techType);
             });
 
-            return CalculateSkillLevelDamage(techAppliedDamage) + additionalDamage;
-        }
+            double passiveAppliedDamage = levelAppliedDamage + additionalDamage;
 
-        protected double CalculateProjectTypeAppliedDamage(ProjectType projectType)
-        {
-            return BaseDamage * (1 + SynastryCache.LanguageToProjectSynastry.GetValue(Information.Type)(projectType));
-        }
+            double typeAppliedDamage = passiveAppliedDamage * (1 + SynastryCache.LanguageToProjectSynastry.GetValue(Information.Type)(projectType));
+            double techAppliedDamage = typeAppliedDamage * (1 + SynastryCache.LanguageToTechSynastry.GetValue(Information.Type)(techType));
 
-        protected double CalculatetechTypeAppliedDamage(double projectTypeAppliedDamage, RequiredTechType techType)
-        {
-            return projectTypeAppliedDamage * (1 + SynastryCache.LanguageToTechSynastry.GetValue(Information.Type)(techType));
+            return techAppliedDamage;
         }
 
         protected abstract double CalculateSkillLevelDamage(double projectTypeAppliedDamage);
