@@ -14,10 +14,11 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 10,
             IconName = "Python",
-            RequiredUpgradeCost = 2
+            RequiredUpgradeCost = 2,
+            DescriptionFunc = level => string.Format("Python으로 간단한 코드를 아주 빠르게 작성할 수 있습니다. 쿨타임이 {0}% 감소합니다.", level)
         };
 
-        public FastCode() : base(information, Enumerable.Empty<PassiveSkill>())
+        public FastCode() : base(information.Clone(), Enumerable.Empty<PassiveSkill>())
         {
 
         }

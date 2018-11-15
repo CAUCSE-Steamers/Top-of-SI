@@ -14,11 +14,12 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 20,
             IconName = "Cpp",
-            RequiredUpgradeCost = 5
+            RequiredUpgradeCost = 5,
+            DescriptionFunc = level => string.Format("C++로 코드를 작성합니다. 프로젝트에게 {0}의 데미지를 입힙니다. (쿨타임 4턴, 명중률 90%)", level * 3)
         };
 
         public C8()
-            : base(information, new List<PassiveSkill>() { new Overload() }, 4)
+            : base(information.Clone(), new List<PassiveSkill>() { new Overload() }, 4)
         {
             Accuracy = 0.9;
         }

@@ -14,11 +14,12 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 10,
             IconName = "Python",
-            RequiredUpgradeCost = 1
+            RequiredUpgradeCost = 1,
+            DescriptionFunc = level => string.Format("Python으로 코드를 작성합니다. 프로젝트에게 {0}의 데미지를 입힙니다. (쿨타임 1턴, 명중률 80%)", level)
         };
 
         public snake()
-            : base(information, new List<PassiveSkill>() { new FastCode(), new Pypi() }, 1)
+            : base(information.Clone(), new List<PassiveSkill>() { new FastCode(), new Pypi() }, 1)
         {
             Accuracy = 0.8;
         }

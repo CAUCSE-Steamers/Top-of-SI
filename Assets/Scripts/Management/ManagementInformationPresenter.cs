@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Model;
 using System.Linq;
+using UnityEngine.Events;
 
 public class ManagementInformationPresenter : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class ManagementInformationPresenter : MonoBehaviour
     private Transform skillCellPanelTransform;
     [SerializeField]
     private GameObject rootObject;
+    [SerializeField]
+    private SkillManagementPresenter skillManagementPresenter;
+    [SerializeField]
+    private UnityEvent onUpgradeClicked;
 
     private ProgrammerSpec currentPresentedSpec;
 
@@ -67,10 +72,20 @@ public class ManagementInformationPresenter : MonoBehaviour
             skillImage.sprite = ResourceLoadUtility.LoadIcon(activeSkill.Information.IconName);
 
             var skillText = createdCell.GetComponentInChildren<Text>();
-            skillText.text = string.Format("{0} ({1} / {2})", activeSkill.Information.Name, activeSkill.Information.AcquisitionLevel, activeSkill.Information.MaximumLevel);
+
+            int allMaximumLevel = activeSkill.FlattenContainingPassiveSkills()
+                                             .Aggregate(activeSkill.Information.MaximumLevel, (totalMaximumLevel, passiveSkill) => totalMaximumLevel + passiveSkill.Information.MaximumLevel);
+            int allAcquiredLevel = activeSkill.FlattenContainingPassiveSkills()
+                                              .Aggregate(activeSkill.Information.AcquisitionLevel, (totalAcquiredLevel, passiveSkill) => totalAcquiredLevel + passiveSkill.Information.AcquisitionLevel);
+
+            skillText.text = string.Format("{0} ({1} / {2})", activeSkill.Information.Name, allAcquiredLevel, allMaximumLevel);
 
             var upgradeButton = createdCell.GetComponentInChildren<Button>();
-
+            upgradeButton.onClick.AddListener(() =>
+            {
+                onUpgradeClicked.Invoke();
+                skillManagementPresenter.Present(activeSkill);
+            });
         }
     }
 

@@ -14,10 +14,11 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 20,
             IconName = "Java",
-            RequiredUpgradeCost = 4
+            RequiredUpgradeCost = 4,
+            DescriptionFunc = level => string.Format("JavaDoc에 익숙해져, 여러 패키지를 사용할 수 있습니다. 데미지가 {0}% 증가합니다.", level)
         };
 
-        public Doctor() : base(information, Enumerable.Empty<PassiveSkill>())
+        public Doctor() : base(information.Clone(), Enumerable.Empty<PassiveSkill>())
         {
 
         }
