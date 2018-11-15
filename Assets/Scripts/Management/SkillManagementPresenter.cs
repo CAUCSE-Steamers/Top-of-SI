@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System.Collections;
 using Model;
 using System.Linq;
@@ -19,6 +20,10 @@ public class SkillManagementPresenter : MonoBehaviour
     private Transform passiveSkillParentTransform;
     [SerializeField]
     private Transform auxPassiveSkillParentTransform;
+    [SerializeField]
+    private SkillUpgradePresenter skillUpgradePresenter;
+    [SerializeField]
+    private UnityEvent onUpgradeClicked;
 
     public void Present(ActiveSkill activeSkill)
     {
@@ -45,14 +50,27 @@ public class SkillManagementPresenter : MonoBehaviour
 
     private void ConstructActivePanel(ActiveSkill activeSkill)
     {
-        CreateSkillCell(activeSkillParentTransform, activeSkill.Information);
+        var createdCell = CreateSkillCell(activeSkillParentTransform, activeSkill.Information);
+        var buttonComponent = createdCell.GetComponentInChildren<Button>();
+        buttonComponent.onClick.AddListener(() =>
+        {
+            skillUpgradePresenter.Present(activeSkill);
+            onUpgradeClicked.Invoke();
+        });
     }
 
     private void ConstructPassivePanel(IEnumerable<PassiveSkill> passiveSkills)
     {
         foreach (var passiveSkill in passiveSkills)
         {
-            CreateSkillCell(passiveSkillParentTransform, passiveSkill.Information);
+            var createdCell = CreateSkillCell(passiveSkillParentTransform, passiveSkill.Information);
+            var buttonComponent = createdCell.GetComponentInChildren<Button>();
+            buttonComponent.onClick.AddListener(() =>
+            {
+                skillUpgradePresenter.Present(passiveSkill);
+                onUpgradeClicked.Invoke();
+            });
+
             CreateBlankCell(passiveSkillParentTransform, passiveSkill.AuxiliaryPassiveSkills.Count() - 1);
             ConstructAuxPassivePanel(passiveSkill.AuxiliaryPassiveSkills);
         }
@@ -83,7 +101,7 @@ public class SkillManagementPresenter : MonoBehaviour
         }
     }
 
-    private void CreateSkillCell(Transform parentTransform, SkillBasicInformation information)
+    private GameObject CreateSkillCell(Transform parentTransform, SkillBasicInformation information)
     {
         var createdCell = Instantiate(skillCellTemplate, parentTransform);
         
@@ -97,11 +115,14 @@ public class SkillManagementPresenter : MonoBehaviour
             textComponent.text = "Locked";
 
             buttonComponent.interactable = false;
+            
             imageComponent.color = new Color(0, 0, 0, 1f);
         }
         else
         {
             createdCell.GetComponentInChildren<Text>().text = string.Format("{0} ({1} / {2})", information.Name, information.AcquisitionLevel, information.MaximumLevel);
         }
+
+        return createdCell;
     }
 }
