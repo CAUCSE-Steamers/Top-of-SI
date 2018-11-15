@@ -25,6 +25,8 @@ public class SkillUpgradePresenter : MonoBehaviour
     private UnityEvent onUpgradeCompleted;
     [SerializeField]
     private UnityEvent onMoneyNotEnough;
+    [SerializeField]
+    private GameObject afterSkillPanel;
 
     public void Present(ActiveSkill activeSkill)
     {
@@ -67,13 +69,41 @@ public class SkillUpgradePresenter : MonoBehaviour
 
         previousTitlePair.SetText(string.Format("{0} (Lv. {1})", basicInformation.Name, basicInformation.AcquisitionLevel));
         previousTitlePair.SetSprite(basicInformation.Image);
-        previousSkillDescription.text = basicInformation.DescriptionFunc(basicInformation.AcquisitionLevel);
+
+        if (basicInformation.AcquisitionLevel == 0)
+        {
+            previousSkillDescription.text = "스킬을 습득하지 않았습니다.";
+        }
+        else
+        {
+            previousSkillDescription.text = basicInformation.DescriptionFunc(basicInformation.AcquisitionLevel);
+        }
+
         previousMoneyText.text = LobbyManager.Instance.CurrentPlayer.Money.ToString();
 
-        // TODO: 만렙이라 강화할 게 없다!
         afterTitlePair.SetSprite(basicInformation.Image);
-        afterTitlePair.SetText(string.Format("{0} (Lv. {1})", basicInformation.Name, basicInformation.AcquisitionLevel + 1));
-        afterSkillDescription.text = basicInformation.DescriptionFunc(basicInformation.AcquisitionLevel + 1);
-        afterMoneyText.text = (LobbyManager.Instance.CurrentPlayer.Money - basicInformation.RequiredUpgradeCost).ToString();
+
+        if (basicInformation.AcquisitionLevel == basicInformation.MaximumLevel)
+        {
+            afterTitlePair.SetText(string.Format("{0} (Lv. {1})", basicInformation.Name, basicInformation.AcquisitionLevel));
+            afterSkillDescription.text = basicInformation.DescriptionFunc(basicInformation.AcquisitionLevel);
+            afterMoneyText.text = LobbyManager.Instance.CurrentPlayer.Money.ToString();
+
+            afterSkillPanel.GetComponentInChildren<Image>().color = new Color(0, 0, 0, 0.7f);
+            afterSkillPanel.GetComponentInChildren<Text>().text = "강화 완료";
+
+            upgradeButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            afterTitlePair.SetText(string.Format("{0} (Lv. {1})", basicInformation.Name, basicInformation.AcquisitionLevel + 1));
+            afterSkillDescription.text = basicInformation.DescriptionFunc(basicInformation.AcquisitionLevel + 1);
+            afterMoneyText.text = (LobbyManager.Instance.CurrentPlayer.Money - basicInformation.RequiredUpgradeCost).ToString();
+
+            afterSkillPanel.GetComponentInChildren<Image>().color = new Color(0, 0, 0, 0);
+            afterSkillPanel.GetComponentInChildren<Text>().text = string.Empty;
+
+            upgradeButton.gameObject.SetActive(true);
+        }
     }
 }
