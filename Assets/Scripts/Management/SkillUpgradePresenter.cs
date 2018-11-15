@@ -29,8 +29,6 @@ public class SkillUpgradePresenter : MonoBehaviour
     public void Present(ActiveSkill activeSkill)
     {
         Present(activeSkill.Information);
-        AppendCooldownDescription(previousSkillDescription, activeSkill);
-        AppendCooldownDescription(afterSkillDescription, activeSkill);
 
         upgradeButton.onClick.AddListener(() =>
         {
@@ -41,12 +39,6 @@ public class SkillUpgradePresenter : MonoBehaviour
     public void Present(PassiveSkill passiveSkill)
     {
         Present(passiveSkill.Information);
-
-        if (passiveSkill is ICooldownRequired)
-        {
-            AppendCooldownDescription(previousSkillDescription, passiveSkill as ICooldownRequired);
-            AppendCooldownDescription(afterSkillDescription, passiveSkill as ICooldownRequired);
-        }
 
         upgradeButton.onClick.AddListener(() =>
         {
@@ -75,18 +67,13 @@ public class SkillUpgradePresenter : MonoBehaviour
 
         previousTitlePair.SetText(string.Format("{0} (Lv. {1})", basicInformation.Name, basicInformation.AcquisitionLevel));
         previousTitlePair.SetSprite(basicInformation.Image);
-        previousSkillDescription.text = "";
+        previousSkillDescription.text = basicInformation.DescriptionFunc(basicInformation.AcquisitionLevel);
         previousMoneyText.text = LobbyManager.Instance.CurrentPlayer.Money.ToString();
 
         // TODO: 만렙이라 강화할 게 없다!
         afterTitlePair.SetSprite(basicInformation.Image);
         afterTitlePair.SetText(string.Format("{0} (Lv. {1})", basicInformation.Name, basicInformation.AcquisitionLevel + 1));
-        afterSkillDescription.text = "";
+        afterSkillDescription.text = basicInformation.DescriptionFunc(basicInformation.AcquisitionLevel + 1);
         afterMoneyText.text = (LobbyManager.Instance.CurrentPlayer.Money - basicInformation.RequiredUpgradeCost).ToString();
-    }
-
-    private void AppendCooldownDescription(Text descriptionText, ICooldownRequired cooldownRequired)
-    {
-        descriptionText.text = descriptionText.text + string.Format(" (쿨타임 {0}턴)", (int) cooldownRequired.DefaultCooldown);
     }
 }

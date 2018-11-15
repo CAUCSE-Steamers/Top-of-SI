@@ -14,8 +14,9 @@ namespace Model
             Type = SkillType.C,
             AcquisitionLevel = 0,
             MaximumLevel = 100,
-            IconName = "C", 
-            RequiredUpgradeCost = 3
+            IconName = "C",
+            RequiredUpgradeCost = 3,
+            DescriptionFunc = level => string.Format("C 언어로 코드를 작성합니다. 프로젝트에게 {0}의 데미지를 입힙니다. (쿨타임 5턴, 명중률 90%)", level / 2)
         };
 
         public CVar()

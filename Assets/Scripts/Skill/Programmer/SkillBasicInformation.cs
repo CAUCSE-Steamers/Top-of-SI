@@ -57,6 +57,11 @@ namespace Model
             get; set;
         }
 
+        public Func<int, string> DescriptionFunc
+        {
+            get; set;
+        }
+
         public void RecoverStateFromXml(string rawXml)
         {
             var element = XElement.Parse(rawXml);

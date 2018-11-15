@@ -15,7 +15,8 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 10,
             IconName = "Java",
-            RequiredUpgradeCost = 3
+            RequiredUpgradeCost = 3,
+            DescriptionFunc = level => string.Format("Java로 코드를 작성합니다. 프로젝트에게 {0}의 데미지를 입힙니다. (쿨타임 2턴, 명중률 90%)", level * 2)
         };
 
         public JavaGrab()

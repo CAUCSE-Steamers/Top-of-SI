@@ -11,14 +11,14 @@ namespace Model
     public abstract class ActiveSkill : ICooldownRequired, ILevelUp, IXmlConvertible
     {
         private double baseDamage = 1.0;
-        private double defaultCooldown;
+        private double initialCooldown;
 
         public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double defaultCooldown)
         {
             Information = information;
             AuxiliaryPassiveSkills = passiveSkills;
             BaseDamage = baseDamage;
-            DefaultCooldown = defaultCooldown;
+            initialCooldown = defaultCooldown;
 
             Information.LearnEnabled = true;
             RemainingCooldown = 0.0;
@@ -104,11 +104,7 @@ namespace Model
         {
             get
             {
-                return defaultCooldown * (1.0 + AdditionlCooldownRatio);
-            }
-            private set
-            {
-                defaultCooldown = value;
+                return CalculatePassiveAppliedCooldown() * (1.0 + AdditionlCooldownRatio);
             }
         }
 
@@ -142,9 +138,9 @@ namespace Model
 
         private double CalculatePassiveAppliedCooldown()
         {
-            double additionCooldown = AdditionalValueFromPassive<ICooldownConvertible>(DefaultCooldown, cooldownPassive =>
+            double additionCooldown = AdditionalValueFromPassive<ICooldownConvertible>(initialCooldown, cooldownPassive =>
             {
-                return cooldownPassive.CalculateAppliedCooldown(DefaultCooldown);
+                return cooldownPassive.CalculateAppliedCooldown(initialCooldown);
             });
 
             return DefaultCooldown + additionCooldown;
