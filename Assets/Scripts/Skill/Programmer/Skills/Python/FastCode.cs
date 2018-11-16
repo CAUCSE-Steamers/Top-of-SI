@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class FastCode : PassiveSkill, ICooldownConvertible
+    public class FastCode : PassiveSkill, ICooldownConvertible
     {
         private static SkillBasicInformation information = new SkillBasicInformation()
         {
@@ -25,7 +25,7 @@ namespace Model
 
         public double CalculateAppliedCooldown(double baseCooldown)
         {
-            return baseCooldown * (1 - information.AcquisitionLevel / 100);
+            return baseCooldown * (1 - (information.AcquisitionLevel * 0.01));
         }
 
         public override void LevelUP()

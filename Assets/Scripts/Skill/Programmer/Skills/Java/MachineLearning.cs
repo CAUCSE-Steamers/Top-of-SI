@@ -23,19 +23,19 @@ namespace Model
 
         }
 
-        public double calculateAppliedAccuracy(double accuracy)
+        public double CalculateAppliedAccuracy(double accuracy)
         {
-            return accuracy * (1 + Information.AcquisitionLevel / 100);
+            return accuracy * (1 + (Information.AcquisitionLevel * 0.01));
         }
 
         public double CalculateAppliedCooldown(double baseCooldown)
         {
-            return baseCooldown * (1 + 2 * information.AcquisitionLevel / 100);
+            return baseCooldown * (1 + (2 * information.AcquisitionLevel * 0.01));
         }
 
         public double CalculateAppliedDamage(double baseDamage, ProjectType projectType, RequiredTechType techType)
         {
-            return baseDamage * (1 + Information.AcquisitionLevel / 100);
+            return baseDamage * (1 + (Information.AcquisitionLevel * 0.01));
         }
 
         public override void LevelUP()
