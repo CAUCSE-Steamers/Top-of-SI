@@ -16,6 +16,7 @@ namespace Model
 
         private double baseDamage = 1.0;
         private double initialCooldown;
+        private double accuracy;
 
         public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double defaultCooldown)
         {
@@ -28,6 +29,7 @@ namespace Model
             RemainingCooldown = 0.0;
             AdditionalDamageRatio = 0.0;
             AdditionlCooldownRatio = 0.0;
+            Accuracy = 0.0;
         }
 
         public double RemainingCooldown
@@ -110,10 +112,21 @@ namespace Model
             }
         }
 
-        // if random double number is smaller than accuracy, skill correct.
         public double Accuracy
         {
-            get; set;
+            get
+            {
+                double additionalAccuracy = AdditionalValueFromPassive<IAccuracyConvertible>(accuracy, accuracyPassive =>
+                {
+                    return accuracyPassive.CalculateAppliedAccuracy(accuracy);
+                });
+
+                return accuracy + additionalAccuracy;
+            }
+            set
+            {
+                accuracy = value;
+            }
         }
 
         public IEnumerable<PassiveSkill> FlattenContainingPassiveSkills()
@@ -180,7 +193,7 @@ namespace Model
             return techAppliedDamage;
         }
 
-        protected abstract double CalculateSkillLevelDamage(double projectTypeAppliedDamage);
+        protected abstract double CalculateSkillLevelDamage(double baseDamage);
 
         public abstract void LevelUP();
 

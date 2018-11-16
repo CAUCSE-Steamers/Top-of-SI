@@ -19,7 +19,7 @@ namespace Model
                 new CVar(),
                 new C8(),
                 new JShot(),
-                new snake(),
+                new Snake(),
             };   
         }
 

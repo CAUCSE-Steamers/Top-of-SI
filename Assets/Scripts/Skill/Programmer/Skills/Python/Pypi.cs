@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class Pypi : PassiveSkill, ICooldownConvertible, IDamageConvertible
+    public class Pypi : PassiveSkill, ICooldownConvertible, IDamageConvertible
     {
         private static SkillBasicInformation information = new SkillBasicInformation()
         {
@@ -25,12 +25,12 @@ namespace Model
 
         public double CalculateAppliedCooldown(double baseCooldown)
         {
-            return baseCooldown * (1 + 5 * information.AcquisitionLevel / 100);
+            return baseCooldown * (1 + (5 * information.AcquisitionLevel * 0.01));
         }
 
         public double CalculateAppliedDamage(double baseDamage, ProjectType projectType, RequiredTechType techType)
         {
-            return baseDamage * (1 + information.AcquisitionLevel / 100);
+            return baseDamage * (1 + (information.AcquisitionLevel * 0.01));
         }
 
         public override void LevelUP()

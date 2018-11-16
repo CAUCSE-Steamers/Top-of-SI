@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    public class snake : ActiveSkill
+    public class Snake : ActiveSkill
     {
         private static SkillBasicInformation information = new SkillBasicInformation
         {
@@ -18,7 +18,7 @@ namespace Model
             DescriptionFunc = level => string.Format("Python으로 코드를 작성합니다. 프로젝트에게 {0}의 데미지를 입힙니다. (쿨타임 1턴, 명중률 80%)", level)
         };
 
-        public snake()
+        public Snake()
             : base(information.Clone(), new List<PassiveSkill>() { new FastCode(), new Pypi() }, 1)
         {
             Accuracy = 0.8;
@@ -34,9 +34,9 @@ namespace Model
             }
         }
 
-        protected override double CalculateSkillLevelDamage(double projectTypeAppliedDamage)
+        protected override double CalculateSkillLevelDamage(double baseDamage)
         {
-            return projectTypeAppliedDamage * Information.AcquisitionLevel;
+            return baseDamage * Information.AcquisitionLevel;
         }
     }
 }

@@ -33,9 +33,9 @@ namespace Model
             }
         }
 
-        protected override double CalculateSkillLevelDamage(double projectTypeAppliedDamage)
+        protected override double CalculateSkillLevelDamage(double baseDamage)
         {
-            return projectTypeAppliedDamage * Information.AcquisitionLevel * 3;
+            return baseDamage * Information.AcquisitionLevel * 3;
         }
     }
 }

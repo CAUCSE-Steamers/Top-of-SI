@@ -25,7 +25,7 @@ namespace Model
 
         public double CalculateAppliedDamage(double baseDamage, ProjectType projectType, RequiredTechType techType)
         {
-            return baseDamage * (1 + Information.AcquisitionLevel / 100);
+            return baseDamage * (1 + (Information.AcquisitionLevel * 0.01));
         }
 
         public override void LevelUP()

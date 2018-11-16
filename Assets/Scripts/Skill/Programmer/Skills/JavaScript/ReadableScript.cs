@@ -23,9 +23,9 @@ namespace Model
 
         }
 
-        public double calculateAppliedAccuracy(double accuracy)
+        public double CalculateAppliedAccuracy(double accuracy)
         {
-            return accuracy * (1 + information.AcquisitionLevel / 100);
+            return accuracy * (1 + (information.AcquisitionLevel * 0.01));
         }
 
         public override void LevelUP()
