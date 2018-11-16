@@ -4,6 +4,7 @@ using Model;
 using UnityEngine.UI;
 using System.Text;
 using System.Linq;
+using System;
 
 public class StageNoticeUiPresenter : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class StageNoticeUiPresenter : MonoBehaviour
     private Text leftBossSkillText;
     [SerializeField]
     private Text rightBossSkillText;
+    [SerializeField]
+    private Text leftBossNoticeText;
+    [SerializeField]
+    private Text rightBossNoticeText;
 
     private Text BossSkillText
     {
@@ -21,6 +26,15 @@ public class StageNoticeUiPresenter : MonoBehaviour
         }
     }
 
+    private Text BossNoticeText
+    {
+        get
+        {
+            return StageManager.Instance.Status.StageDirection == Direction.Left ?
+                   leftBossNoticeText : rightBossNoticeText;
+        }
+    }
+
     public void SetBossSkillNoticeActiveState(bool newState)
     {
         BossSkillText.gameObject.SetActive(newState);
@@ -28,6 +42,7 @@ public class StageNoticeUiPresenter : MonoBehaviour
 
     public void RenderBossSkillNotice(ProjectSkill skill)
     {
+        BossNoticeText.gameObject.SetActive(false);
         SetBossSkillNoticeActiveState(true);
 
         if (skill is ProjectBurfSkill)
@@ -39,13 +54,13 @@ public class StageNoticeUiPresenter : MonoBehaviour
             RenderBossSkillNotice(skill as ProjectMultiAttackSkill);
         }
 
-        StartCoroutine(AutomaticTurnOffBossSkillNotice());
+        StartCoroutine(AutomaticTurnOffText(BossSkillText, 2.5f));
     }
 
-    private IEnumerator AutomaticTurnOffBossSkillNotice()
+    private IEnumerator AutomaticTurnOffText(Text text, float duration)
     {
-        yield return new WaitForSeconds(3.0f);
-        SetBossSkillNoticeActiveState(false);
+        yield return new WaitForSeconds(duration);
+        text.gameObject.SetActive(false);
     }
 
     private void RenderBossSkillNotice(ProjectMultiAttackSkill multiAttackSkill)
@@ -82,5 +97,14 @@ public class StageNoticeUiPresenter : MonoBehaviour
         }
 
         BossSkillText.text = noticeBuilder.ToString();
+    }
+
+    public void RenderBossText(string text)
+    {
+        BossSkillText.gameObject.SetActive(false);
+        BossNoticeText.gameObject.SetActive(true);
+        BossNoticeText.text = text;
+
+        StartCoroutine(AutomaticTurnOffText(BossNoticeText, 1.0f));
     }
 }

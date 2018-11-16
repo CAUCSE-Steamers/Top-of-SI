@@ -125,7 +125,7 @@ namespace Model
 
         public void RemoveBurf(IBurf targetBurf)
         {
-            burfs = burfs.Where(burf => burf.Equals(targetBurf) != false)
+            burfs = burfs.Where(burf => burf.Equals(targetBurf) == false)
                          .ToList();
         }
 
