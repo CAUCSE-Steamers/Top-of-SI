@@ -35,7 +35,7 @@ namespace Model
             FullHealth = Health;
             AdditionalDamageRatio = 0.0;
             Cost = new Money(30, 300, 200);
-            HealRate = 0.1;
+            HealRate = 0.0;
             Leadership = 10;
             Sociality = 10;
         }

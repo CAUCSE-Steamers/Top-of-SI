@@ -30,8 +30,8 @@ namespace Model
             AdditionalDamageRatio = 0.0;
             AdditionlCooldownRatio = 0.0;
             Accuracy = 0.0;
-            Information.CriticalRatio = 0.9;
-            Information.CriticalProbability = 1.5;
+            Information.CriticalRatio = 0.5;
+            Information.CriticalProbability = 0.9;
         }
 
         public double RemainingCooldown
@@ -54,7 +54,7 @@ namespace Model
                 }
                 if(UnityEngine.Random.Range(0, 1) > Information.CriticalProbability)
                 {
-                    critical = Information.CriticalRatio;
+                    critical += Information.CriticalRatio;
                 }
                 hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical));
 
