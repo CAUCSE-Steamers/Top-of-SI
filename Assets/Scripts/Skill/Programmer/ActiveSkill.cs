@@ -30,6 +30,8 @@ namespace Model
             AdditionalDamageRatio = 0.0;
             AdditionlCooldownRatio = 0.0;
             Accuracy = 0.0;
+            Information.CriticalRatio = 0.9;
+            Information.CriticalProbability = 1.5;
         }
 
         public double RemainingCooldown
@@ -45,12 +47,16 @@ namespace Model
             }
             else
             {
+                double critical = 1;
                 if (IsTriggerable == false)
                 {
                     DebugLogger.LogWarningFormat("ActiveSkill::ApplySkill => Skill '{0}'의 쿨타임이 {1} 남아있는 상태에서 발동되려고 합니다.", Information.Name, RemainingCooldown);
                 }
-
-                hurtable.Hurt((int)CalculateDamage(projectType, techType));
+                if(UnityEngine.Random.Range(0, 1) > Information.CriticalProbability)
+                {
+                    critical = Information.CriticalRatio;
+                }
+                hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical));
 
                 RemainingCooldown = DefaultCooldown;
             }
