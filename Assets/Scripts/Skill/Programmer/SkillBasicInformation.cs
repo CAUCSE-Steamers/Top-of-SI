@@ -9,12 +9,37 @@ namespace Model
 {
     public class SkillBasicInformation : IXmlConvertible, IXmlStateRecoverable
     {
+        public SkillBasicInformation()
+        {
+            LearnEnabled = false;
+        }
+
+        public SkillBasicInformation Clone()
+        {
+            return new SkillBasicInformation
+            {
+                LearnEnabled = this.LearnEnabled,
+                IconName = this.IconName,
+                Type = this.Type,
+                Name = this.Name,
+                AcquisitionLevel = this.AcquisitionLevel,
+                MaximumLevel = this.MaximumLevel,
+                RequiredUpgradeCost = this.RequiredUpgradeCost,
+                DescriptionFunc = this.DescriptionFunc
+            };
+        }
+
         public Sprite Image
         {
             get
             {
                 return ResourceLoadUtility.LoadIcon(IconName);
             }
+        }
+
+        public bool LearnEnabled
+        {
+            get; set;
         }
 
         public string IconName
@@ -47,6 +72,11 @@ namespace Model
             get; set;
         }
 
+        public Func<int, string> DescriptionFunc
+        {
+            get; set;
+        }
+
         public void RecoverStateFromXml(string rawXml)
         {
             var element = XElement.Parse(rawXml);
@@ -57,6 +87,7 @@ namespace Model
             AcquisitionLevel = element.AttributeValue("AcquisitionLevel", int.Parse);
             MaximumLevel = element.AttributeValue("MaximumLevel", int.Parse);
             RequiredUpgradeCost = element.AttributeValue("RequiredUpgradeCost", int.Parse);
+            LearnEnabled = element.AttributeValue("LearnEnabled", bool.Parse);
         }
 
         public XElement ToXmlElement()
@@ -67,7 +98,8 @@ namespace Model
                 new XAttribute("Name", Name),
                 new XAttribute("AcquisitionLevel", AcquisitionLevel),
                 new XAttribute("MaximumLevel", MaximumLevel),
-                new XAttribute("RequiredUpgradeCost", RequiredUpgradeCost));
+                new XAttribute("RequiredUpgradeCost", RequiredUpgradeCost),
+                new XAttribute("LearnEnabled", LearnEnabled));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 using System;
 using Model;
 
@@ -105,7 +106,8 @@ public class ObjectInformationPresenter : MonoBehaviour
     {
         actionBlockingObject.SetActive(StageManager.Instance.Unit.IsAbleToAct(programmer) == false);
 
-        foreach (var activeSkill in programmer.Ability.AcquiredActiveSkills)
+        foreach (var activeSkill in programmer.Ability.AcquiredActiveSkills
+                                                      .Where(skill => skill.Information.AcquisitionLevel > 0))
         {
             var skillPresenter = Instantiate(skillPresenterTemplate, skillPanelObject);
 

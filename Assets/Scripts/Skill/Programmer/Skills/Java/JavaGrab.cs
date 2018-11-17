@@ -12,14 +12,15 @@ namespace Model
         {
             Name = "JavaGrab",
             Type = SkillType.Java,
-            AcquisitionLevel = 1,
+            AcquisitionLevel = 0,
             MaximumLevel = 10,
             IconName = "Java",
-            RequiredUpgradeCost = 3
+            RequiredUpgradeCost = 3,
+            DescriptionFunc = level => string.Format("Java로 코드를 작성합니다. 프로젝트에게 {0}의 데미지를 입힙니다. (쿨타임 2턴, 명중률 90%)", level * 2)
         };
 
         public JavaGrab()
-            : base(information, new List<PassiveSkill>() { new Doctor(), new MachineLearning() }, 2)
+            : base(information.Clone(), new List<PassiveSkill>() { new Doctor(), new MachineLearning() }, 2)
         {
             Accuracy = 0.9;
         }
@@ -45,9 +46,9 @@ namespace Model
             }
         }
 
-        protected override double CalculateSkillLevelDamage(double projectTypeAppliedDamage)
+        protected override double CalculateSkillLevelDamage(double baseDamage)
         {
-            return projectTypeAppliedDamage * Information.AcquisitionLevel * 2;
+            return baseDamage * (Information.AcquisitionLevel * 2);
         }
     }
 }

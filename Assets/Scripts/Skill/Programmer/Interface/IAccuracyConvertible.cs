@@ -7,6 +7,6 @@ namespace Model
 {
     interface IAccuracyConvertible
     {
-        double calculateAppliedAccuracy(double accuracy);
+        double CalculateAppliedAccuracy(double accuracy);
     }
 }

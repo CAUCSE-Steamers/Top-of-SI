@@ -11,14 +11,15 @@ namespace Model
         {
             Name = "JShot",
             Type = SkillType.JavaScript,
-            AcquisitionLevel = 1,
+            AcquisitionLevel = 0,
             MaximumLevel = 30,
             IconName = "JavaScript",
-            RequiredUpgradeCost = 2
+            RequiredUpgradeCost = 2,
+            DescriptionFunc = level => string.Format("JavaScript로 코드를 작성합니다. 프로젝트에게 {0}의 데미지를 입힙니다. (쿨타임 2턴, 명중률 50%)", level)
         };
 
         public JShot()
-            : base(information, new List<PassiveSkill>() { new ReadableScript() }, 2)
+            : base(information.Clone(), new List<PassiveSkill>() { new ReadableScript() }, 2)
         {
             Accuracy = 0.5;
         }
@@ -32,9 +33,9 @@ namespace Model
             }
         }
 
-        protected override double CalculateSkillLevelDamage(double projectTypeAppliedDamage)
+        protected override double CalculateSkillLevelDamage(double baseDamage)
         {
-            return projectTypeAppliedDamage * Information.AcquisitionLevel;
+            return baseDamage * Information.AcquisitionLevel;
         }
     }
 }

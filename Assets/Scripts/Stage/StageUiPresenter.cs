@@ -195,14 +195,26 @@ public class StageUiPresenter : MonoBehaviour
 
         var boss = StageManager.Instance.Unit.Boss;
         currentSelectedProgrammer.UseSkill();
-        
+
+        skill.OnSkillMissed += HandleMissedSkill;
         skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype);
+        skill.OnSkillMissed -= HandleMissedSkill;
         objectInformationPresenter.ResetInformationUi();
         idleState.ResetSelectedObject();
+    }
+
+    private void HandleMissedSkill(ActiveSkill activeSkill)
+    {
+        RenderBossText("공격이 빗나갔습니다!");
     }
 
     public void RenderBossSkillNotice(ProjectSkill skill)
     {
         stageNoticeUiPresenter.RenderBossSkillNotice(skill);
+    }
+
+    public void RenderBossText(string text)
+    {
+        stageNoticeUiPresenter.RenderBossText(text);
     }
 }

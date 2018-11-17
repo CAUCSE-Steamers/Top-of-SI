@@ -14,17 +14,18 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 60,
             IconName = "C",
-            RequiredUpgradeCost = 4
+            RequiredUpgradeCost = 4,
+            DescriptionFunc = level => string.Format("Low-Level C 언어를 배웁니다. 스킬 데미지가 {0}% 증가합니다.", level)
         };
 
-        public CounterEvolution() : base(information, Enumerable.Empty<PassiveSkill>())
+        public CounterEvolution() : base(information.Clone(), Enumerable.Empty<PassiveSkill>())
         {
 
         }
 
         public double CalculateAppliedDamage(double baseDamage, ProjectType projectType, RequiredTechType techType)
         {
-            return baseDamage * (1 + Information.AcquisitionLevel / 100);
+            return baseDamage * (1 + (Information.AcquisitionLevel * 0.01));
         }
 
         public override void LevelUP()

@@ -7,7 +7,10 @@ using Model;
 
 public class LobbyManager : MonoBehaviour
 {
-    Player player;
+    public Player CurrentPlayer
+    {
+        get; private set;
+    }
 
     public static LobbyManager Instance
     {
@@ -96,7 +99,7 @@ public class LobbyManager : MonoBehaviour
 
     private void Start()
     {
-        player = new Player();
+        CurrentPlayer = new Player();
         TempLobby();
         OnChangeStage += lobbyUi.UpdateProject;
         SelectedStage = stages[0];
