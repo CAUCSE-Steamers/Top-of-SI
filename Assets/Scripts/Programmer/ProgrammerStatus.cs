@@ -35,7 +35,6 @@ namespace Model
             FullHealth = Health;
             AdditionalDamageRatio = 0.0;
             Cost = new Money(30, 300, 200);
-            Critical = 0.03;
             HealRate = 0.1;
             Leadership = 10;
             Sociality = 10;
@@ -105,16 +104,8 @@ namespace Model
             get; private set;
         }
 
-        public double Critical
-        {
-            //TODO : when Attack, calculate rate and affect to damage.
-            get; set;
-        }
-
         public double HealRate
         {
-            //TODO : When heal other programmer, get rate from this.
-            // healing value = (object.FullHealth - object.Health) * healRate
             get; set;
         }
 
@@ -202,7 +193,6 @@ namespace Model
                     new XAttribute("Health", Health),
                     new XAttribute("Leadership", Leadership),
                     new XAttribute("Sociality", Sociality),
-                    new XAttribute("Critical", Critical),
                     new XAttribute("HealRate", HealRate), 
                     Cost.ToXmlElement());
         }
@@ -217,7 +207,6 @@ namespace Model
             Health = element.AttributeValue("Health", int.Parse);
             Leadership = element.AttributeValue("Leadership", int.Parse);
             Sociality = element.AttributeValue("Sociality", int.Parse);
-            Critical = element.AttributeValue("Critical", double.Parse);
             HealRate = element.AttributeValue("HealRate", double.Parse);
 
             Cost.RecoverStateFromXml(element.Element("Money").ToString());
