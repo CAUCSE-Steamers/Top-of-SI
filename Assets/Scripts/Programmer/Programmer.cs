@@ -38,7 +38,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public void Heal(int increasingHealth)
     {
-        Status.Health += increasingHealth;
+        Status.Health += (int)(increasingHealth * (1 + Status.HealRate));
         Status.Health = Mathf.Clamp(Status.Health, 0, Status.FullHealth);
 
         CommonLogger.LogFormat("Programmer::Hurt => {0} 프로그래머가 {1}의 체력을 회복함. 현재 체력은 {2}.", name, increasingHealth, Status.Health);

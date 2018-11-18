@@ -229,8 +229,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void InvokeSkill(ProjectSingleAttackSkill skill)
     {
-        //TODO : need to know how to find selected programmer
-        //Programmer.Hurt((int)skill.Damage);
+        Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))].Hurt((int)skill.Damage);
     }
     private void InvokeSkill(ProjectMultiAttackSkill skill)
     {
@@ -241,8 +240,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     }
     private void InvokeSkill(ProjectSingleDeburfSkill skill)
     {
-        //TODO : need to know how to find selected programmer
-        //Programmer.Deburf(skill.Deburf);
+        Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))].Deburf(skill.Deburf);
     }
     private void InvokeSkill(ProjectMultiDeburfSkill skill)
     {

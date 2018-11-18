@@ -67,6 +67,16 @@ namespace Model
             get; set;
         }
 
+        public double CriticalProbability
+        {
+            get; set;
+        }
+
+        public double CriticalRatio
+        {
+            get; set;
+        }
+
         public int RequiredUpgradeCost
         {
             get; set;
@@ -86,6 +96,8 @@ namespace Model
             Name = element.AttributeValue("Name");
             AcquisitionLevel = element.AttributeValue("AcquisitionLevel", int.Parse);
             MaximumLevel = element.AttributeValue("MaximumLevel", int.Parse);
+            CriticalProbability = element.AttributeValue("CriticalProbability", double.Parse);
+            CriticalRatio = element.AttributeValue("CriticalRatio", double.Parse);
             RequiredUpgradeCost = element.AttributeValue("RequiredUpgradeCost", int.Parse);
             LearnEnabled = element.AttributeValue("LearnEnabled", bool.Parse);
         }
@@ -98,6 +110,8 @@ namespace Model
                 new XAttribute("Name", Name),
                 new XAttribute("AcquisitionLevel", AcquisitionLevel),
                 new XAttribute("MaximumLevel", MaximumLevel),
+                new XAttribute("CriticalProbability", CriticalProbability), 
+                new XAttribute("CriticalRatio", CriticalRatio),
                 new XAttribute("RequiredUpgradeCost", RequiredUpgradeCost),
                 new XAttribute("LearnEnabled", LearnEnabled));
         }
