@@ -19,6 +19,9 @@ public class LobbyUiPresenter : MonoBehaviour
     private Button previousProject;
     [SerializeField]
     private Button nextProject;
+    [SerializeField]
+    private LobbySkillPresenter recommendedSkillList;
+
 
     // Use this for initialization
     void Start()
@@ -54,6 +57,8 @@ public class LobbyUiPresenter : MonoBehaviour
         {
             nextProject.gameObject.SetActive(true);
         }
+
+        recommendedSkillList.Present();
     }
 
     public void UpdateMoney(int money)

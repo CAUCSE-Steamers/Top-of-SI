@@ -6,10 +6,8 @@ namespace Model
 {
     public class TestProject : AbstractProject
     {
-        // Use this for initialization
-        void Start()
+        public TestProject()
         {
-            anim = GetComponent<Animator>();
             Status = new ProjectStatus
             {
                 Name = "TestBoss",
@@ -19,10 +17,17 @@ namespace Model
             List<ProjectSkill> skill_list = new List<ProjectSkill>
             {
                 new VersionUpdate(),
-                new RequirementChanged(), 
+                new RequirementChanged(),
                 new DeadLineChanged()
             };
             Ability = new ProjectAbility(skill_list, ProjectType.None);
+        }
+
+        // Use this for initialization
+        void Start()
+        {
+            anim = GetComponent<Animator>();
+            
         }
 
         // Update is called once per frame
