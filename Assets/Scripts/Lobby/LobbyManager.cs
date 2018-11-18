@@ -61,18 +61,22 @@ public class LobbyManager : MonoBehaviour
             {
                 Title = "Test Project",
                 ElapsedDayLimit = 5,
+                Boss = new TestProject(),
             },
             new GameStage
             {
                 Title = "Web Project",
                 ElapsedDayLimit = 4,
+                Boss = new TestProject(),
             },
             new GameStage
             {
                 Title = "iOS Project",
                 ElapsedDayLimit = 3,
+                Boss = new TestProject(),
             }
         };
+
 
 
         stages[0].AddObjectives(new List<IStageObjective>
