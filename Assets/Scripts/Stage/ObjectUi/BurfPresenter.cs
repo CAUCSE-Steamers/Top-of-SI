@@ -47,7 +47,7 @@ public class BurfPresenter : PointEventTrigger
 
             imageComponent.sprite = ResourceLoadUtility.LoadIcon(burf.IconName);
 
-            textComponent[0].text = (burf.RemainingTurn + 1).ToString();
+            textComponent[0].text = burf.RemainingTurn.ToString();
             textComponent[1].text = burf.Description;
         }
 
