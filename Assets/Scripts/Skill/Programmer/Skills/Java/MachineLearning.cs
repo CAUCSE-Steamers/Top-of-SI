@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class MachineLearning : PassiveSkill, ICooldownConvertible, IAccuracyConvertible, IDamageConvertible
+    public class MachineLearning : PassiveSkill, ICooldownConvertible, IAccuracyConvertible, IDamageConvertible
     {
         private static SkillBasicInformation information = new SkillBasicInformation()
         {
@@ -36,11 +36,6 @@ namespace Model
         public double CalculateAppliedDamage(double baseDamage, ProjectType projectType, RequiredTechType techType)
         {
             return baseDamage * (1 + (Information.AcquisitionLevel * 0.01));
-        }
-
-        public override void LevelUP()
-        {
-            information.AcquisitionLevel++;
         }
     }
 }

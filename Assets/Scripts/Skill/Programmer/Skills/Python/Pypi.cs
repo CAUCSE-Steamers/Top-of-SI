@@ -32,10 +32,5 @@ namespace Model
         {
             return baseDamage * (1 + (information.AcquisitionLevel * 0.01));
         }
-
-        public override void LevelUP()
-        {
-            information.AcquisitionLevel++;
-        }
     }
 }

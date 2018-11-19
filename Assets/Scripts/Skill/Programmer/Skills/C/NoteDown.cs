@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class NoteDown : PassiveSkill, ICooldownConvertible
+    public class NoteDown : PassiveSkill, ICooldownConvertible
     {
         private static SkillBasicInformation information = new SkillBasicInformation()
         {
@@ -26,11 +26,6 @@ namespace Model
         public double CalculateAppliedCooldown(double baseCooldown)
         {
             return baseCooldown * (1 - (information.AcquisitionLevel * 0.01));
-        }
-
-        public override void LevelUP()
-        {
-            information.AcquisitionLevel++;
         }
     }
 }
