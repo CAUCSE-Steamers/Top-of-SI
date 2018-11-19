@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class ReadableScript : PassiveSkill, IAccuracyConvertible
+    public class ReadableScript : PassiveSkill, IAccuracyConvertible
     {
         private static SkillBasicInformation information = new SkillBasicInformation()
         {
@@ -26,11 +26,6 @@ namespace Model
         public double CalculateAppliedAccuracy(double accuracy)
         {
             return accuracy * (1 + (information.AcquisitionLevel * 0.01));
-        }
-
-        public override void LevelUP()
-        {
-            information.AcquisitionLevel++;
         }
     }
 }

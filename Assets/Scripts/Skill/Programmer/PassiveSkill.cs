@@ -51,7 +51,10 @@ namespace Model
             get; private set;
         }
 
-        public abstract void LevelUP();
+        public virtual void LevelUP()
+        {
+            ++Information.AcquisitionLevel;
+        }
 
         public XElement ToXmlElement()
         {

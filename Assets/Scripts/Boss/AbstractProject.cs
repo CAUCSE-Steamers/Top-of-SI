@@ -50,7 +50,11 @@ public abstract class AbstractProject : MonoBehaviour, IHurtable, IInvokeSkills
         ProjectSkill ret = Ability.InvokedSkill;
         anim.Play(ret.Information.Animation);
         ret.ResetCoolDown();
-        OnActionFinished();
         return ret;
+    }
+
+    public void InvokeFinished()
+    {
+        OnActionFinished();
     }
 }

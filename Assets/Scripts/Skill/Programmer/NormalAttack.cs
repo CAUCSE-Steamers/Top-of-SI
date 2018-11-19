@@ -19,7 +19,7 @@ namespace Model
         };
 
         public NormalAttack() 
-            : base(information, Enumerable.Empty<PassiveSkill>(), 1.0)
+            : base(information.Clone(), Enumerable.Empty<PassiveSkill>(), 1.0)
         {
             Accuracy = 1.0;
         }

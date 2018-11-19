@@ -71,10 +71,8 @@ namespace Model
 
         public void Unmodify(ProgrammerStatus status)
         {
-            status.FullHealth -= FullIncreasingQuantity;
-            status.Health = Mathf.Clamp(status.Health - HealQuantity, 0, status.FullHealth);
-
-            CommonLogger.LogFormat("HealBurf::Modify => 프로그래머 '{0}'에 적용된 힐 버프가 해제됨. 체력이 {1}, 총 체력이 {2}만큼 감소함.", status.Name, HealQuantity, FullIncreasingQuantity);
+            // Do nothing
+            CommonLogger.LogFormat("HealBurf::Modify => 프로그래머 '{0}'에 적용된 힐 버프가 해제됨.", status.Name);
         }
     }
 }

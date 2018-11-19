@@ -146,11 +146,12 @@ namespace Model
 
         public IEnumerable<IBurf> DecayBurfAndFetchExpiredBurfs()
         {
+            burfs.ForEach(burf => --burf.RemainingTurn);
+
             var expiredBurfs = burfs.Where(burf => burf.RemainingTurn <= 0);
 
-            burfs = burfs.Except(expiredBurfs)
+            burfs = burfs.Where(burf => burf.RemainingTurn > 0)
                          .ToList();
-            burfs.ForEach(burf => --burf.RemainingTurn);
 
             return expiredBurfs;
         }

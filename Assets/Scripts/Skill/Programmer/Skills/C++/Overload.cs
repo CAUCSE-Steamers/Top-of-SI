@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class Overload : PassiveSkill, ICooldownConvertible, IDamageConvertible
+    public class Overload : PassiveSkill, ICooldownConvertible, IDamageConvertible
     {
         private static SkillBasicInformation information = new SkillBasicInformation()
         {
@@ -13,7 +13,7 @@ namespace Model
             Type = SkillType.CPlusPlus,
             AcquisitionLevel = 0,
             MaximumLevel = 10,
-            IconName = "CPlusPlus",
+            IconName = "Cpp",
             RequiredUpgradeCost = 8,
             DescriptionFunc = level => string.Format("연산자 오버로딩을 시작합니다. 스킬의 쿨타임과 데미지가 {0}% 증가합니다.", level * 5)
         };
@@ -31,11 +31,6 @@ namespace Model
         public double CalculateAppliedDamage(double baseDamage, ProjectType projectType, RequiredTechType techType)
         {
             return baseDamage * (1 + (5 * information.AcquisitionLevel * 0.01));
-        }
-
-        public override void LevelUP()
-        {
-            information.AcquisitionLevel++;
         }
     }
 }

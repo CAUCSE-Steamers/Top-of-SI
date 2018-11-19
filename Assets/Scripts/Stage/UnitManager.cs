@@ -94,8 +94,16 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             foreach (var programmer in Programmers)
             {
                 programmer.ApplyPersistentStatusBurfs();
-                programmer.DecayBurfs();
             }
+        }
+    }
+
+    private void DecayProgrammerBurfs()
+    {
+        CommonLogger.Log("UnitManager::DecayBurfsIfTurnChangedToBoss => 프로그래머의 버프 유지 시간을 감소시킴.");
+        foreach (var programmer in Programmers)
+        {
+            programmer.DecayBurfs();
         }
     }
 
@@ -170,6 +178,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void SubscribeToBoss()
     {
+        boss.OnActionFinished += DecayProgrammerBurfs;
         boss.OnActionFinished += () => Turn = TurnState.Player;
         boss.OnDeath += () => Turn = TurnState.GameEnd;
     }
@@ -224,6 +233,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                     break;
             }
 
+            boss.InvokeFinished();
         }
     }
 
