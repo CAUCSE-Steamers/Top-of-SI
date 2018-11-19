@@ -43,6 +43,9 @@ public class StageNoticeUiPresenter : MonoBehaviour
     public void RenderBossSkillNotice(ProjectSkill skill)
     {
         BossNoticeText.gameObject.SetActive(false);
+        BossNoticeText.text = string.Empty;
+        BossSkillText.text = string.Empty;
+
         SetBossSkillNoticeActiveState(true);
 
         if (skill is ProjectBurfSkill)
