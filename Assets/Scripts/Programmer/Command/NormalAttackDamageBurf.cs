@@ -37,7 +37,7 @@ namespace Model
         {
             get
             {
-                return string.Format("일반 공격 데미지가 {0}배 적용됩니다.", DamageBurfRatio);
+                return string.Format("일반 공격 데미지가 {0}배 추가 적용됩니다.", DamageBurfRatio);
             }
         }
 
