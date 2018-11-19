@@ -28,9 +28,11 @@ public class StageManager : MonoBehaviour, IDisposable
             DebugLogger.LogWarning("StageManager::Awake => 이미 초기화된 StageManager가 메모리에 존재합니다.");
             Destroy(this.gameObject);
         }
-
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
     
     private void Start()
