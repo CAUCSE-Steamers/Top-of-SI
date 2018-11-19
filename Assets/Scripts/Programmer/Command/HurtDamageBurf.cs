@@ -37,7 +37,7 @@ namespace Model
         {
             get
             {
-                return string.Format("피격 시 {0}배 피해를 받습니다.", AdditionalDamageRatio);
+                return string.Format("피격 시 {0}배 추가 피해를 받습니다.", AdditionalDamageRatio);
             }
         }
 
