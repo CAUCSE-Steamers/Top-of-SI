@@ -24,9 +24,11 @@ public class SoundManager : MonoBehaviour
             DebugLogger.LogWarning("SoundManager::Awake => 이미 초기화된 SoundManager가 메모리에 존재합니다.");
             Destroy(this.gameObject);
         }
-
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 
     private void Start()
