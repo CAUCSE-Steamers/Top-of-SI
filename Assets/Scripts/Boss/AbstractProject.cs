@@ -12,12 +12,12 @@ public abstract class AbstractProject : MonoBehaviour, IHurtable, IInvokeSkills
     protected Animator anim;
     public ProjectStatus Status
     {
-        get; protected set;
+        get; set;
     }
 
     public ProjectAbility Ability
     {
-        get; protected set;
+        get; set;
     }
 
     public abstract void Hurt(int damage);
