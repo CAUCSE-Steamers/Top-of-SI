@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Model
 {
-    public class ProjectAbility
+    public class ProjectAbility : IXmlConvertible, IXmlStateRecoverable
     {
         public ProjectAbility(List<ProjectSkill> projectSkills, ProjectType projectType)
         {
@@ -46,6 +47,30 @@ namespace Model
                 }
                 return ProjectSkills.First();
             }
+        }
+
+        public void RecoverStateFromXml(string rawXml)
+        {
+            var rootElement = XElement.Parse(rawXml);
+
+            ProjType = (ProjectType) rootElement.AttributeValue("ProjectType", int.Parse);
+            Techtype = (RequiredTechType) rootElement.AttributeValue("TechType", int.Parse);
+
+            var skillList = new List<ProjectSkill>();
+            foreach (var skillElement in rootElement.Element("Skills").Elements())
+            {
+                skillList.Add(ProjectSkill.ParseXml(skillElement));
+            }
+
+            ProjectSkills = skillList;
+        }
+
+        public XElement ToXmlElement()
+        {
+            return new XElement("ProjectAbility",
+                new XAttribute("ProjectType", (int) ProjType),
+                new XAttribute("TechType", (int) Techtype),
+                new XElement("Skills", ProjectSkills.Select(skill => skill.ToXmlElement())));
         }
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using Model;
 
 public class LobbyManager : MonoBehaviour
@@ -63,19 +65,31 @@ public class LobbyManager : MonoBehaviour
             {
                 Title = "Test Project",
                 ElapsedDayLimit = 5,
-                Boss = new TestProject(),
+                Boss = new ProjectSpec()
+                {
+                    Ability = new TestProject().Ability,
+                    Status = new TestProject().Status
+                }
             },
             new GameStage
             {
                 Title = "Web Project",
                 ElapsedDayLimit = 4,
-                Boss = new TestProject(),
+                Boss = new ProjectSpec()
+                {
+                    Ability = new TestProject().Ability,
+                    Status = new TestProject().Status
+                }
             },
             new GameStage
             {
                 Title = "iOS Project",
                 ElapsedDayLimit = 3,
-                Boss = new TestProject(),
+                Boss = new ProjectSpec()
+                {
+                    Ability = new TestProject().Ability,
+                    Status = new TestProject().Status
+                }
             }
         };
 
@@ -106,20 +120,44 @@ public class LobbyManager : MonoBehaviour
     private void Start()
     {
         CurrentPlayer = new Player();
+        stages = new List<GameStage>();
         TempLobby();
+        //SaveStages();
+        //LoadStages();
         OnChangeStage += lobbyUi.UpdateProject;
         SelectedStage = stages[0];
 
         // TODO: Temporary Load/Save
-        // var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Save.xml";
-
+        //var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
+        
         // Read
-        // var rootElement = System.Xml.Linq.XElement.Parse(System.IO.File.ReadAllText(path));
-        // player.RecoverStateFromXml(rootElement.ToString());
+        //var rootElement = XElement.Parse(File.ReadAllText(savePath));
+        //CurrentPlayer.RecoverStateFromXml(rootElement.ToString());
 
         // Write
-        // System.IO.File.WriteAllText(path, player.ToXmlElement().ToString());
+        //File.WriteAllText(savePath, CurrentPlayer.ToXmlElement().ToString());
+    }
 
+    public void LoadStages()
+    {
+        var projectPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Stage.xml";
+        var rootElement = XElement.Parse(File.ReadAllText(projectPath));
+
+        foreach (var stageElement in rootElement.Elements("Stage"))
+        {
+            var newStage = new GameStage();
+            newStage.RecoverStateFromXml(stageElement.ToString());
+            stages.Add(newStage);
+        }
+    }
+
+    public void SaveStages()
+    {
+        var projectPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Stage.xml";
+        var stageRootElement = new XElement("Stages",
+            stages.Select(stage => stage.ToXmlElement()));
+
+        File.WriteAllText(projectPath, stageRootElement.ToString());
     }
 
     public void ChangeToNextProject()

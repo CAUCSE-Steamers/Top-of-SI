@@ -122,6 +122,8 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 programmerActingDictionary[programmer] = true;
                 ChangeTurnToBossIfAllProgrammersPerformAction();
             };
+
+            CheckProgrammerFormation(programmer.transform.position);
         }
     }
 

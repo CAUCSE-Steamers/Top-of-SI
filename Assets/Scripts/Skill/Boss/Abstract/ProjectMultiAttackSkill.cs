@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Model
 {
@@ -15,6 +16,23 @@ namespace Model
         public double Damage
         {
             get; private set;
+        }
+
+        public override XElement ToXmlElement()
+        {
+            var baseElement = base.ToXmlElement();
+            baseElement.Add(
+                new XElement("Specialized",
+                    new XAttribute("Damage", Damage))
+            );
+
+            return baseElement;
+        }
+
+        public override void RecoverStateFromXml(string rawXml)
+        {
+            var rootElement = XElement.Parse(rawXml);
+            Damage = rootElement.AttributeValue("Damage", double.Parse);
         }
     }
 }
