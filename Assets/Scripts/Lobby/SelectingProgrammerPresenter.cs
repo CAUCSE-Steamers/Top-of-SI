@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,10 @@ public class SelectingProgrammerPresenter : MonoBehaviour
     private GameObject[] selectedProgrammerCells;
     [SerializeField]
     private ProgrammerListPresenter programmerListPresenter;
+    [SerializeField]
+    private UnityEvent onNoProgrammerSelected;
+    [SerializeField]
+    private UnityEvent onSuccessfullySelected;
 
     private ICollection<ProgrammerSpec> selectedSpecs;
 
@@ -67,6 +72,15 @@ public class SelectingProgrammerPresenter : MonoBehaviour
 
     public void StoreSelectedProgrammers()
     {
-        LobbyManager.Instance.SelectedStage.ProgrammerSpecs = selectedSpecs;
+        if (selectedSpecs.Count == 0)
+        {
+            onNoProgrammerSelected.Invoke();
+            return;
+        }
+        else
+        {
+            LobbyManager.Instance.SelectedStage.ProgrammerSpecs = selectedSpecs;
+            onSuccessfullySelected.Invoke();
+        }
     }
 }
