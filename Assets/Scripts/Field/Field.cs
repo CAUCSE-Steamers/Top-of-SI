@@ -99,6 +99,12 @@ public class Field : MonoBehaviour
         return randomPosition;
     }
 
+    public Vector3 GetRandomVector()
+    {
+        var randomDeltaVector = IndicesTransformToVector(GetRandomPosition());
+        return new Vector3(transform.position.x + randomDeltaVector.x, 0, transform.position.z + randomDeltaVector.y);
+    }
+
     public IEnumerable<Cell> FetchObjectContainingCells()
     {
         return cellsInSquare.SelectMany(rowCells => rowCells)
