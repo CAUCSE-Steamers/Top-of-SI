@@ -114,20 +114,45 @@ public class StageManager : MonoBehaviour, IDisposable
                 new StringObjective("테스트 목표 3"),
             });
 
-        SetStage(tempStage, programmers, boss);
+        SetStage(programmers, boss);
     }
 
-    public void SetStage(GameStage stage, IEnumerable<Programmer> programmers, AbstractProject boss)
+    public void SetStage(IEnumerable<Programmer> programmers, AbstractProject boss)
     {
         CommonLogger.Log("StageManager::SetStage => 초기화 시작");
-        CurrentStage = stage;
+        CurrentStage = LobbyManager.Instance.SelectedStage;
         StageField = fieldSpawner.SpawnField();
         
         Status.InitializeStageStatus(maximumDayLimit: CurrentStage.ElapsedDayLimit, unitManager: Unit);
-        Unit.SetUnits(programmers, boss, StageField);
+
+        InitializeProgrammerProperty();
+        InitializeBossProperty();
+
+        Unit.SetUnits(programmers.Where(programmer => programmer.gameObject.activeSelf), boss, StageField);
         Status.RegisterEventAfterInit(unitManager: Unit);
 
         Status.OnStageDirectionChanged += AdjustStageDirectionView;
+    }
+
+    private void InitializeProgrammerProperty()
+    {
+        for (int i = 0; i < programmers.Count(); ++i)
+        {
+            if (i < CurrentStage.ProgrammerSpecs.Count())
+            {
+                programmers.ElementAt(i).Ability = CurrentStage.ProgrammerSpecs.ElementAt(i).Ability;
+                programmers.ElementAt(i).Status = CurrentStage.ProgrammerSpecs.ElementAt(i).Status;
+            }
+            else
+            {
+                programmers.ElementAt(i).gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void InitializeBossProperty()
+    {
+        // TODO: Boss
     }
 
     private void Update()
