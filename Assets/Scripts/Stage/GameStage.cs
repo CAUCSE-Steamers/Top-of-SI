@@ -25,6 +25,11 @@ namespace Model
             get; set;
         }
 
+        public string IconName
+        {
+            get; set;
+        }
+
         public IEnumerable<IStageObjective> Objectives
         {
             get
@@ -65,6 +70,7 @@ namespace Model
             ElapsedDayLimit = rootElement.AttributeValue("TimeLimit", int.Parse);
             Reward = rootElement.AttributeValue("Reward", int.Parse);
             MainStage = rootElement.AttributeValue("MainStage", bool.Parse);
+            IconName = rootElement.AttributeValue("Icon");
 
             Boss = new ProjectSpec();
             Boss.RecoverStateFromXml(rootElement.Element("ProjectSpec").ToString());
@@ -78,6 +84,7 @@ namespace Model
                 new XAttribute("TimeLimit", ElapsedDayLimit),
                 new XAttribute("Reward", Reward),
                 new XAttribute("MainStage", MainStage),
+                new XAttribute("Icon", IconName),
                 Boss.ToXmlElement());
         }
     }

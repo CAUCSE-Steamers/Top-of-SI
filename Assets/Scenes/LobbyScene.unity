@@ -4990,6 +4990,7 @@ MonoBehaviour:
   projectTitleText: {fileID: 355806403}
   elapsedDayText: {fileID: 826477172}
   payText: {fileID: 1620349899}
+  icon: {fileID: 604933225}
   previousProject: {fileID: 674956608}
   nextProject: {fileID: 2073581361}
   recommendedSkillList: {fileID: 2078179081}

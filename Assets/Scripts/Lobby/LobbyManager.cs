@@ -69,7 +69,8 @@ public class LobbyManager : MonoBehaviour
                 {
                     Ability = new TestProject().Ability,
                     Status = new TestProject().Status
-                }
+                },
+                IconName = "Cpp"
             },
             new GameStage
             {
@@ -79,7 +80,8 @@ public class LobbyManager : MonoBehaviour
                 {
                     Ability = new TestProject().Ability,
                     Status = new TestProject().Status
-                }
+                },
+                IconName = "CSharp"
             },
             new GameStage
             {
@@ -89,7 +91,8 @@ public class LobbyManager : MonoBehaviour
                 {
                     Ability = new TestProject().Ability,
                     Status = new TestProject().Status
-                }
+                },
+                IconName = "Java"
             }
         };
 

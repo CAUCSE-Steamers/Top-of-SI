@@ -16,6 +16,8 @@ public class LobbyUiPresenter : MonoBehaviour
     [SerializeField]
     private Text payText;
     [SerializeField]
+    private Image icon;
+    [SerializeField]
     private Button previousProject;
     [SerializeField]
     private Button nextProject;
@@ -40,6 +42,7 @@ public class LobbyUiPresenter : MonoBehaviour
         projectTitleText.text = stage.Title;
         elapsedDayText.text = stage.ElapsedDayLimit.ToString();
         payText.text = stage.Reward.ToString();
+        icon.sprite = ResourceLoadUtility.LoadIcon(stage.IconName);
 
         if (isFirst)
         {
