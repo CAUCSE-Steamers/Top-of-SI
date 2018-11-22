@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Model
 {
-    public class GameStage
+    public class GameStage : IXmlConvertible, IXmlStateRecoverable
     {
         private List<IStageObjective> objectives;
         public GameStage()
         {
             objectives = new List<IStageObjective>();
+            Boss = new ProjectSpec();
         }
 
         public string Title
@@ -36,7 +38,7 @@ namespace Model
             get; set;
         }
 
-        public AbstractProject Boss
+        public ProjectSpec Boss
         {
             get; set;
         }
@@ -54,6 +56,29 @@ namespace Model
         public void AddObjectives(IEnumerable<IStageObjective> newObjectives)
         {
             objectives.AddRange(newObjectives);
+        }
+
+        public void RecoverStateFromXml(string rawXml)
+        {
+            var rootElement = XElement.Parse(rawXml);
+            Title = rootElement.AttributeValue("Title");
+            ElapsedDayLimit = rootElement.AttributeValue("TimeLimit", int.Parse);
+            Reward = rootElement.AttributeValue("Reward", int.Parse);
+            MainStage = rootElement.AttributeValue("MainStage", bool.Parse);
+
+            Boss = new ProjectSpec();
+            Boss.RecoverStateFromXml(rootElement.Element("ProjectSpec").ToString());
+        }
+
+        public XElement ToXmlElement()
+        {
+            // TODO: objectives?
+            return new XElement("Stage",
+                new XAttribute("Title", Title),
+                new XAttribute("TimeLimit", ElapsedDayLimit),
+                new XAttribute("Reward", Reward),
+                new XAttribute("MainStage", MainStage),
+                Boss.ToXmlElement());
         }
     }
 }
