@@ -5,6 +5,8 @@ using UnityEngine;
 using System;
 using Model;
 
+using Random = UnityEngine.Random;
+
 public class StageManager : MonoBehaviour, IDisposable
 {
     public static StageManager Instance
@@ -20,7 +22,11 @@ public class StageManager : MonoBehaviour, IDisposable
     private FieldSpawner fieldSpawner;
     [SerializeField]
     private StageUiPresenter uiPresenter;
-
+    [SerializeField]
+    private Programmer programmerTemplate;
+    [SerializeField]
+    private AbstractProject bossTemplate;
+    
     private void Awake()
     {
         if (Instance != null)
@@ -37,12 +43,14 @@ public class StageManager : MonoBehaviour, IDisposable
     
     private void Start()
     {
+        Programmers = new List<Programmer>();
+        
         if (fieldSpawner == null)
         {
             DebugLogger.LogError("StageManager::Start => 필드를 생성할 Spawner가 null입니다.");
         }
 
-        TempSetStage();
+        SetStage();
     }
 
     public StageStatusManager Status
@@ -94,40 +102,53 @@ public class StageManager : MonoBehaviour, IDisposable
         get; private set;
     }
 
-    [SerializeField]
-    private Programmer[] programmers;
-    [SerializeField]
-    private AbstractProject boss;
-    private void TempSetStage()
+    public ICollection<Programmer> Programmers
     {
-        var tempStage = new GameStage
-        {
-            Title = "Project Test - Title",
-            ElapsedDayLimit = 1000,
-        };
-
-        tempStage.AddObjectives(new List<IStageObjective>
-            {
-                new ElapsedDayObjective(tempStage),
-                new StringObjective("테스트 목표 1"),
-                new StringObjective("테스트 목표 2"),
-                new StringObjective("테스트 목표 3"),
-            });
-
-        SetStage(tempStage, programmers, boss);
+        get; private set;
     }
 
-    public void SetStage(GameStage stage, IEnumerable<Programmer> programmers, AbstractProject boss)
+    public AbstractProject Boss
+    {
+        get; private set;
+    }
+
+    public void SetStage()
     {
         CommonLogger.Log("StageManager::SetStage => 초기화 시작");
-        CurrentStage = stage;
+        CurrentStage = LobbyManager.Instance.SelectedStage;
         StageField = fieldSpawner.SpawnField();
         
         Status.InitializeStageStatus(maximumDayLimit: CurrentStage.ElapsedDayLimit, unitManager: Unit);
-        Unit.SetUnits(programmers, boss, StageField);
+
+        InitializeProgrammers();
+        InitializeBoss();
+
+        Unit.SetUnits(Programmers, Boss, StageField);
         Status.RegisterEventAfterInit(unitManager: Unit);
 
         Status.OnStageDirectionChanged += AdjustStageDirectionView;
+    }
+
+    private void InitializeProgrammers()
+    {
+        foreach (var programmerSpec in CurrentStage.ProgrammerSpecs)
+        {
+            var newProgrammer = Instantiate(programmerTemplate);
+
+            newProgrammer.transform.position = StageField.GetRandomVector();
+            newProgrammer.Ability = programmerSpec.Ability;
+            newProgrammer.Status = programmerSpec.Status;
+
+            Programmers.Add(newProgrammer);
+        }
+    }
+
+    private void InitializeBoss()
+    {
+        var newBoss = Instantiate(bossTemplate);
+        Boss = newBoss;
+        Boss.Status = CurrentStage.Boss.Status;
+        Boss.Ability = CurrentStage.Boss.Ability;
     }
 
     private void Update()
@@ -162,8 +183,8 @@ public class StageManager : MonoBehaviour, IDisposable
         }
 
         float bossDeltaX = stageDirection == Direction.Left ? 25.0f : -25.0f;
-        boss.transform.Translate(new Vector3(bossDeltaX, 0f, 0f), Space.World);
-        boss.transform.Rotate(Vector3.up * 180.0f, Space.World);
+        Boss.transform.Translate(new Vector3(bossDeltaX, 0f, 0f), Space.World);
+        Boss.transform.Rotate(Vector3.up * 180.0f, Space.World);
     }
 
     public void Dispose()

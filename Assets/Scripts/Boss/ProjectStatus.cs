@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Model
 {
-    public class ProjectStatus
+    public class ProjectStatus : IXmlConvertible, IXmlStateRecoverable
     {
         public event Action<int> OnHealthChanged = delegate { };
         private int health;
@@ -61,6 +62,23 @@ namespace Model
                 }
             }
             return false;
+        }
+
+        public XElement ToXmlElement()
+        {
+            return new XElement("ProjectStatus",
+                    new XAttribute("Health", Health),
+                    new XAttribute("FullHealth", FullHealth),
+                    new XAttribute("Name", Name));
+        }
+
+        public void RecoverStateFromXml(string rawXml)
+        {
+            var rootElement = XElement.Parse(rawXml);
+
+            Health = rootElement.AttributeValue("Health", int.Parse);
+            FullHealth = rootElement.AttributeValue("FullHealth", int.Parse);
+            Name = rootElement.AttributeValue("Name");
         }
     }
 }
