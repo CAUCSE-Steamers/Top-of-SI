@@ -3,6 +3,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
+using Random = UnityEngine.Random;
+
 public class Field : MonoBehaviour
 {
     private IList<IList<Cell>> cellsInSquare;
@@ -83,6 +85,18 @@ public class Field : MonoBehaviour
                 cellsInSquare[x][y].PositionInField = new Vector2Int(x, y);
             }
         }
+    }
+
+    public Vector2Int GetRandomPosition()
+    {
+        var randomPosition = new Vector2Int(Random.Range(0, Size.x), Random.Range(0, Size.y));
+
+        while (GetCell(randomPosition.x, randomPosition.y).HasObjectOnCell())
+        {
+            randomPosition = new Vector2Int(Random.Range(0, Size.x), Random.Range(0, Size.y));
+        }
+
+        return randomPosition;
     }
 
     public IEnumerable<Cell> FetchObjectContainingCells()
