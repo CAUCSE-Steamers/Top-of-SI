@@ -39,7 +39,8 @@ public class LobbyUiPresenter : MonoBehaviour
     {
         projectTitleText.text = stage.Title;
         elapsedDayText.text = stage.ElapsedDayLimit.ToString();
-        
+        payText.text = stage.Reward.ToString();
+
         if (isFirst)
         {
             previousProject.gameObject.SetActive(false);
