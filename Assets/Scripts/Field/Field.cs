@@ -22,6 +22,14 @@ public class Field : MonoBehaviour
         }
     }
 
+    public Vector2Int Size
+    {
+        get
+        {
+            return size;
+        }
+    }
+
     public Cell GetCell(int x, int y)
     {
         try
