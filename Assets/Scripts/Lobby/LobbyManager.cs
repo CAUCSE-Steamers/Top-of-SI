@@ -7,7 +7,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Model;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager : MonoBehaviour, IEventDisposable
 {
     public Player CurrentPlayer
     {
@@ -39,7 +39,6 @@ public class LobbyManager : MonoBehaviour
 
     List<GameStage> stages;
 
-    [SerializeField]
     private LobbyUiPresenter lobbyUi;
 
     public event Action<GameStage, bool, bool> OnChangeStage = delegate { };
@@ -120,19 +119,29 @@ public class LobbyManager : MonoBehaviour
         selectedStage = stages[0];
     }
 
+    public void RefreshPresenter(LobbyUiPresenter presenter)
+    {
+        DisposeRegisteredEvents();
+
+        lobbyUi = presenter;
+
+        OnChangeStage += lobbyUi.UpdateProject;
+        SelectedStage = stages[0];
+    }
+
     private void Start()
     {
         CurrentPlayer = new Player();
         stages = new List<GameStage>();
         TempLobby();
+     
+        RefreshPresenter(GameObject.Find("LobbyUi").GetComponent<LobbyUiPresenter>());
         //SaveStages();
         //LoadStages();
-        OnChangeStage += lobbyUi.UpdateProject;
-        SelectedStage = stages[0];
 
         // TODO: Temporary Load/Save
         //var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
-        
+
         // Read
         //var rootElement = XElement.Parse(File.ReadAllText(savePath));
         //CurrentPlayer.RecoverStateFromXml(rootElement.ToString());
@@ -215,9 +224,8 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DisposeRegisteredEvents()
     {
-
+        OnChangeStage = delegate { };
     }
 }

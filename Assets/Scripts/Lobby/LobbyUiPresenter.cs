@@ -26,9 +26,9 @@ public class LobbyUiPresenter : MonoBehaviour
 
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
-
+        LobbyManager.Instance.RefreshPresenter(this);
     }
 
     // Update is called once per frame
