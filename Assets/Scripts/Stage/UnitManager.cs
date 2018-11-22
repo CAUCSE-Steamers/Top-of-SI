@@ -134,6 +134,8 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 CurrentAppliedFormation = formation;
 
                 CommonLogger.LogFormat("UnitManager::CheckProgrammerFormation => 진형 '{0}'가 적용됨.", CurrentAppliedFormation.Name);
+                //TODO: Apply Formation to Programmers
+
                 break;
             }
         }
@@ -189,10 +191,12 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         {
             CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청함.");
 
+            //Decrease Boss Skill Cool
             foreach (ProjectSkill iter in Boss.Ability.ProjectSkills)
             {
                 iter.DecreaseCooldown();
             }
+            //Decrease Boss Burf Cool and Remove if it's Cool down
             for(int i = 0, delete = 0; i < Boss.Status.Burf.Count; i++)
             {
                 Boss.Status.Burf[i - delete].DecreaseTurn();
@@ -202,6 +206,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                     delete++;
                 }
             }
+            //TODO: Move, Attack, Skill or Do Nothing.
 
             var usedSkill = boss.Invoke();
             if (usedSkill is ISoundProducible)
@@ -213,6 +218,8 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             StageManager.Instance.StageUi.RenderBossSkillNotice(usedSkill);
 
             CommonLogger.LogFormat("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스가 {0} 스킬을 사용함.", usedSkill.Information.Name);
+
+            //TODO: Add Special Deburf, like decrease deadline
 
             switch (usedSkill.Information.Type)
             {
