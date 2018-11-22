@@ -41,6 +41,11 @@ namespace Model
             get; set;
         }
 
+        public IEnumerable<ProgrammerSpec> ProgrammerSpecs
+        {
+            get; set;
+        }
+
         public int Reward
         {
             get; set;
