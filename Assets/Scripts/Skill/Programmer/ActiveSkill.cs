@@ -17,7 +17,7 @@ namespace Model
         private double baseDamage = 1.0;
         private double initialCooldown;
         private double accuracy;
-
+        //TODO: add cost value.
         public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double defaultCooldown)
         {
             Information = information;
