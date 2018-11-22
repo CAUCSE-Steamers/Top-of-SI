@@ -23,14 +23,14 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public ProgrammerStatus Status
     {
-        get; private set;
+        get; set;
     }
 
     public ProgrammerAbility Ability
     {
-        get; private set;
+        get; set;
     }
-
+    
     public void SetHealth(int newHealth)
     {
         Status.Health = newHealth;
