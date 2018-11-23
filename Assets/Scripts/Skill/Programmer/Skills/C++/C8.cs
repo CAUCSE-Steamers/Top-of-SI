@@ -22,6 +22,7 @@ namespace Model
             : base(information.Clone(), new List<PassiveSkill>() { new Overload() }, 4)
         {
             Accuracy = 0.9;
+            Cost = 4;
         }
 
         public override void LevelUP()

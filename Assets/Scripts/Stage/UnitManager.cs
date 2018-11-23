@@ -208,41 +208,48 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                     delete++;
                 }
             }
-            //TODO: Move, Attack, Skill or Do Nothing.
 
-            var usedSkill = boss.Invoke();
-            if (usedSkill is ISoundProducible)
+            if(UnityEngine.Random.Range(0, 12) > 9)
             {
-                var clip = (usedSkill as ISoundProducible).EffectSound;
-                SoundManager.Instance.FetchAvailableSource().PlayOneShot(clip);
+                //MOVE
+                StageManager.Instance.MoveBoss();
             }
-            
-            StageManager.Instance.StageUi.RenderBossSkillNotice(usedSkill);
-
-            CommonLogger.LogFormat("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스가 {0} 스킬을 사용함.", usedSkill.Information.Name);
-
-            //TODO: Add Special Deburf, like decrease deadline
-
-            switch (usedSkill.Information.Type)
+            else
             {
-                case ProjectSkillType.SingleAttack:
-                    InvokeSkill((ProjectSingleAttackSkill)usedSkill);
-                    break;
-                case ProjectSkillType.MultiAttack:
-                    InvokeSkill((ProjectMultiAttackSkill)usedSkill);
-                    break;
-                case ProjectSkillType.SingleDeburf:
-                    InvokeSkill((ProjectSingleDeburfSkill)usedSkill);
-                    break;
-                case ProjectSkillType.MultiDeburf:
-                    InvokeSkill((ProjectMultiDeburfSkill)usedSkill);
-                    break;
-                case ProjectSkillType.Burf:
-                    InvokeSkill((ProjectBurfSkill)usedSkill);
-                    break;
-            }
+                //DO Attack or Skill
+                var usedSkill = boss.Invoke();
+                if (usedSkill is ISoundProducible)
+                {
+                    var clip = (usedSkill as ISoundProducible).EffectSound;
+                    SoundManager.Instance.FetchAvailableSource().PlayOneShot(clip);
+                }
 
-            boss.InvokeFinished();
+                StageManager.Instance.StageUi.RenderBossSkillNotice(usedSkill);
+
+                CommonLogger.LogFormat("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스가 {0} 스킬을 사용함.", usedSkill.Information.Name);
+                
+                switch (usedSkill.Information.Type)
+                {
+                    case ProjectSkillType.SingleAttack:
+                        InvokeSkill((ProjectSingleAttackSkill)usedSkill);
+                        break;
+                    case ProjectSkillType.MultiAttack:
+                        InvokeSkill((ProjectMultiAttackSkill)usedSkill);
+                        break;
+                    case ProjectSkillType.SingleDeburf:
+                        InvokeSkill((ProjectSingleDeburfSkill)usedSkill);
+                        break;
+                    case ProjectSkillType.MultiDeburf:
+                        InvokeSkill((ProjectMultiDeburfSkill)usedSkill);
+                        break;
+                    case ProjectSkillType.Burf:
+                        InvokeSkill((ProjectBurfSkill)usedSkill);
+                        break;
+                }
+
+                boss.InvokeFinished();
+
+            }
         }
     }
 
@@ -259,13 +266,23 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     }
     private void InvokeSkill(ProjectSingleDeburfSkill skill)
     {
-        Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))].Deburf(skill.Deburf);
+        Programmer programmer = Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
+        DeburfType blockMove = programmer.Deburf(skill.Deburf);
+        if((blockMove & DeburfType.DisableMovement) == DeburfType.DisableMovement)
+        {
+            //TODO : let programmer can't move
+        }
     }
     private void InvokeSkill(ProjectMultiDeburfSkill skill)
     {
+        DeburfType outOfProgrammer = DeburfType.None;
         foreach (var programmer in Programmers)
         {
-            programmer.Deburf(skill.Deburf);
+            outOfProgrammer = (outOfProgrammer | programmer.Deburf(skill.Deburf));
+        }
+        if ((outOfProgrammer & DeburfType.ShortenDeadLine) == outOfProgrammer)
+        {
+            StageManager.Instance.Status.setDayLimit(skill.Deburf[0].Factor);
         }
     }
     private void InvokeSkill(ProjectBurfSkill skill)

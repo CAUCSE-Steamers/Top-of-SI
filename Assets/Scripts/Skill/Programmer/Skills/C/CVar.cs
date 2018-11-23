@@ -23,6 +23,7 @@ namespace Model
             : base(information.Clone(), new List<PassiveSkill>() { new NoteDown(), new CounterEvolution() }, 5)
         {
             Accuracy = 0.9;
+            Cost = 4;
         }
 
         public AudioClip EffectSound

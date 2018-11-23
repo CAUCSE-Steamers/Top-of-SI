@@ -175,8 +175,6 @@ public class StageUiPresenter : MonoBehaviour
         var idleState = stateAnimator.GetBehaviour<IdleState>();
         var currentSelectedProgrammer = idleState.SelectedObject.GetComponent<Programmer>();
 
-        //TODO : Decrease Programmer's HP as much as Active Skill cost
-
         if (skill is IEffectProducible)
         {
             var effectObject = (skill as IEffectProducible).MakeEffect(currentSelectedProgrammer.transform);
@@ -197,9 +195,9 @@ public class StageUiPresenter : MonoBehaviour
 
         var boss = StageManager.Instance.Unit.Boss;
         currentSelectedProgrammer.UseSkill();
-
+        currentSelectedProgrammer.SpendSkillCost(skill.Cost);
         skill.OnSkillMissed += HandleMissedSkill;
-        skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype);
+        skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype, currentSelectedProgrammer.getDamageDecreaseRatio());
         skill.OnSkillMissed -= HandleMissedSkill;
         objectInformationPresenter.ResetInformationUi();
         idleState.ResetSelectedObject();
