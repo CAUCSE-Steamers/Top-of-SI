@@ -89,11 +89,11 @@ public class Field : MonoBehaviour
 
     public Vector2Int GetRandomPosition()
     {
-        var randomPosition = new Vector2Int(Random.Range(0, Size.x), Random.Range(0, Size.y));
+        var randomPosition = new Vector2Int(Random.Range(0, 2), Random.Range(0, 2));
 
         while (GetCell(randomPosition.x, randomPosition.y).HasObjectOnCell())
         {
-            randomPosition = new Vector2Int(Random.Range(0, Size.x), Random.Range(0, Size.y));
+            randomPosition = new Vector2Int(Random.Range(0, 2), Random.Range(0, 2));
         }
 
         return randomPosition;
@@ -102,7 +102,7 @@ public class Field : MonoBehaviour
     public Vector3 GetRandomVector()
     {
         var randomDeltaVector = IndicesTransformToVector(GetRandomPosition());
-        return new Vector3(transform.position.x + randomDeltaVector.x, 0, transform.position.z + randomDeltaVector.y);
+        return new Vector3(transform.position.x + randomDeltaVector.x, 0, transform.position.z + randomDeltaVector.z);
     }
 
     public IEnumerable<Cell> FetchObjectContainingCells()
