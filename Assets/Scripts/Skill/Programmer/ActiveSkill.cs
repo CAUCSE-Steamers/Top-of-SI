@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,7 +40,7 @@ namespace Model
             get; private set;
         }
 
-        public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType)
+        public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType, double decreaseDamageRatio = 0.0)
         {
             if (Random.Range(0f, 1f) > Accuracy)
             {
@@ -57,7 +57,7 @@ namespace Model
                 {
                     critical += Information.CriticalRatio;
                 }
-                hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical));
+                hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical * (1 - decreaseDamageRatio)));
 
                 RemainingCooldown = DefaultCooldown;
             }
