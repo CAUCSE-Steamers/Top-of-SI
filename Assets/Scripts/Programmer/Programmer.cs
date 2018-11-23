@@ -167,6 +167,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         yield return new WaitForSeconds(0.5f);
 
         var particle = Instantiate(testEffect, skillSpellPositionObject.transform);
+        particle.transform.position = skillSpellPositionObject.transform.position;
         particle.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(1.5f);
