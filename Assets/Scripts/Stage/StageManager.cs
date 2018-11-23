@@ -177,6 +177,19 @@ public class StageManager : MonoBehaviour, IDisposable
         }
     }
 
+    public void MoveBoss()
+    {
+        switch (Status.StageDirection)
+        {
+            case Direction.Left:
+                AdjustStageDirectionView(Direction.Right);
+                break;
+            case Direction.Right:
+                AdjustStageDirectionView(Direction.Left);
+                break;
+        }
+    }
+
     private void AdjustStageDirectionView(Direction newStageDirection)
     {
         AdjustCameraView(newStageDirection);

@@ -100,6 +100,11 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         }
     }
 
+    public void setDayLimit(double ratio)
+    {
+        this.maximumDayLimit = (int)(this.maximumDayLimit * (1 - ratio) + 0.5);
+    }
+
     public int ElapsedDays
     {
         get

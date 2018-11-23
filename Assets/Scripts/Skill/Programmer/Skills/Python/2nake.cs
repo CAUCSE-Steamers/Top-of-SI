@@ -22,6 +22,7 @@ namespace Model
             : base(information.Clone(), new List<PassiveSkill>() { new FastCode(), new Pypi() }, 1)
         {
             Accuracy = 0.8;
+            Cost = 2;
         }
 
         public override void LevelUP()

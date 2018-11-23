@@ -17,6 +17,7 @@ namespace Model
         private double baseDamage = 1.0;
         private double initialCooldown;
         private double accuracy;
+        private int cost;
 
         public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double defaultCooldown)
         {
@@ -39,7 +40,7 @@ namespace Model
             get; private set;
         }
 
-        public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType)
+        public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType, double decreaseDamageRatio = 0.0)
         {
             if (Random.Range(0f, 1f) > Accuracy)
             {
@@ -56,7 +57,7 @@ namespace Model
                 {
                     critical += Information.CriticalRatio;
                 }
-                hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical));
+                hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical * (1 - decreaseDamageRatio)));
 
                 RemainingCooldown = DefaultCooldown;
             }
@@ -132,6 +133,18 @@ namespace Model
             set
             {
                 accuracy = value;
+            }
+        }
+
+        public int Cost
+        {
+            get
+            {
+                return cost;
+            }
+            set
+            {
+                cost = value;
             }
         }
 

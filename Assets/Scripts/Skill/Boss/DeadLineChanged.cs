@@ -18,8 +18,8 @@ namespace Model
 
         private static List<DeBurfStructure> deburf = new List<DeBurfStructure>
         {
-            new DeBurfStructure(DeburfType.ShortenDeadLine, Int32.MaxValue, 0.8),
-            new DeBurfStructure(DeburfType.IncreaseMentalUsage, Int32.MaxValue, 25)
+            new DeBurfStructure(DeburfType.ShortenDeadLine, Int32.MaxValue, 0.2),
+            new DeBurfStructure(DeburfType.IncreaseMentalUsage, Int32.MaxValue, 0.25)
         };
 
         public DeadLineChanged() : base(deburf, information, 3)
