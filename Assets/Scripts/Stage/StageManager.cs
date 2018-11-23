@@ -168,28 +168,12 @@ public class StageManager : MonoBehaviour, IDisposable
         Boss.Status = CurrentStage.Boss.Status.Clone();
         Boss.Ability = CurrentStage.Boss.Ability.Clone();
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Status.StageDirection = Status.StageDirection == Direction.Left ?
-                                    Direction.Right :
-                                    Direction.Left;
-        }
-    }
-
+    
     public void MoveBoss()
     {
-        switch (Status.StageDirection)
-        {
-            case Direction.Left:
-                AdjustStageDirectionView(Direction.Right);
-                break;
-            case Direction.Right:
-                AdjustStageDirectionView(Direction.Left);
-                break;
-        }
+        Status.StageDirection = Status.StageDirection == Direction.Left ?
+                                    Direction.Right :
+                                    Direction.Left;
     }
 
     private void AdjustStageDirectionView(Direction newStageDirection)
