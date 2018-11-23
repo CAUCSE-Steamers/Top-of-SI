@@ -13,6 +13,13 @@ namespace Model.Formation
             new Vector2Int(0, 0)
         };
 
+        private IEnumerable<IBurf> soloBurfs = new List<IBurf>
+        {
+            new SkillDamageBurf(0.2),
+            new NormalAttackDamageBurf(0.5),
+            new HealBurf(2, 3)
+        };
+
         public SoloOverwhelming() 
             : base("장판파", 1)
         {
@@ -24,6 +31,22 @@ namespace Model.Formation
             {
                 return relativeFormationLocations;
             }
+        }
+
+
+        protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
+        {
+            var programmer = programmers.Single();
+            foreach (var burf in soloBurfs)
+            {
+                programmer.RegisterBurf(burf);
+            }
+        }
+
+        public override void DetachBurfs()
+        {
+            var programmer = AffectedProgrammers.Single();
+
         }
     }
 }

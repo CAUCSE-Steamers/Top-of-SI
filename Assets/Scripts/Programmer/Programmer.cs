@@ -85,11 +85,6 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         
         Ability = new ProgrammerAbility();
 
-        RegisterBurf(new HealBurf(10, 50) { RemainingTurn = 3 });
-        RegisterBurf(new HurtDamageBurf(10.0) { RemainingTurn = 4 });
-        RegisterBurf(new NormalAttackDamageBurf(29.0) { RemainingTurn = 5 });
-        RegisterBurf(new SkillDamageBurf(59.0) { RemainingTurn = 5 });
-
         OnMovingStarted += Rotate;
     }
 
