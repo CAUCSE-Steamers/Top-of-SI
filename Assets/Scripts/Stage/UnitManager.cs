@@ -248,10 +248,9 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                         InvokeSkill((ProjectBurfSkill)usedSkill);
                         break;
                 }
-
-                boss.InvokeFinished();
-
             }
+
+            boss.InvokeFinished();
         }
     }
 
