@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +17,8 @@ namespace Model
         private double baseDamage = 1.0;
         private double initialCooldown;
         private double accuracy;
-        //TODO: add cost value.
+        private int cost;
+
         public ActiveSkill(SkillBasicInformation information, IEnumerable<PassiveSkill> passiveSkills, double defaultCooldown)
         {
             Information = information;
@@ -132,6 +133,18 @@ namespace Model
             set
             {
                 accuracy = value;
+            }
+        }
+
+        public int Cost
+        {
+            get
+            {
+                return cost;
+            }
+            set
+            {
+                cost = value;
             }
         }
 

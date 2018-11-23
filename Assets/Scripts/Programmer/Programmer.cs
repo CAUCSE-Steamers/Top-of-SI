@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -320,6 +320,18 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
     {
         //If new Deburf type which need to control out of programmer, add it to this.
         return ((type & DeburfType.ShortenDeadLine) != 0);
+    }
+
+    public void SpendSkillCost(int cost)
+    {
+        foreach(var iter in Status.Deburf)
+        {
+            if((iter.Type & DeburfType.IncreaseMentalUsage) == DeburfType.IncreaseMentalUsage)
+            {
+                cost = (int)(cost * (1 + iter.Factor));
+            }
+        }
+        Status.Health -= cost;
     }
 
     public XElement ToXmlElement()

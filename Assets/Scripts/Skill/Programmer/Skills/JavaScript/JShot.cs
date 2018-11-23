@@ -22,6 +22,7 @@ namespace Model
             : base(information.Clone(), new List<PassiveSkill>() { new ReadableScript() }, 2)
         {
             Accuracy = 0.5;
+            Cost = 2;
         }
 
         public override void LevelUP()
