@@ -1,4 +1,4 @@
-using Model;
+﻿using Model;
 using Model.Formation;
 using System;
 using System.Collections.Generic;
@@ -209,6 +209,14 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 }
             }
 
+            if(UnityEngine.Random.Range(0, 12) > 9)
+            {
+                //MOVE
+                StageManager.Instance.MoveBoss();
+            }
+            else
+            {
+                //DO Attack or Skill
                 var usedSkill = boss.Invoke();
                 if (usedSkill is ISoundProducible)
                 {
