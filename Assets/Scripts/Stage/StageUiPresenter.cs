@@ -29,6 +29,9 @@ public class StageUiPresenter : MonoBehaviour
             idleState.OnSelected += objectInformationPresenter.SetObjectInformation;
         });
 
+        var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
+        moveState.OnMovingStarted += () => objectInformationPresenter.SetEffectActiveState(false);
+
         objectInformationPresenter.OnSkillInvoked += InvokeSkill;
     }
 
