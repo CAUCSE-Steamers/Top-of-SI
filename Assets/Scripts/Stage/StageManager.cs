@@ -163,8 +163,8 @@ public class StageManager : MonoBehaviour, IDisposable
     {
         var newBoss = Instantiate(bossTemplate);
         Boss = newBoss;
-        Boss.Status = CurrentStage.Boss.Status;
-        Boss.Ability = CurrentStage.Boss.Ability;
+        Boss.Status = CurrentStage.Boss.Status.Clone();
+        Boss.Ability = CurrentStage.Boss.Ability.Clone();
     }
 
     private void Update()
