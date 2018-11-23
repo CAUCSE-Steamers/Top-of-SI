@@ -141,16 +141,21 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         RefreshPresenter(GameObject.Find("LobbyUi").GetComponent<LobbyUiPresenter>());
         //SaveStages();
         //LoadStages();
+    }
 
-        // TODO: Temporary Load/Save
-        //var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
+    public void LoadPlayer()
+    {
+        var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
 
-        // Read
-        //var rootElement = XElement.Parse(File.ReadAllText(savePath));
-        //CurrentPlayer.RecoverStateFromXml(rootElement.ToString());
+        var rootElement = XElement.Parse(File.ReadAllText(savePath));
+        CurrentPlayer.RecoverStateFromXml(rootElement.ToString());
+    }
 
-        // Write
-        //File.WriteAllText(savePath, CurrentPlayer.ToXmlElement().ToString());
+    public void SavePlayer()
+    {
+        var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
+
+        File.WriteAllText(savePath, CurrentPlayer.ToXmlElement().ToString());
     }
 
     public void LoadStages()
