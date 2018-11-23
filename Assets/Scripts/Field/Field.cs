@@ -89,11 +89,11 @@ public class Field : MonoBehaviour
 
     public Vector2Int GetRandomPosition()
     {
-        var randomPosition = new Vector2Int(Random.Range(0, 2), Random.Range(0, 2));
+        var randomPosition = new Vector2Int(Random.Range(0, Size.x), Random.Range(0, Size.y));
 
         while (GetCell(randomPosition.x, randomPosition.y).HasObjectOnCell())
         {
-            randomPosition = new Vector2Int(Random.Range(0, 2), Random.Range(0, 2));
+            randomPosition = new Vector2Int(Random.Range(0, Size.x), Random.Range(0, Size.y));
         }
 
         return randomPosition;
