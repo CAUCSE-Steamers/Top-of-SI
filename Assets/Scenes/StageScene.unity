@@ -3377,7 +3377,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 400371153}
+      - m_Target: {fileID: 1268244837}
         m_MethodName: ForceMoveToScene
         m_Mode: 5
         m_Arguments:
@@ -3561,6 +3561,7 @@ GameObject:
   - component: {fileID: 317957125}
   - component: {fileID: 317957127}
   - component: {fileID: 317957126}
+  - component: {fileID: 317957128}
   m_Layer: 5
   m_Name: FailPanel
   m_TagString: Untagged
@@ -3623,6 +3624,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 317957124}
+--- !u!114 &317957128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 317957124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4908a9c0aed414ab59878b654ea2e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &318308074
 GameObject:
   m_ObjectHideFlags: 0
@@ -4255,7 +4267,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 400371153}
+      - m_Target: {fileID: 317957128}
         m_MethodName: ForceMoveToScene
         m_Mode: 5
         m_Arguments:
@@ -4602,7 +4614,6 @@ MonoBehaviour:
   statusManager: {fileID: 900699072}
   unitManager: {fileID: 654518456}
   fieldSpawner: {fileID: 920565258}
-  uiPresenter: {fileID: 403914967}
   programmerTemplate: {fileID: 114151406200873448, guid: a2daeb17522b0e747914931b83fa7028,
     type: 2}
   bossTemplate: {fileID: 114182205418394240, guid: 46792dabcd5d271409607e081dd4babf,
@@ -5825,7 +5836,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 400371153}
+      - m_Target: {fileID: 317957128}
         m_MethodName: ForceMoveToScene
         m_Mode: 5
         m_Arguments:
@@ -12869,6 +12880,7 @@ GameObject:
   - component: {fileID: 1268244834}
   - component: {fileID: 1268244836}
   - component: {fileID: 1268244835}
+  - component: {fileID: 1268244837}
   m_Layer: 5
   m_Name: VictoryPanel
   m_TagString: Untagged
@@ -12934,6 +12946,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1268244833}
+--- !u!114 &1268244837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1268244833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4908a9c0aed414ab59878b654ea2e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1270674624
 GameObject:
   m_ObjectHideFlags: 0
@@ -17911,7 +17934,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 400371153}
+      - m_Target: {fileID: 1268244837}
         m_MethodName: ForceMoveToScene
         m_Mode: 5
         m_Arguments:

@@ -21,12 +21,12 @@ public class StageManager : MonoBehaviour, IDisposable
     [SerializeField]
     private FieldSpawner fieldSpawner;
     [SerializeField]
-    private StageUiPresenter uiPresenter;
-    [SerializeField]
     private Programmer programmerTemplate;
+
     [SerializeField]
     private AbstractProject bossTemplate;
-    
+    private StageUiPresenter uiPresenter;
+
     private void Awake()
     {
         if (Instance != null)
@@ -44,12 +44,18 @@ public class StageManager : MonoBehaviour, IDisposable
     private void Start()
     {
         Programmers = new List<Programmer>();
-        
+
         if (fieldSpawner == null)
         {
             DebugLogger.LogError("StageManager::Start => 필드를 생성할 Spawner가 null입니다.");
         }
+    }
 
+    public void RefreshPresenter(StageUiPresenter stageUiPresenter)
+    {
+        Dispose();
+
+        uiPresenter = stageUiPresenter;
         SetStage();
     }
 
@@ -131,6 +137,8 @@ public class StageManager : MonoBehaviour, IDisposable
 
     private void InitializeProgrammers()
     {
+        Programmers.Clear();
+
         foreach (var programmerSpec in CurrentStage.ProgrammerSpecs)
         {
             var newProgrammer = Instantiate(programmerTemplate);

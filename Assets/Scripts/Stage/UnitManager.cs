@@ -68,6 +68,8 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             throw new ArgumentNullException();
         }
 
+        CurrentAppliedFormation = null;
+
         OnTurnChanged += RequestBossActionIfTurnChangedToBoss;
         OnTurnChanged += PermitProgrammersActionIfTurnChangedToPlayer;
         OnTurnChanged += ApplyBurfsIfTurnChangedToPlayer;
@@ -343,11 +345,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     public void DisposeRegisteredEvents()
     {
         OnTurnChanged = delegate { };
-
-        foreach (var programmer in programmerActingDictionary.Keys)
-        {
-            programmer.DisposeRegisteredEvents();
-        }
 
         CommonLogger.Log("UnitManager::DisposeRegisteredEvents => 이벤트 Disposing 완료.");
     }

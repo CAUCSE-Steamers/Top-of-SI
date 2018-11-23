@@ -18,6 +18,8 @@ public class StageUiPresenter : MonoBehaviour
 
     private void Start()
     {
+        StageManager.Instance.RefreshPresenter(this);
+
         AddEnterEvent<IdleState>(StartUiSynchronizing);
 
         AddEnterEvent<IdleState>(() =>
