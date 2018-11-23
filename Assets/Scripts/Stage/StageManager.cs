@@ -142,6 +142,8 @@ public class StageManager : MonoBehaviour, IDisposable
 
         foreach (var programmerSpec in CurrentStage.ProgrammerSpecs)
         {
+            programmerSpec.Status.DisposeRegisteredEvents();
+
             var newProgrammer = Instantiate(programmerTemplate);
             var randomVector = StageField.GetRandomVector();
 
