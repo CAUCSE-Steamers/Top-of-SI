@@ -2457,7 +2457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aad094ca74b9b324ab23197e07d63b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyUi: {fileID: 1447418759}
 --- !u!1 &758864539
 GameObject:
   m_ObjectHideFlags: 0
@@ -4990,6 +4989,7 @@ MonoBehaviour:
   projectTitleText: {fileID: 355806403}
   elapsedDayText: {fileID: 826477172}
   payText: {fileID: 1620349899}
+  icon: {fileID: 604933225}
   previousProject: {fileID: 674956608}
   nextProject: {fileID: 2073581361}
   recommendedSkillList: {fileID: 2078179081}

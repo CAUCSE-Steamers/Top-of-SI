@@ -40,7 +40,14 @@ public class LobbySkillPresenter : MonoBehaviour
         var createdSkill = Instantiate(recommendedSkillPrefab, recommendedSkillListPanel);
         var description = createdSkill.GetComponentInChildren<Text>();
 
-        description.text = skill.ToString();
+        if (skill == ProjectType.None)
+        {
+            description.text = "특별한 기술이 필요하지 않습니다.";
+        }
+        else
+        {
+            description.text = string.Format("{0} 분야에 최적화된 기술이 필요합니다.", skill.ToString());
+        }
     }
 
     private void RemoveRecommendedSkill()

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Model;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager : MonoBehaviour, IEventDisposable
 {
     public Player CurrentPlayer
     {
@@ -39,7 +39,6 @@ public class LobbyManager : MonoBehaviour
 
     List<GameStage> stages;
 
-    [SerializeField]
     private LobbyUiPresenter lobbyUi;
 
     public event Action<GameStage, bool, bool> OnChangeStage = delegate { };
@@ -69,7 +68,8 @@ public class LobbyManager : MonoBehaviour
                 {
                     Ability = new TestProject().Ability,
                     Status = new TestProject().Status
-                }
+                },
+                IconName = "Cpp"
             },
             new GameStage
             {
@@ -79,7 +79,8 @@ public class LobbyManager : MonoBehaviour
                 {
                     Ability = new TestProject().Ability,
                     Status = new TestProject().Status
-                }
+                },
+                IconName = "CSharp"
             },
             new GameStage
             {
@@ -89,7 +90,8 @@ public class LobbyManager : MonoBehaviour
                 {
                     Ability = new TestProject().Ability,
                     Status = new TestProject().Status
-                }
+                },
+                IconName = "Java"
             }
         };
 
@@ -117,25 +119,43 @@ public class LobbyManager : MonoBehaviour
         selectedStage = stages[0];
     }
 
+    public void RefreshPresenter(LobbyUiPresenter presenter)
+    {
+        DisposeRegisteredEvents();
+        
+        lobbyUi = presenter;
+
+        OnChangeStage += lobbyUi.UpdateProject;
+        SelectedStage = stages[0];
+
+            // TODO: 랜덤 위치 설정 제대로 안 겹치게 나오나?
+            // TODO: 보스 Status/Ability는 Clone해서 Setting 해야함.
+    }
+
     private void Start()
     {
         CurrentPlayer = new Player();
         stages = new List<GameStage>();
         TempLobby();
+     
+        RefreshPresenter(GameObject.Find("LobbyUi").GetComponent<LobbyUiPresenter>());
         //SaveStages();
         //LoadStages();
-        OnChangeStage += lobbyUi.UpdateProject;
-        SelectedStage = stages[0];
+    }
 
-        // TODO: Temporary Load/Save
-        //var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
-        
-        // Read
-        //var rootElement = XElement.Parse(File.ReadAllText(savePath));
-        //CurrentPlayer.RecoverStateFromXml(rootElement.ToString());
+    public void LoadPlayer()
+    {
+        var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
 
-        // Write
-        //File.WriteAllText(savePath, CurrentPlayer.ToXmlElement().ToString());
+        var rootElement = XElement.Parse(File.ReadAllText(savePath));
+        CurrentPlayer.RecoverStateFromXml(rootElement.ToString());
+    }
+
+    public void SavePlayer()
+    {
+        var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
+
+        File.WriteAllText(savePath, CurrentPlayer.ToXmlElement().ToString());
     }
 
     public void LoadStages()
@@ -212,9 +232,8 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DisposeRegisteredEvents()
     {
-
+        OnChangeStage = delegate { };
     }
 }

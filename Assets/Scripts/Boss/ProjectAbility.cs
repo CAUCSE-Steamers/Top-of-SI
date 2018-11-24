@@ -33,6 +33,14 @@ namespace Model
             get; private set;
         }
 
+        public ProjectAbility Clone()
+        {
+            return new ProjectAbility(new List<ProjectSkill>(this.ProjectSkills), this.ProjType)
+            {
+                Techtype = this.Techtype,
+            };
+        }
+
         public ProjectSkill InvokedSkill
         {
             get

@@ -18,6 +18,8 @@ public class StageUiPresenter : MonoBehaviour
 
     private void Start()
     {
+        StageManager.Instance.RefreshPresenter(this);
+
         AddEnterEvent<IdleState>(StartUiSynchronizing);
 
         AddEnterEvent<IdleState>(() =>
@@ -26,6 +28,9 @@ public class StageUiPresenter : MonoBehaviour
             objectInformationPresenter.ResetInformationUi();
             idleState.OnSelected += objectInformationPresenter.SetObjectInformation;
         });
+
+        var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
+        moveState.OnMovingStarted += () => objectInformationPresenter.SetEffectActiveState(false);
 
         objectInformationPresenter.OnSkillInvoked += InvokeSkill;
     }

@@ -85,11 +85,6 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         
         Ability = new ProgrammerAbility();
 
-        RegisterBurf(new HealBurf(10, 50) { RemainingTurn = 3 });
-        RegisterBurf(new HurtDamageBurf(10.0) { RemainingTurn = 4 });
-        RegisterBurf(new NormalAttackDamageBurf(29.0) { RemainingTurn = 5 });
-        RegisterBurf(new SkillDamageBurf(59.0) { RemainingTurn = 5 });
-
         OnMovingStarted += Rotate;
     }
 
@@ -172,6 +167,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         yield return new WaitForSeconds(0.5f);
 
         var particle = Instantiate(testEffect, skillSpellPositionObject.transform);
+        particle.transform.position = skillSpellPositionObject.transform.position;
         particle.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(1.5f);

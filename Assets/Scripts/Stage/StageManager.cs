@@ -21,12 +21,12 @@ public class StageManager : MonoBehaviour, IDisposable
     [SerializeField]
     private FieldSpawner fieldSpawner;
     [SerializeField]
-    private StageUiPresenter uiPresenter;
-    [SerializeField]
     private Programmer programmerTemplate;
+
     [SerializeField]
     private AbstractProject bossTemplate;
-    
+    private StageUiPresenter uiPresenter;
+
     private void Awake()
     {
         if (Instance != null)
@@ -44,12 +44,18 @@ public class StageManager : MonoBehaviour, IDisposable
     private void Start()
     {
         Programmers = new List<Programmer>();
-        
+
         if (fieldSpawner == null)
         {
             DebugLogger.LogError("StageManager::Start => 필드를 생성할 Spawner가 null입니다.");
         }
+    }
 
+    public void RefreshPresenter(StageUiPresenter stageUiPresenter)
+    {
+        Dispose();
+
+        uiPresenter = stageUiPresenter;
         SetStage();
     }
 
@@ -131,14 +137,26 @@ public class StageManager : MonoBehaviour, IDisposable
 
     private void InitializeProgrammers()
     {
+        Programmers.Clear();
+        HashSet<Vector3> programmerPositions = new HashSet<Vector3>();
+
         foreach (var programmerSpec in CurrentStage.ProgrammerSpecs)
         {
-            var newProgrammer = Instantiate(programmerTemplate);
+            programmerSpec.Status.DisposeRegisteredEvents();
 
-            newProgrammer.transform.position = StageField.GetRandomVector();
+            var newProgrammer = Instantiate(programmerTemplate);
+            var randomVector = StageField.GetRandomVector();
+
+            while (programmerPositions.Contains(randomVector))
+            {
+                randomVector = StageField.GetRandomVector();
+            }
+
+            newProgrammer.transform.position = randomVector;
             newProgrammer.Ability = programmerSpec.Ability;
             newProgrammer.Status = programmerSpec.Status;
 
+            programmerPositions.Add(randomVector);
             Programmers.Add(newProgrammer);
         }
     }
@@ -147,31 +165,15 @@ public class StageManager : MonoBehaviour, IDisposable
     {
         var newBoss = Instantiate(bossTemplate);
         Boss = newBoss;
-        Boss.Status = CurrentStage.Boss.Status;
-        Boss.Ability = CurrentStage.Boss.Ability;
+        Boss.Status = CurrentStage.Boss.Status.Clone();
+        Boss.Ability = CurrentStage.Boss.Ability.Clone();
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Status.StageDirection = Status.StageDirection == Direction.Left ?
-                                    Direction.Right :
-                                    Direction.Left;
-        }
-    }
-
+    
     public void MoveBoss()
     {
-        switch (Status.StageDirection)
-        {
-            case Direction.Left:
-                AdjustStageDirectionView(Direction.Right);
-                break;
-            case Direction.Right:
-                AdjustStageDirectionView(Direction.Left);
-                break;
-        }
+        Status.StageDirection = Status.StageDirection == Direction.Left ?
+                                    Direction.Right :
+                                    Direction.Left;
     }
 
     private void AdjustStageDirectionView(Direction newStageDirection)

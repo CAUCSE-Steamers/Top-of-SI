@@ -21,6 +21,7 @@ public abstract class DispatchableState : StateMachineBehaviour
     private void OnEnable()
     {
         Manager = GameObject.Find("StageManager").GetComponent<StageManager>();
+        PlayingAnimator = GameObject.Find("GameUi").GetComponent<Animator>();
 
         ClearEvent();
     }

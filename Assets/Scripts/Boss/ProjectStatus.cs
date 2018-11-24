@@ -40,6 +40,17 @@ namespace Model
             }
         }
 
+        public ProjectStatus Clone()
+        {
+            return new ProjectStatus
+            {
+                Name = this.Name,
+                FullHealth = this.FullHealth,
+                Health = this.Health,
+                Burf = new List<BurfStructure>(this.Burf)
+            };
+        }
+
         public List<BurfStructure> Burf
         {
             get

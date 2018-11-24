@@ -38,12 +38,23 @@ namespace Model.Formation
             get; private set;
         }
 
-        public void Attach()
+        public IEnumerable<Programmer> AffectedProgrammers
+        {
+            get; protected set;
+        }
+
+        public void AttachBurfs(IEnumerable<Programmer> programmers)
+        {
+            AffectedProgrammers = programmers;
+            RegisterBurfs(programmers);
+        }
+
+        protected virtual void RegisterBurfs(IEnumerable<Programmer> programmers)
         {
 
         }
 
-        public void Detach()
+        public virtual void DetachBurfs()
         {
 
         }
