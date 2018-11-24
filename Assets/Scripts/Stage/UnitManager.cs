@@ -133,8 +133,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         foreach (var programmer in programmerActingDictionary.Keys)
         {
-            programmer.OnMovingEnded += CheckProgrammerFormation;
-
             programmer.OnActionStarted += () =>
             {
                 StageManager.Instance.StageField.BlockCellClicking();
@@ -155,6 +153,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 }
 
                 programmerActingDictionary[programmer] = true;
+                CheckProgrammerFormation(Vector3.zero);
                 ChangeTurnToBossIfAllProgrammersPerformAction();
             };
 
@@ -164,7 +163,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     public void CheckProgrammerFormation(Vector3 position)
     {
-        CurrentAppliedFormation = null;
+        ResetAppliedFormation();
 
         foreach (var formation in Formation.formations)
         {
@@ -178,6 +177,16 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 break;
             }
         }
+    }
+
+    private void ResetAppliedFormation()
+    {
+        if (CurrentAppliedFormation != null)
+        {
+            CurrentAppliedFormation.DetachBurfs();
+        }
+
+        CurrentAppliedFormation = null;
     }
 
     public Formation CurrentAppliedFormation
