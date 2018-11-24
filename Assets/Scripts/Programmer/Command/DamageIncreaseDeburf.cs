@@ -51,18 +51,22 @@ namespace Model
         {
             get
             {
-                return IncreaseRatio > 0.0;
+                return IncreaseRatio < 0.0;
             }
         }
 
         public void Modify(ProgrammerStatus status)
         {
             status.AdditionalDamageRatio += IncreaseRatio;
+
+            CommonLogger.LogFormat("DamageIncreaseDeburf::Modify => 프로그래머 '{0}'가 피격 데미지 버프를 받음. 피격 데미지 비율이 {1} 증가함. 현재 : {2}", status.Name, IncreaseRatio, status.AdditionalDamageRatio);
         }
 
         public void Unmodify(ProgrammerStatus status)
         {
             status.AdditionalDamageRatio -= IncreaseRatio;
+
+            CommonLogger.LogFormat("DamageIncreaseDeburf::Modify => 프로그래머 '{0}'의 피격 데미지 버프가 해제됨. 피격 데미지 비율이 {1} 감소함. 현재 : {2}", status.Name, IncreaseRatio, status.AdditionalDamageRatio);
         }
     }
 }
