@@ -21,7 +21,7 @@ namespace Model
         {
             get
             {
-                return CooldownRatio >= 1.0;
+                return CooldownRatio <= 0.0;
             }
         }
 
@@ -37,7 +37,7 @@ namespace Model
         {
             get
             {
-                return string.Format("모든 프로그래밍 쿨타임을 {0}배 감소 적용됩니다.", CooldownRatio);
+                return string.Format("모든 프로그래밍 공격 쿨타임이 {0}배 추가 적용됩니다.", CooldownRatio);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Model
         {
             get
             {
-                return "Cooldown";
+                return "Coffee";
             }
         }
 
@@ -58,9 +58,9 @@ namespace Model
         {
             if (activeSkill.Information.Type != SkillType.None)
             {
-                activeSkill.AdditionlCooldownRatio += CooldownRatio;;
+                activeSkill.AdditionlCooldownRatio += CooldownRatio;
 
-                CommonLogger.LogFormat("SkillCooldownBurf::Modify => 스킬 '{0}'에 znfxkdla 버프를 받음. 쿨타임이 {1} 감소함. 현재 : {2}", activeSkill.Information.Name, CooldownRatio, activeSkill.AdditionlCooldownRatio);
+                CommonLogger.LogFormat("SkillCooldownBurf::Modify => 스킬 '{0}'에 쿨타임 버프를 받음. 쿨타임 비율이 {1}만큼 증가함. 현재 : {2}", activeSkill.Information.Name, CooldownRatio, activeSkill.AdditionlCooldownRatio);
             }
         }
 
@@ -68,9 +68,9 @@ namespace Model
         {
             if (activeSkill.Information.Type != SkillType.None)
             {
-                activeSkill.AdditionalDamageRatio -= CooldownRatio;
+                activeSkill.AdditionlCooldownRatio -= CooldownRatio;
 
-                CommonLogger.LogFormat("SkillCooldownBurf::Unmodify => 스킬 '{0}'의 쿨타임 버프가 해제됨. 쿨타임이 {1} 증가함. 현재 : {2}", activeSkill.Information.Name, CooldownRatio, activeSkill.AdditionlCooldownRatio);
+                CommonLogger.LogFormat("SkillCooldownBurf::Unmodify => 스킬 '{0}'의 쿨타임 버프가 해제됨. 쿨타임 비율이 {1}만큼 감소함. 현재 : {2}", activeSkill.Information.Name, CooldownRatio, activeSkill.AdditionlCooldownRatio);
             }
         }
     }
