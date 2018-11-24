@@ -172,6 +172,18 @@ namespace Model
             }
         }
 
+        public TBurf GetBurf<TBurf>() where TBurf : IBurf
+        {
+            var burf = Burfs.OfType<TBurf>().FirstOrDefault();
+            return burf;
+        }
+
+        public bool HasBurf<TBurf>() where TBurf : IBurf
+        {
+            var burf = Burfs.OfType<TBurf>().FirstOrDefault();
+            return burf != null;
+        }
+
         public bool isValidBurfs(String Name)
         {
             foreach(var iter in Burfs.ToList())
