@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Model
 {
-    class DamageIncreaseDeburf : IBurf, IStatusModificationCommand
+    public class DamageIncreaseDeburf : IBurf, IStatusModificationCommand
     {
-        private double xRatio;
         public DamageIncreaseDeburf(double ratio)
         {
             IncreaseRatio = ratio;
@@ -27,7 +26,7 @@ namespace Model
         {
             get
             {
-                return string.Format("자신이 받은 데미지를 {0} 배 증가시킨다.", IncreaseRatio);
+                return string.Format("피격 데미지가 {0}배 추가 적용됩니다.", IncreaseRatio);
             }
         }
 
@@ -35,7 +34,7 @@ namespace Model
         {
             get
             {
-                return "DamageIncrease";
+                return "Blood";
             }
 
         }
@@ -44,7 +43,7 @@ namespace Model
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -52,7 +51,7 @@ namespace Model
         {
             get
             {
-                return false;
+                return IncreaseRatio > 0.0;
             }
         }
 
