@@ -20,6 +20,8 @@ public class StageUiPresenter : MonoBehaviour
 
     private void Start()
     {
+        objectInformationPresenter.ResetInformationUi();
+
         StageManager.Instance.RefreshPresenter(this);
 
         AddEnterEvent<IdleState>(StartUiSynchronizing);
@@ -27,7 +29,6 @@ public class StageUiPresenter : MonoBehaviour
         AddEnterEvent<IdleState>(() =>
         {
             var idleState = stateAnimator.GetBehaviour<IdleState>();
-            objectInformationPresenter.ResetInformationUi();
             idleState.OnSelected += objectInformationPresenter.SetObjectInformation;
         });
 
@@ -66,6 +67,8 @@ public class StageUiPresenter : MonoBehaviour
             moveState.SetSelectedProgrammer(programmer);
 
             idleState.TransitionToMoveState();
+
+            objectInformationPresenter.RenderCancelMove();
         }
     }
 
@@ -80,6 +83,8 @@ public class StageUiPresenter : MonoBehaviour
 
             idleState.TransitionToVacationState();
             vacationState.SetSelectedProgrammer(programmer);
+
+            objectInformationPresenter.RenderStartVacation();
         }
     }
 
@@ -91,6 +96,14 @@ public class StageUiPresenter : MonoBehaviour
         {
             ChangeProgrammerAlphaColor(vacationState.SelectedProgrammer, 0.4f);
             vacationState.ConfirmVacation();
+            objectInformationPresenter.ResetInformationUi();
+        }
+        else
+        {
+            var idleState = stateAnimator.GetBehaviour<IdleState>();
+            idleState.ReserveSetSelectedObject(vacationState.SelectedProgrammer.gameObject);
+
+            objectInformationPresenter.RenderSkillPanel(vacationState.SelectedProgrammer);
         }
 
         vacationState.TransitionToIdle();
@@ -101,6 +114,11 @@ public class StageUiPresenter : MonoBehaviour
         var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
         moveState.DisableCellEffect(gameObject);
         moveState.TransitionToIdle();
+
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
+        idleState.ReserveSetSelectedObject(moveState.SelectedProgrammer.gameObject);
+
+        objectInformationPresenter.RenderSkillPanel(moveState.SelectedProgrammer);
     }
 
     public void TogglePause()

@@ -6,8 +6,13 @@ public class SelectingMoveState : DispatchableState
 {
     public event Action OnMovingStarted = delegate { };
 
-    private Programmer selectedProgrammer;
     private bool isBlockMoving;
+
+    public Programmer SelectedProgrammer
+    {
+        get; private set;
+    }
+
 
     protected override void ProcessEnterState()
     {
@@ -22,7 +27,7 @@ public class SelectingMoveState : DispatchableState
             cell.OnMouseClicked -= MoveProgrammerToCell;
         }
 
-        selectedProgrammer.OnActionFinished -= TransitionToIdle;
+        SelectedProgrammer.OnActionFinished -= TransitionToIdle;
     }
 
     public void SetSelectedProgrammer(Programmer programmer)
@@ -32,10 +37,10 @@ public class SelectingMoveState : DispatchableState
             DebugLogger.LogError("SelectMovingCellState::SetSelectedProgrammer => 주어진 프로개르머가 Null입니다.");
         }
 
-        selectedProgrammer = programmer;
+        SelectedProgrammer = programmer;
         programmer.OnActionFinished += TransitionToIdle;
 
-        foreach (var movableCell in Manager.Unit.CurrentMovableCellFor(selectedProgrammer))
+        foreach (var movableCell in Manager.Unit.CurrentMovableCellFor(SelectedProgrammer))
         {
             movableCell.OnMouseClicked += DisableCellEffect;
             movableCell.OnMouseClicked += MoveProgrammerToCell;
@@ -59,12 +64,12 @@ public class SelectingMoveState : DispatchableState
 
             if (cellComponent != null)
             {
-                var programmerFieldPosition = Manager.StageField.VectorToIndices(selectedProgrammer.transform.position);
+                var programmerFieldPosition = Manager.StageField.VectorToIndices(SelectedProgrammer.transform.position);
                 var positionDifference = cellComponent.PositionInField - programmerFieldPosition;
 
                 var vectorDifference = Manager.StageField.IndicesTransformToVector(positionDifference);
 
-                selectedProgrammer.Move(vectorDifference);
+                SelectedProgrammer.Move(vectorDifference);
             }
         }
     }

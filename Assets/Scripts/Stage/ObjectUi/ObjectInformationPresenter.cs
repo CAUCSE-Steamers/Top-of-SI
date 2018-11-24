@@ -22,6 +22,10 @@ public class ObjectInformationPresenter : MonoBehaviour
     [SerializeField]
     private GameObject vacationPanel;
     [SerializeField]
+    private GameObject cancelMovePanel;
+    [SerializeField]
+    private GameObject startVacationPanel;
+    [SerializeField]
     private GameObject selectedEffectObject;
 
     public void SetObjectInformation(GameObject objectToView)
@@ -37,8 +41,7 @@ public class ObjectInformationPresenter : MonoBehaviour
     public void ResetInformationUi()
     {
         actionBlockingObject.SetActive(false);
-        vacationPanel.SetActive(false);
-
+        SetPanelActiveState(false);
         SetEffectActiveState(false);
         SetDefaultActionState(false);
 
@@ -104,10 +107,9 @@ public class ObjectInformationPresenter : MonoBehaviour
             new Vector3(programmerPosition.x, programmerPosition.y + 0.5f, programmerPosition.z);
     }
 
-    private void RenderSkillPanel(Programmer programmer)
+    public void RenderSkillPanel(Programmer programmer)
     {
-        skillPanelObject.gameObject.SetActive(false);
-        vacationPanel.SetActive(false);
+        SetPanelActiveState(false);
 
         actionBlockingObject.SetActive(StageManager.Instance.Unit.IsAbleToAct(programmer) == false);
 
@@ -119,6 +121,14 @@ public class ObjectInformationPresenter : MonoBehaviour
         {
             RenderActiveSkills(programmer);
         }
+    }
+
+    public void SetPanelActiveState(bool newState)
+    {
+        skillPanelObject.gameObject.SetActive(newState);
+        vacationPanel.SetActive(newState);
+        cancelMovePanel.SetActive(newState);
+        startVacationPanel.SetActive(newState);
     }
 
     private void RenderReturnFromVacation(Programmer programmer)
@@ -136,6 +146,14 @@ public class ObjectInformationPresenter : MonoBehaviour
     {
         skillPanelObject.gameObject.SetActive(true);
 
+        foreach (var childButton in skillPanelObject.GetComponentsInChildren<Button>())
+        {
+            if (childButton.GetComponent<SkillPresenter>() != null)
+            {
+                Destroy(childButton.gameObject);
+            }
+        }
+
         foreach (var activeSkill in programmer.Ability.AcquiredActiveSkills
                                                       .Where(skill => skill.Information.AcquisitionLevel > 0))
         {
@@ -144,5 +162,17 @@ public class ObjectInformationPresenter : MonoBehaviour
             skillPresenter.RenderSkill(activeSkill);
             skillPresenter.ActivationButton.onClick.AddListener(() => OnSkillInvoked(activeSkill));
         }
+    }
+
+    public void RenderCancelMove()
+    {
+        SetPanelActiveState(false);
+        cancelMovePanel.SetActive(true);
+    }
+
+    public void RenderStartVacation()
+    {
+        SetPanelActiveState(false);
+        startVacationPanel.SetActive(true);
     }
 }
