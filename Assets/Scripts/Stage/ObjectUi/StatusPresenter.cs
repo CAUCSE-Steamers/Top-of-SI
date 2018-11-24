@@ -19,7 +19,7 @@ public class StatusPresenter : MonoBehaviour
     {
         burfUi.OnPointerEntered += sender =>
         {
-            if (Status != null)
+            if (Status != null && Status.PositiveBurfs.Count() > 0)
             {
                 burfUi.EnableBurfPopup();
             }
@@ -27,7 +27,7 @@ public class StatusPresenter : MonoBehaviour
 
         deburfUi.OnPointerEntered += sender =>
         {
-            if (Status != null)
+            if (Status != null && Status.NegativeBurfs.Count() > 0)
             {
                 deburfUi.EnableBurfPopup();
             }
