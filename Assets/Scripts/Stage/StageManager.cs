@@ -156,6 +156,8 @@ public class StageManager : MonoBehaviour, IDisposable
             newProgrammer.Ability = programmerSpec.Ability;
             newProgrammer.Status = programmerSpec.Status;
 
+            newProgrammer.Status.ResetStageParameters();
+
             programmerPositions.Add(randomVector);
             Programmers.Add(newProgrammer);
         }

@@ -40,6 +40,15 @@ namespace Model
             Sociality = 10;
         }
 
+        public void ResetStageParameters()
+        {
+            StartVacationDay = null;
+            AdditionalDamageRatio = 0.0;
+            HealRate = 0.0;
+            RemainingVacationDay = 0;
+            burfs.Clear();
+        }
+
         public int? StartVacationDay
         {
             get; set;
