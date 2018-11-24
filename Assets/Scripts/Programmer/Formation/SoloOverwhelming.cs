@@ -17,9 +17,10 @@ namespace Model.Formation
         {
             burfs = new List<IBurf>
             {
-                new SkillDamageBurf(0.2),
-                new NormalAttackDamageBurf(0.5),
-                new HealBurf(2, 3)
+                new SkillDamageBurf(0.2) { RemainingTurn = int.MaxValue },
+                new NormalAttackDamageBurf(0.5) { RemainingTurn = int.MaxValue },
+                new HealBurf(2, 3) { RemainingTurn = int.MaxValue },
+                new HurtDamageBurf(-0.2) { RemainingTurn = int.MaxValue }
             };
         }
 
@@ -35,6 +36,7 @@ namespace Model.Formation
         protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
         {
             var programmer = programmers.Single();
+
             foreach (var burf in burfs)
             {
                 programmer.RegisterBurf(burf);

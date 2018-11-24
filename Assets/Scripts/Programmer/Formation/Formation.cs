@@ -11,7 +11,9 @@ namespace Model.Formation
     {
         public readonly static IEnumerable<Formation> formations;
         protected static Programmer central;
+
         protected IEnumerable<IBurf> burfs;
+
         static Formation()
         {
             var formationType = typeof(Formation);
@@ -54,7 +56,7 @@ namespace Model.Formation
 
         public virtual void DetachBurfs()
         {
-            foreach (var programmer in AffectedProgrammers.ToList())
+            foreach (var programmer in AffectedProgrammers)
             {
                 foreach (var burf in burfs)
                 {
