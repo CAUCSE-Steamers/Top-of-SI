@@ -42,6 +42,8 @@ public class StageNoticeUiPresenter : MonoBehaviour
 
     public void RenderBossSkillNotice(ProjectSkill skill)
     {
+        StopAllCoroutines();
+
         PlayerNoticeText.gameObject.SetActive(false);
         PlayerNoticeText.text = string.Empty;
         BossSkillText.text = string.Empty;
@@ -104,6 +106,8 @@ public class StageNoticeUiPresenter : MonoBehaviour
 
     public void RenderPlayerText(string text)
     {
+        StopAllCoroutines();
+
         BossSkillText.gameObject.SetActive(false);
         PlayerNoticeText.gameObject.SetActive(true);
         PlayerNoticeText.text = text;
