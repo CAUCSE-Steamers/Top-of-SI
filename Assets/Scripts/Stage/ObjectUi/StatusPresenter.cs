@@ -59,12 +59,15 @@ public class StatusPresenter : MonoBehaviour
 
     private void PresentFormationStatus()
     {
-        var appliedFormation = StageManager.Instance.Unit.CurrentAppliedFormation;
-        if (appliedFormation != null)
+        if (Status.IsOnVacation == false)
         {
-            formationUi.SetActiveState(true);
-            formationUi.SetText(string.Format("{0} 적용중", appliedFormation.Name));
-        }
+            var appliedFormation = StageManager.Instance.Unit.CurrentAppliedFormation;
+            if (appliedFormation != null)
+            {
+                formationUi.SetActiveState(true);
+                formationUi.SetText(string.Format("{0} 적용중", appliedFormation.Name));
+            }
+        }        
     }
 
     private void SetTextsActiveState(bool newState)
