@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class SocialityBurf : IBurf, IStatusModificationCommand
+    public class SocialityBurf : IBurf, IStatusModificationCommand
     {
         public SocialityBurf(int sociality)
         {
@@ -26,7 +26,7 @@ namespace Model
         {
             get
             {
-                return string.Format("자신의 리더십을 {0} 증가시킨다.", Sociality);
+                return string.Format("매 턴마다 리더십이 {0}만큼 증가합니다.", Sociality);
             }
         }
 
@@ -34,7 +34,7 @@ namespace Model
         {
             get
             {
-                return "Sociality";
+                return "Call";
             }
         }
 
@@ -50,7 +50,7 @@ namespace Model
         {
             get
             {
-                return true;
+                return Sociality > 0;
             }
         }
 
