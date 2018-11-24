@@ -103,7 +103,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         foreach (var programmer in Programmers)
         {
-            programmer.Status.RemainingVacationDay = StageManager.Instance.CurrentStage.ElapsedDayLimit / 3;
+            programmer.Status.RemainingVacationDay = StageManager.Instance.CurrentStage.ElapsedDayLimit;
         }
     }
 
@@ -226,6 +226,16 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         if (Turn == TurnState.Boss)
         {
+            if (Programmers.Where(programmer => programmer.Status.IsOnVacation).Count() ==
+                Programmers.Count())
+            {
+                CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청하려 했으나, 모든 프로그래머가 휴가 중이므로 취소됨.");
+
+                StageManager.Instance.StageUi.RenderPlayerText("프로젝트가 아무런 행동도 수행하지 않았습니다.");
+                boss.InvokeFinished();
+                return;
+            }
+
             CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청함.");
 
             //Decrease Boss Skill Cool
@@ -248,6 +258,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             {
                 //MOVE
                 StageManager.Instance.MoveBoss();
+                StageManager.Instance.StageUi.RenderPlayerText("프로젝트의 방향이 전환되었습니다!");
             }
             else
             {
