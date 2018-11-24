@@ -106,6 +106,24 @@ public class ObjectInformationPresenter : MonoBehaviour
     {
         actionBlockingObject.SetActive(StageManager.Instance.Unit.IsAbleToAct(programmer) == false);
 
+        // TODO: 스테이지 끝나면 휴가에서 강제 송환해야..
+        if (programmer.Status.IsOnVacation)
+        {
+            RenderReturnFromVacation(programmer);
+        }
+        else
+        {
+            RenderActiveSkills(programmer);
+        }
+    }
+
+    private void RenderReturnFromVacation(Programmer programmer)
+    {
+
+    }
+
+    private void RenderActiveSkills(Programmer programmer)
+    {
         foreach (var activeSkill in programmer.Ability.AcquiredActiveSkills
                                                       .Where(skill => skill.Information.AcquisitionLevel > 0))
         {
