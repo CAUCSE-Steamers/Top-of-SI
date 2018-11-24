@@ -223,6 +223,8 @@ public class StageUiPresenter : MonoBehaviour
 
         currentSelectedProgrammer.ActFinish();
         objectInformationPresenter.ResetInformationUi();
+
+        StageManager.Instance.Unit.CheckProgrammerFormation(Vector3.zero);
     }
 
     private void ChangeProgrammerAlphaColor(Programmer programmer, float alphaValue)

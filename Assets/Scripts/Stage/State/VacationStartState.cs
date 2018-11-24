@@ -23,6 +23,7 @@ public class VacationStartState : DispatchableState
         if (SelectedProgrammer != null)
         {
             SelectedProgrammer.GoVacation(Manager.Status.ElapsedDays);
+            StageManager.Instance.Unit.CheckProgrammerFormation(Vector3.zero);
         }
     }
 

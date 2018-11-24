@@ -113,11 +113,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         foreach (var programmer in programmerActingDictionary.Keys)
         {
-            programmer.OnMovingStarted += position =>
-            {
-                CurrentAppliedFormation = null;
-            };
-
             programmer.OnMovingEnded += CheckProgrammerFormation;
             programmer.OnActionFinished += () =>
             {
@@ -129,8 +124,10 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         }
     }
 
-    private void CheckProgrammerFormation(Vector3 position)
+    public void CheckProgrammerFormation(Vector3 position)
     {
+        CurrentAppliedFormation = null;
+
         foreach (var formation in Formation.formations)
         {
             if (formation.CanApplyFormation())
