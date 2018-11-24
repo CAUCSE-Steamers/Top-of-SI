@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using Model;
+using System.Linq;
 
 public class StageStatusManager : MonoBehaviour, IEventDisposable
 {
@@ -36,6 +37,9 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
 
         unitManager.OnTurnChanged += SetToGameOverIfDayIsEqualToLimitAndTurnChangedToBoss;
         unitManager.OnTurnChanged += IncreaseDayIfTurnChangedToPlayer;
+        OnStatusChanged += SetTurnStageToEnd;
+        OnStatusChanged += ForceReturningFromVacationWhenStageFinished;
+
         this.maximumDayLimit = maximumDayLimit;
         this.unitManager = unitManager;
 
@@ -47,9 +51,18 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         CommonLogger.Log("StageStatusManager::InitializeStageStatus => 초기화 완료");
     }
 
+    private void SetTurnStageToEnd(StageStatus turn)
+    {
+        if (turn != StageStatus.InProgress)
+        {
+            unitManager.Turn = TurnState.GameEnd;
+        }
+    }
+
     public void RegisterEventAfterInit(UnitManager unitManager)
     {
         unitManager.Boss.OnDeath += SetToStageClear;
+        unitManager.OnTurnChanged += DecreaseAvailableVacationIfTurnChangedToPlayer;
     }
 
     private void SetToGameOverIfDayExceeded(int currentDays)
@@ -127,5 +140,47 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         OnStageDirectionChanged = delegate { };
 
         CommonLogger.Log("StageStatusManager::DisposeRegisteredEvents => 이벤트 Disposing 완료.");
+    }
+
+    private void DecreaseAvailableVacationIfTurnChangedToPlayer(TurnState turn)
+    {
+        if (turn == TurnState.Player)
+        {
+            int forcedReturnedCount = 0;
+
+            foreach (var programmer in unitManager.Programmers.Where(programmer => programmer.Status.IsOnVacation).ToList())
+            {
+                --programmer.Status.RemainingVacationDay;
+
+                if (programmer.Status.RemainingVacationDay <= 0)
+                {
+                    CommonLogger.LogFormat("StageStatusManager::DecreaseAvailableVacationIfTurnChangedToPlayer => 잔여 휴가 일수가 끝나서 {0}가 휴가에서 강제로 돌아옴.", programmer.Status.Name);
+
+                    programmer.ReturnFromVacation(ElapsedDays, false);
+                    StageManager.Instance.StageUi.ChangeProgrammerAlphaColor(programmer, 1f);
+
+                    ++forcedReturnedCount;
+                }
+
+                if (forcedReturnedCount > 0)
+                {
+                    StageManager.Instance.StageUi.RenderPlayerText(string.Format("프로그래머 {0}명이 잔여 휴가 일수가 없어 근무로 돌아옵니다.", forcedReturnedCount));
+                }
+            }
+        }
+    }
+
+    private void ForceReturningFromVacationWhenStageFinished(StageStatus stageStatus)
+    {
+        if (stageStatus != StageStatus.InProgress)
+        {
+            foreach (var programmer in unitManager.Programmers.Where(programmer => programmer.Status.IsOnVacation).ToList())
+            {
+                CommonLogger.LogFormat("StageStatusManager::ForceReturningFromVacationWhenStageFinished => 스테이지가 종료되어 {0}가 휴가에서 강제로 돌아옴.", programmer.Status.Name);
+                programmer.ReturnFromVacation(ElapsedDays);
+
+                StageManager.Instance.StageUi.ChangeProgrammerAlphaColor(programmer, 1f);
+            }
+        }
     }
 }

@@ -15,9 +15,13 @@ public class StageUiPresenter : MonoBehaviour
     private StageInformationPresenter stageInformationPresenter;
     [SerializeField]
     private StageNoticeUiPresenter stageNoticeUiPresenter;
+    [SerializeField]
+    private GameObject blockingUi;
 
     private void Start()
     {
+        objectInformationPresenter.ResetInformationUi();
+
         StageManager.Instance.RefreshPresenter(this);
 
         AddEnterEvent<IdleState>(StartUiSynchronizing);
@@ -25,14 +29,24 @@ public class StageUiPresenter : MonoBehaviour
         AddEnterEvent<IdleState>(() =>
         {
             var idleState = stateAnimator.GetBehaviour<IdleState>();
-            objectInformationPresenter.ResetInformationUi();
             idleState.OnSelected += objectInformationPresenter.SetObjectInformation;
         });
 
         var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
         moveState.OnMovingStarted += () => objectInformationPresenter.SetEffectActiveState(false);
 
+        foreach (var programmer in StageManager.Instance.Unit.Programmers)
+        {
+            programmer.OnActionStarted += () => SetBlockUiState(true);
+            programmer.OnActionFinished += () => SetBlockUiState(false);
+        }
+
         objectInformationPresenter.OnSkillInvoked += InvokeSkill;
+    }
+
+    private void SetBlockUiState(bool newState)
+    {
+        blockingUi.SetActive(newState);
     }
 
     private void StartUiSynchronizing()
@@ -53,6 +67,8 @@ public class StageUiPresenter : MonoBehaviour
             moveState.SetSelectedProgrammer(programmer);
 
             idleState.TransitionToMoveState();
+
+            objectInformationPresenter.RenderCancelMove();
         }
     }
 
@@ -67,6 +83,8 @@ public class StageUiPresenter : MonoBehaviour
 
             idleState.TransitionToVacationState();
             vacationState.SetSelectedProgrammer(programmer);
+
+            objectInformationPresenter.RenderStartVacation();
         }
     }
 
@@ -76,7 +94,16 @@ public class StageUiPresenter : MonoBehaviour
 
         if (confirmingVacation)
         {
+            ChangeProgrammerAlphaColor(vacationState.SelectedProgrammer, 0.4f);
             vacationState.ConfirmVacation();
+            objectInformationPresenter.ResetInformationUi();
+        }
+        else
+        {
+            var idleState = stateAnimator.GetBehaviour<IdleState>();
+            idleState.ReserveSetSelectedObject(vacationState.SelectedProgrammer.gameObject);
+
+            objectInformationPresenter.RenderSkillPanel(vacationState.SelectedProgrammer);
         }
 
         vacationState.TransitionToIdle();
@@ -87,6 +114,11 @@ public class StageUiPresenter : MonoBehaviour
         var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
         moveState.DisableCellEffect(gameObject);
         moveState.TransitionToIdle();
+
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
+        idleState.ReserveSetSelectedObject(moveState.SelectedProgrammer.gameObject);
+
+        objectInformationPresenter.RenderSkillPanel(moveState.SelectedProgrammer);
     }
 
     public void TogglePause()
@@ -208,9 +240,38 @@ public class StageUiPresenter : MonoBehaviour
         idleState.ResetSelectedObject();
     }
 
+    public void ActOnVacation(bool isReturning)
+    {
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
+        var currentSelectedProgrammer = idleState.SelectedObject.GetComponent<Programmer>();
+        int elapsedDays = StageManager.Instance.Status.ElapsedDays;
+        
+        if (isReturning)
+        {
+            currentSelectedProgrammer.ReturnFromVacation(elapsedDays);
+            ChangeProgrammerAlphaColor(currentSelectedProgrammer, 1f);
+        }
+
+        currentSelectedProgrammer.ActFinish();
+        objectInformationPresenter.ResetInformationUi();
+
+        StageManager.Instance.Unit.CheckProgrammerFormation(Vector3.zero);
+    }
+
+    public void ChangeProgrammerAlphaColor(Programmer programmer, float alphaValue)
+    {
+        foreach (var renderer in programmer.GetComponentsInChildren<Renderer>())
+        {
+            foreach (var material in renderer.materials)
+            {
+                material.color = new Color(1, 1, 1, alphaValue);
+            }
+        }
+    }
+
     private void HandleMissedSkill(ActiveSkill activeSkill)
     {
-        RenderBossText("공격이 빗나갔습니다!");
+        RenderPlayerText("공격이 빗나갔습니다!");
     }
 
     public void RenderBossSkillNotice(ProjectSkill skill)
@@ -218,8 +279,8 @@ public class StageUiPresenter : MonoBehaviour
         stageNoticeUiPresenter.RenderBossSkillNotice(skill);
     }
 
-    public void RenderBossText(string text)
+    public void RenderPlayerText(string text)
     {
-        stageNoticeUiPresenter.RenderBossText(text);
+        stageNoticeUiPresenter.RenderPlayerText(text);
     }
 }

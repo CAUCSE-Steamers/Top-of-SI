@@ -10,6 +10,22 @@ public class Field : MonoBehaviour
     private IList<IList<Cell>> cellsInSquare;
     private Vector2Int size;
 
+    public void BlockCellClicking()
+    {
+        foreach (var cell in Cells)
+        {
+            cell.gameObject.layer = 2;
+        }
+    }
+
+    public void UnblockCellClicking()
+    {
+        foreach (var cell in Cells)
+        {
+            cell.gameObject.layer = Cell.Layer;
+        }
+    }
+
     public IEnumerable<Cell> Cells
     {
         get

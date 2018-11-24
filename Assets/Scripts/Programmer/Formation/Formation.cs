@@ -65,7 +65,7 @@ namespace Model.Formation
 
         public bool CanApplyFormation()
         {
-            var programmersInStage = StageManager.Instance.Unit.Programmers;
+            var programmersInStage = StageManager.Instance.Unit.NotVacationProgrammers;
 
             if (programmersInStage.Count() != NumberOfProgrammers)
             {
@@ -92,7 +92,7 @@ namespace Model.Formation
         private IEnumerable<Vector2Int> FetchRelativePositionsFor(Vector2Int centralLocation)
         {
             var stageField = StageManager.Instance.StageField;
-            var programmers = StageManager.Instance.Unit.Programmers;
+            var programmers = StageManager.Instance.Unit.NotVacationProgrammers;
 
             var relativePositions = new List<Vector2Int>
             {

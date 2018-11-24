@@ -127,9 +127,6 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
         OnChangeStage += lobbyUi.UpdateProject;
         SelectedStage = stages[0];
-
-            // TODO: 랜덤 위치 설정 제대로 안 겹치게 나오나?
-            // TODO: 보스 Status/Ability는 Clone해서 Setting 해야함.
     }
 
     private void Start()

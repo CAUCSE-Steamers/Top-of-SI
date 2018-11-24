@@ -109,6 +109,11 @@ namespace Model
             get; set;
         }
 
+        public int RemainingVacationDay
+        {
+            get; set;
+        }
+
         public void AddBurf(IBurf newBurf)
         {
             burfs.Add(newBurf);

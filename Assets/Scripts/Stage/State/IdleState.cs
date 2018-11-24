@@ -5,10 +5,16 @@ using System.Collections;
 public class IdleState : DispatchableState
 {
     public event Action<GameObject> OnSelected = delegate { };
+    private GameObject reservedObject = null;
 
     public void ResetSelectedObject()
     {
         SelectedObject = null;
+    }
+
+    public void ReserveSetSelectedObject(GameObject obj)
+    {
+        reservedObject = obj;
     }
 
     public GameObject SelectedObject
@@ -35,6 +41,12 @@ public class IdleState : DispatchableState
     protected override void ProcessEnterState()
     {
         ResetSelectedObject();
+
+        if (reservedObject != null)
+        {
+            SelectedObject = reservedObject;
+            reservedObject = null;
+        }
 
         foreach (var programmer in Manager.Unit.Programmers)
         {

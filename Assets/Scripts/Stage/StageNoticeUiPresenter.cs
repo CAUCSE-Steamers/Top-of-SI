@@ -13,9 +13,9 @@ public class StageNoticeUiPresenter : MonoBehaviour
     [SerializeField]
     private Text rightBossSkillText;
     [SerializeField]
-    private Text leftBossNoticeText;
+    private Text leftPlayerText;
     [SerializeField]
-    private Text rightBossNoticeText;
+    private Text rightPlayerText;
 
     private Text BossSkillText
     {
@@ -26,12 +26,12 @@ public class StageNoticeUiPresenter : MonoBehaviour
         }
     }
 
-    private Text BossNoticeText
+    private Text PlayerNoticeText
     {
         get
         {
             return StageManager.Instance.Status.StageDirection == Direction.Left ?
-                   leftBossNoticeText : rightBossNoticeText;
+                   leftPlayerText : rightPlayerText;
         }
     }
 
@@ -42,8 +42,10 @@ public class StageNoticeUiPresenter : MonoBehaviour
 
     public void RenderBossSkillNotice(ProjectSkill skill)
     {
-        BossNoticeText.gameObject.SetActive(false);
-        BossNoticeText.text = string.Empty;
+        StopAllCoroutines();
+
+        PlayerNoticeText.gameObject.SetActive(false);
+        PlayerNoticeText.text = string.Empty;
         BossSkillText.text = string.Empty;
 
         SetBossSkillNoticeActiveState(true);
@@ -102,12 +104,14 @@ public class StageNoticeUiPresenter : MonoBehaviour
         BossSkillText.text = noticeBuilder.ToString();
     }
 
-    public void RenderBossText(string text)
+    public void RenderPlayerText(string text)
     {
-        BossSkillText.gameObject.SetActive(false);
-        BossNoticeText.gameObject.SetActive(true);
-        BossNoticeText.text = text;
+        StopAllCoroutines();
 
-        StartCoroutine(AutomaticTurnOffText(BossNoticeText, 1.0f));
+        BossSkillText.gameObject.SetActive(false);
+        PlayerNoticeText.gameObject.SetActive(true);
+        PlayerNoticeText.text = text;
+
+        StartCoroutine(AutomaticTurnOffText(PlayerNoticeText, 2.5f));
     }
 }

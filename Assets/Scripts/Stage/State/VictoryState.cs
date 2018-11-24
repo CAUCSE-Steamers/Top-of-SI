@@ -1,18 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Model;
 
-public class VictoryState : DispatchableState {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-
+public class VictoryState : DispatchableState
+{
+    protected override void ProcessEnterState()
+    {
+        StageManager.Instance.Status.CurrentStatus = StageStatus.Failure;
+    }
 }

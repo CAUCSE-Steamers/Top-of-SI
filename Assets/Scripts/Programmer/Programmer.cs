@@ -8,6 +8,9 @@ using System.Xml.Linq;
 
 public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, IXmlConvertible, IXmlStateRecoverable
 {
+    public const int Layer = 8;
+
+    public event Action OnActionStarted = delegate { };
     public event Action OnActionFinished = delegate { };
 
     public event Action<Vector3> OnMovingStarted = delegate { };
@@ -20,6 +23,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public event Action<int> OnDamaged = delegate { };
     public event Action OnDeath = delegate { };
+    
 
     public ProgrammerStatus Status
     {
@@ -110,6 +114,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public void Move(Vector3 deltaPosition)
     {
+        OnActionStarted();
+
         CommonLogger.LogFormat("Programmer::Move => 프로그래머가 이동 명령을 받음. DeltaPosition = {0}", deltaPosition);
         StopCoroutine("StartMove");
 
@@ -151,6 +157,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public void UseSkill()
     {
+        OnActionStarted();
+
         CommonLogger.Log("Programmer::UseSkill => 프로그래머의 스킬 사용이 시작됨.");
         StartCoroutine(StartUseSkill());
     }
@@ -182,6 +190,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public void DisposeRegisteredEvents()
     {
+        OnActionStarted = delegate { };
         OnActionFinished = delegate { };
         OnMovingEnded = delegate { };
         OnSkillStarted = delegate { };
@@ -208,22 +217,35 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         OnActionFinished();
     }
 
-    public void ReturnFromVacation(int elapsedDays)
+    public int VacationHealthQuantity(int elapsedDays)
     {
-        if (Status.IsOnVacation == false)
+        if (Status.StartVacationDay == null)
         {
-            DebugLogger.LogWarningFormat("Programmer::GoVacation => 프로그래머 '{0}'는 휴가를 떠나지 않은 상태에서 복귀하려고 합니다.", name);
+            return 0;
         }
 
         int deltaDays = (elapsedDays - Status.StartVacationDay).Value;
-        int healQuantity = (int)((Status.FullHealth * (0.05 * deltaDays * deltaDays)));
+        int healQuantity = (int) ((Status.FullHealth * (0.02 * deltaDays)));
 
-        Heal(healQuantity);
+        return healQuantity;
+    }
+
+    public void ReturnFromVacation(int elapsedDays, bool isFinishAction = true)
+    {
+        if (Status.IsOnVacation == false)
+        {
+            DebugLogger.LogWarningFormat("Programmer::ReturnFromVacation => 프로그래머 '{0}'는 휴가를 떠나지 않은 상태에서 복귀하려고 합니다.", name);
+        }
+
+        Heal(VacationHealthQuantity(elapsedDays));
         Status.StartVacationDay = null;
 
-        CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
+        CommonLogger.LogFormat("Programmer::ReturnFromVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
 
-        OnActionFinished();
+        if (isFinishAction)
+        {
+            OnActionFinished();
+        }
     }
     
     public void ApplyPersistentStatusBurfs()
@@ -233,6 +255,11 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         {
             statusBurf.Modify(Status);
         }
+    }
+
+    public void ActFinish()
+    {
+        OnActionFinished();
     }
 
     public void RegisterBurf(IBurf newBurf)

@@ -6,7 +6,18 @@ public class SelectingMoveState : DispatchableState
 {
     public event Action OnMovingStarted = delegate { };
 
-    private Programmer selectedProgrammer;
+    private bool isBlockMoving;
+
+    public Programmer SelectedProgrammer
+    {
+        get; private set;
+    }
+
+
+    protected override void ProcessEnterState()
+    {
+        isBlockMoving = false;
+    }
 
     protected override void ProcessExitState()
     {
@@ -16,7 +27,7 @@ public class SelectingMoveState : DispatchableState
             cell.OnMouseClicked -= MoveProgrammerToCell;
         }
 
-        selectedProgrammer.OnActionFinished -= TransitionToIdle;
+        SelectedProgrammer.OnActionFinished -= TransitionToIdle;
     }
 
     public void SetSelectedProgrammer(Programmer programmer)
@@ -26,10 +37,10 @@ public class SelectingMoveState : DispatchableState
             DebugLogger.LogError("SelectMovingCellState::SetSelectedProgrammer => 주어진 프로개르머가 Null입니다.");
         }
 
-        selectedProgrammer = programmer;
+        SelectedProgrammer = programmer;
         programmer.OnActionFinished += TransitionToIdle;
 
-        foreach (var movableCell in Manager.Unit.CurrentMovableCellFor(selectedProgrammer))
+        foreach (var movableCell in Manager.Unit.CurrentMovableCellFor(SelectedProgrammer))
         {
             movableCell.OnMouseClicked += DisableCellEffect;
             movableCell.OnMouseClicked += MoveProgrammerToCell;
@@ -45,23 +56,27 @@ public class SelectingMoveState : DispatchableState
 
     private void MoveProgrammerToCell(GameObject selectedObject)
     {
-        OnMovingStarted();
-
-        var cellComponent = selectedObject.GetComponent<Cell>();
-
-        if (cellComponent != null)
+        if (isBlockMoving == false)
         {
-            var programmerFieldPosition = Manager.StageField.VectorToIndices(selectedProgrammer.transform.position);
-            var positionDifference = cellComponent.PositionInField - programmerFieldPosition;
+            OnMovingStarted();
 
-            var vectorDifference = Manager.StageField.IndicesTransformToVector(positionDifference);
+            var cellComponent = selectedObject.GetComponent<Cell>();
 
-            selectedProgrammer.Move(vectorDifference);
+            if (cellComponent != null)
+            {
+                var programmerFieldPosition = Manager.StageField.VectorToIndices(SelectedProgrammer.transform.position);
+                var positionDifference = cellComponent.PositionInField - programmerFieldPosition;
+
+                var vectorDifference = Manager.StageField.IndicesTransformToVector(positionDifference);
+
+                SelectedProgrammer.Move(vectorDifference);
+            }
         }
     }
 
     public void TransitionToIdle()
     {
         PlayingAnimator.SetStateTrigger(StateParameter.Idle);
+        isBlockMoving = true;
     }
 }

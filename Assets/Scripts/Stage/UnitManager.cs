@@ -45,6 +45,15 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         }
     }
 
+    public IEnumerable<Programmer> NotVacationProgrammers
+    {
+        get
+        {
+            return Programmers.Where(programmer => programmer.Status.IsOnVacation == false);
+        }
+    }
+
+
     public AbstractProject Boss
     {
         get
@@ -80,18 +89,27 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
         this.boss = boss;
         this.stageField = stageField;
-
+        
         SubscribeToBoss();
         SubscribeToProgrammers();
 
         Turn = TurnState.Player;
+        SetVacationLimitToProgrammers();
 
         CommonLogger.Log("UnitManager::SetUnits => 초기화 완료.");
     }
 
+    private void SetVacationLimitToProgrammers()
+    {
+        foreach (var programmer in Programmers)
+        {
+            programmer.Status.RemainingVacationDay = StageManager.Instance.CurrentStage.ElapsedDayLimit;
+        }
+    }
+
     private void ApplyBurfsIfTurnChangedToPlayer(TurnState turn)
     {
-        if (turn == TurnState.Player)
+        if (Turn == TurnState.Player)
         {
             foreach (var programmer in Programmers)
             {
@@ -113,14 +131,27 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         foreach (var programmer in programmerActingDictionary.Keys)
         {
-            programmer.OnMovingStarted += position =>
+            programmer.OnMovingEnded += CheckProgrammerFormation;
+
+            programmer.OnActionStarted += () =>
             {
-                CurrentAppliedFormation = null;
+                StageManager.Instance.StageField.BlockCellClicking();
+
+                foreach (var prog in Programmers)
+                {
+                    prog.gameObject.layer = 2;
+                }
             };
 
-            programmer.OnMovingEnded += CheckProgrammerFormation;
             programmer.OnActionFinished += () =>
             {
+                StageManager.Instance.StageField.UnblockCellClicking();
+
+                foreach (var prog in Programmers)
+                {
+                    prog.gameObject.layer = Programmer.Layer;
+                }
+
                 programmerActingDictionary[programmer] = true;
                 ChangeTurnToBossIfAllProgrammersPerformAction();
             };
@@ -129,8 +160,10 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         }
     }
 
-    private void CheckProgrammerFormation(Vector3 position)
+    public void CheckProgrammerFormation(Vector3 position)
     {
+        CurrentAppliedFormation = null;
+
         foreach (var formation in Formation.formations)
         {
             if (formation.CanApplyFormation())
@@ -191,8 +224,18 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void RequestBossActionIfTurnChangedToBoss(TurnState turn)
     {
-        if (turn == TurnState.Boss)
+        if (Turn == TurnState.Boss)
         {
+            if (Programmers.Where(programmer => programmer.Status.IsOnVacation).Count() ==
+                Programmers.Count())
+            {
+                CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청하려 했으나, 모든 프로그래머가 휴가 중이므로 취소됨.");
+
+                StageManager.Instance.StageUi.RenderPlayerText("프로젝트가 아무런 행동도 수행하지 않았습니다.");
+                boss.InvokeFinished();
+                return;
+            }
+
             CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청함.");
 
             //Decrease Boss Skill Cool
@@ -215,6 +258,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             {
                 //MOVE
                 StageManager.Instance.MoveBoss();
+                StageManager.Instance.StageUi.RenderPlayerText("프로젝트의 방향이 전환되었습니다!");
             }
             else
             {
@@ -229,7 +273,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 StageManager.Instance.StageUi.RenderBossSkillNotice(usedSkill);
 
                 CommonLogger.LogFormat("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스가 {0} 스킬을 사용함.", usedSkill.Information.Name);
-                
+
                 switch (usedSkill.Information.Type)
                 {
                     case ProjectSkillType.SingleAttack:
@@ -256,7 +300,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void InvokeSkill(ProjectSingleAttackSkill skill)
     {
-        var programmer = Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
+        var programmer = NotVacationProgrammers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
         if (programmer.Status.isValidBurfs("Splash"))
         {
             foreach(var iter in Programmers)
@@ -283,9 +327,10 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             programmer.Hurt((int)skill.Damage);
         }
     }
+
     private void InvokeSkill(ProjectMultiAttackSkill skill)
     {
-        foreach(var programmer in Programmers)
+        foreach(var programmer in NotVacationProgrammers)
         {
             if (programmer.Status.isValidBurfs("Spread"))
             {
@@ -310,8 +355,8 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     }
     private void InvokeSkill(ProjectSingleDeburfSkill skill)
     {
-        Programmer programmer = Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
-        DeburfType blockMove = programmer.Deburf(skill.Deburf);
+        Programmer targetProgrammer = NotVacationProgrammers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
+        DeburfType blockMove = targetProgrammer.Deburf(skill.Deburf);
         if((blockMove & DeburfType.DisableMovement) == DeburfType.DisableMovement)
         {
             //TODO : let programmer can't move
@@ -320,7 +365,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     private void InvokeSkill(ProjectMultiDeburfSkill skill)
     {
         DeburfType outOfProgrammer = DeburfType.None;
-        foreach (var programmer in Programmers)
+        foreach (var programmer in NotVacationProgrammers)
         {
             outOfProgrammer = (outOfProgrammer | programmer.Deburf(skill.Deburf));
         }
@@ -336,7 +381,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void PermitProgrammersActionIfTurnChangedToPlayer(TurnState turn)
     {
-        if (turn == TurnState.Player)
+        if (Turn == TurnState.Player)
         {
             foreach (var programmer in programmerActingDictionary.Keys.ToArray())
             {
@@ -363,7 +408,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void DecreaseActiveSkillCooldownIfTurnChangedToPlayer(TurnState turn)
     {
-        if (turn == TurnState.Player)
+        if (Turn == TurnState.Player)
         {
             foreach (var activeSkill in Programmers.SelectMany(programmer => programmer.Ability.AcquiredActiveSkills))
             {
