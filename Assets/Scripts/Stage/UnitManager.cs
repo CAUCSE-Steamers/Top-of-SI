@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 public class UnitManager : MonoBehaviour, IEventDisposable
 {
     public readonly static IEnumerable<Vector2Int> ProgrammerMovableIndices = new List<Vector2Int>
@@ -298,17 +300,28 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         }
     }
 
+    private void ApplyDamage(Programmer programmer, double damage)
+    {
+        if (programmer.Status.HasBurf<DamageSplashBurf>())
+        {
+            var burf = programmer.Status.GetBurf<DamageSplashBurf>();
+            burf.Accept(damage);
+        }
+        else
+        {
+            programmer.Hurt((int) damage);
+        }
+    }
+
     private void InvokeSkill(ProjectSingleAttackSkill skill)
     {
-        var programmer = NotVacationProgrammers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
-        if (programmer.Status.isValidBurfs("Splash"))
-        {
-            foreach(var iter in Programmers)
-            {
-                iter.Hurt((int)(skill.Damage / Programmers.Count()));
-            }
-        }
-        else if(programmer.Status.isValidBurfs("Spread")){
+        int randomIndex = Random.Range(0, Programmers.Count());
+        var programmer = NotVacationProgrammers.ElementAt(randomIndex);
+
+        ApplyDamage(programmer, skill.Damage);
+        return;
+
+        if (programmer.Status.isValidBurfs("Spread")){
             double ratio = ((DamageSpreadBurf)(programmer.Status.Burfs.Where(burf => burf.IconName.Equals("Spread")).Single())).SpreadRatio;
             foreach (var iter in Programmers)
             {
@@ -330,8 +343,10 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void InvokeSkill(ProjectMultiAttackSkill skill)
     {
-        foreach(var programmer in NotVacationProgrammers)
+        foreach (var programmer in NotVacationProgrammers)
         {
+            ApplyDamage(programmer, skill.Damage);
+            continue;
             if (programmer.Status.isValidBurfs("Spread"))
             {
                 double ratio = ((DamageSpreadBurf)(programmer.Status.Burfs.Where(burf => burf.IconName.Equals("Spread")).Single())).SpreadRatio;
