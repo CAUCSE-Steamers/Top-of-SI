@@ -42,14 +42,5 @@ namespace Model.Formation
                 programmer.RegisterBurf(burf);
             }
         }
-
-        public override void DetachBurfs()
-        {
-            var programmer = AffectedProgrammers.Single();
-            foreach(var burf in burfs)
-            {
-                programmer.Status.RemoveBurf(burf);
-            }
-        }
     }
 }

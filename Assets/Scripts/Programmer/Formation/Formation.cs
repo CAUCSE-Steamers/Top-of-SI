@@ -43,18 +43,18 @@ namespace Model.Formation
 
         public IEnumerable<Programmer> AffectedProgrammers
         {
-            get; protected set;
+            get; private set;
         }
 
         public void AttachBurfs(IEnumerable<Programmer> programmers)
         {
-            AffectedProgrammers = programmers;
-            RegisterBurfs(programmers);
+            AffectedProgrammers = programmers.ToList();
+            RegisterBurfs(AffectedProgrammers);
         }
 
         protected abstract void RegisterBurfs(IEnumerable<Programmer> programmers);
 
-        public virtual void DetachBurfs()
+        public void DetachBurfs()
         {
             foreach (var programmer in AffectedProgrammers)
             {
