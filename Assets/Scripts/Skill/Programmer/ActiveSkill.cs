@@ -15,6 +15,7 @@ namespace Model
         public event Action<ActiveSkill> OnSkillMissed = delegate { };
 
         private double baseDamage = 1.0;
+        private double additionalCooldownRatio;
         private double initialCooldown;
         private double accuracy;
         private int cost;
@@ -73,7 +74,7 @@ namespace Model
 
         public void DecreaseCooldown()
         {
-            if (RemainingCooldown >= 1.0)
+            if (RemainingCooldown > 0.0)
             {
                 RemainingCooldown -= 1.0;
             }
@@ -108,7 +109,18 @@ namespace Model
 
         public double AdditionlCooldownRatio
         {
-            get; set;
+            get
+            {
+                return additionalCooldownRatio;
+            }
+            set
+            {
+                double currentProgressedCooldownRatio = 1.0 - (RemainingCooldown / DefaultCooldown);
+
+                additionalCooldownRatio = value;
+
+                RemainingCooldown = DefaultCooldown * (1.0 - currentProgressedCooldownRatio);
+            }
         }
 
         public double DefaultCooldown
