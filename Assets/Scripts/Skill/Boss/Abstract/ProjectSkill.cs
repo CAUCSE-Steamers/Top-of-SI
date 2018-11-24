@@ -47,6 +47,11 @@ namespace Model
             cooldown -= 1.0;
         }
 
+        public void ForceCooldownToAvailable()
+        {
+            cooldown = 0.0;
+        }
+
         public void ResetCoolDown()
         {
             cooldown = DefaultCooldown;
