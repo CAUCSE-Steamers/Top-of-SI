@@ -34,7 +34,7 @@ namespace Model
         {
             get
             {
-                return "Splash";
+                return "Sharing";
             }
 
         }
