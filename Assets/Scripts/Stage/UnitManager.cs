@@ -256,19 +256,19 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void InvokeSkill(ProjectSingleAttackSkill skill)
     {
-        Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))].Hurt((int)skill.Damage);
+        Programmers.Where(programmer => programmer.Status.IsOnVacation == false).ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))].Hurt((int)skill.Damage);
     }
     private void InvokeSkill(ProjectMultiAttackSkill skill)
     {
-        foreach(var programmer in Programmers)
+        foreach(var programmer in Programmers.Where(programmer => programmer.Status.IsOnVacation == false))
         {
             programmer.Hurt((int)skill.Damage);
         }
     }
     private void InvokeSkill(ProjectSingleDeburfSkill skill)
     {
-        Programmer programmer = Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
-        DeburfType blockMove = programmer.Deburf(skill.Deburf);
+        Programmer targetProgrammer = Programmers.Where(programmer => programmer.Status.IsOnVacation == false).ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
+        DeburfType blockMove = targetProgrammer.Deburf(skill.Deburf);
         if((blockMove & DeburfType.DisableMovement) == DeburfType.DisableMovement)
         {
             //TODO : let programmer can't move
@@ -277,7 +277,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     private void InvokeSkill(ProjectMultiDeburfSkill skill)
     {
         DeburfType outOfProgrammer = DeburfType.None;
-        foreach (var programmer in Programmers)
+        foreach (var programmer in Programmers.Where(programmer => programmer.Status.IsOnVacation == false))
         {
             outOfProgrammer = (outOfProgrammer | programmer.Deburf(skill.Deburf));
         }
