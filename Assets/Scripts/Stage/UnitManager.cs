@@ -321,6 +321,11 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             var burf = programmer.Status.GetBurf<DamageSpreadBurf>();
             burf.Accept(programmer, damage);
         }
+        else if (programmer.Status.HasBurf<TargetedDamageSharingBurf>())
+        {
+            var burf = programmer.Status.GetBurf<TargetedDamageSharingBurf>();
+            burf.Accept(programmer, damage);
+        }
         else
         {
             programmer.Hurt((int) damage);
