@@ -45,7 +45,7 @@ namespace Model
         {
             get
             {
-                return "Coffee";
+                return "DoubleSword";
             }
         }
 
