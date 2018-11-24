@@ -100,7 +100,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void ApplyBurfsIfTurnChangedToPlayer(TurnState turn)
     {
-        if (turn == TurnState.Player)
+        if (Turn == TurnState.Player)
         {
             foreach (var programmer in Programmers)
             {
@@ -197,7 +197,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void RequestBossActionIfTurnChangedToBoss(TurnState turn)
     {
-        if (turn == TurnState.Boss)
+        if (Turn == TurnState.Boss)
         {
             CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청함.");
 
@@ -235,7 +235,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 StageManager.Instance.StageUi.RenderBossSkillNotice(usedSkill);
 
                 CommonLogger.LogFormat("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스가 {0} 스킬을 사용함.", usedSkill.Information.Name);
-                
+
                 switch (usedSkill.Information.Type)
                 {
                     case ProjectSkillType.SingleAttack:
@@ -299,7 +299,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void PermitProgrammersActionIfTurnChangedToPlayer(TurnState turn)
     {
-        if (turn == TurnState.Player)
+        if (Turn == TurnState.Player)
         {
             foreach (var programmer in programmerActingDictionary.Keys.ToArray())
             {
@@ -326,7 +326,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void DecreaseActiveSkillCooldownIfTurnChangedToPlayer(TurnState turn)
     {
-        if (turn == TurnState.Player)
+        if (Turn == TurnState.Player)
         {
             foreach (var activeSkill in Programmers.SelectMany(programmer => programmer.Ability.AcquiredActiveSkills))
             {
