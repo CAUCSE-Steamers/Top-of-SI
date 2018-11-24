@@ -10,7 +10,7 @@ namespace Model.Formation
     public abstract class Formation
     {
         public readonly static IEnumerable<Formation> formations;
-        
+        protected IEnumerable<IBurf> burfs;
         static Formation()
         {
             var formationType = typeof(Formation);
@@ -49,14 +49,17 @@ namespace Model.Formation
             RegisterBurfs(programmers);
         }
 
-        protected virtual void RegisterBurfs(IEnumerable<Programmer> programmers)
-        {
-
-        }
+        protected abstract void RegisterBurfs(IEnumerable<Programmer> programmers);
 
         public virtual void DetachBurfs()
         {
-
+            foreach (var programmer in AffectedProgrammers.ToList())
+            {
+                foreach (var burf in burfs)
+                {
+                    programmer.Status.RemoveBurf(burf);
+                }
+            }
         }
 
         public bool CanApplyFormation()

@@ -14,9 +14,14 @@ namespace Model.Formation
             new Vector2Int(0, -1)
         };
 
-        public PairProgramming() 
-            : base("페어 프로그래밍", 2)
+        public PairProgramming() : base("페어 프로그래밍", 2)
         {
+
+            burfs = new List<IBurf>
+            {
+                new DamageSplashBurf(-0.1),
+                new SocialityBurf(3)
+            };
         }
 
         protected override IEnumerable<Vector2Int> RelativeFormation
@@ -25,6 +30,11 @@ namespace Model.Formation
             {
                 return relativeFormationLocations;
             }
+        }
+
+        protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
+        {
+            throw new NotImplementedException();
         }
     }
 }

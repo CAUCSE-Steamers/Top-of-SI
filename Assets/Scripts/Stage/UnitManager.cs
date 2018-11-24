@@ -138,7 +138,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 CurrentAppliedFormation = formation;
 
                 CommonLogger.LogFormat("UnitManager::CheckProgrammerFormation => 진형 '{0}'가 적용됨.", CurrentAppliedFormation.Name);
-                //TODO: Apply Formation to Programmers
+                CurrentAppliedFormation.AttachBurfs(Programmers);
 
                 break;
             }

@@ -13,16 +13,14 @@ namespace Model.Formation
             new Vector2Int(0, 0)
         };
 
-        private IEnumerable<IBurf> soloBurfs = new List<IBurf>
+        public SoloOverwhelming() : base("장판파", 1)
         {
-            new SkillDamageBurf(0.2),
-            new NormalAttackDamageBurf(0.5),
-            new HealBurf(2, 3)
-        };
-
-        public SoloOverwhelming() 
-            : base("장판파", 1)
-        {
+            burfs = new List<IBurf>
+            {
+                new SkillDamageBurf(0.2),
+                new NormalAttackDamageBurf(0.5),
+                new HealBurf(2, 3)
+            };
         }
 
         protected override IEnumerable<Vector2Int> RelativeFormation
@@ -37,7 +35,7 @@ namespace Model.Formation
         protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
         {
             var programmer = programmers.Single();
-            foreach (var burf in soloBurfs)
+            foreach (var burf in burfs)
             {
                 programmer.RegisterBurf(burf);
             }
@@ -46,7 +44,10 @@ namespace Model.Formation
         public override void DetachBurfs()
         {
             var programmer = AffectedProgrammers.Single();
-
+            foreach(var burf in burfs)
+            {
+                programmer.Status.RemoveBurf(burf);
+            }
         }
     }
 }

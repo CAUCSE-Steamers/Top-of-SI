@@ -16,9 +16,14 @@ namespace Model.Formation
             new Vector2Int(2, -1)
         };
 
-        public Leader()
-            : base("리더", 4)
+        public Leader() : base("리더", 4)
         {
+            burfs = new List<IBurf>
+            {
+                new DamageSpreadBurf(0.33, 0),
+                new LeadershipBurf(5),
+                new HealBurf(5, 5)
+            };
         }
 
         protected override IEnumerable<Vector2Int> RelativeFormation
@@ -27,6 +32,11 @@ namespace Model.Formation
             {
                 return relativeFormationLocations;
             }
+        }
+
+        protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
+        {
+            throw new NotImplementedException();
         }
     }
 }
