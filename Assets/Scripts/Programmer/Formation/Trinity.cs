@@ -15,9 +15,14 @@ namespace Model.Formation
             new Vector2Int(-1, -2)
         };
 
-        public Trinity()
-            : base("트리니티", 3)
+        public Trinity() : base("트리니티", 3)
         {
+            burfs = new List<IBurf>
+            {
+                new DamageIncreaseDeburf(0.2),
+                new HealBurf(3, 5),
+                new SkillCooldownBurf(0.2)
+            };
         }
 
         protected override IEnumerable<Vector2Int> RelativeFormation
@@ -25,6 +30,17 @@ namespace Model.Formation
             get
             {
                 return relativeFormationLocations;
+            }
+        }
+
+        protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
+        {
+            foreach (var programmer in programmers.ToList())
+            {
+                foreach (var burf in burfs.ToList())
+                {
+                    programmer.Status.AddBurf(burf);
+                }
             }
         }
     }

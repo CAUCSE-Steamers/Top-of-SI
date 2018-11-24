@@ -16,9 +16,13 @@ namespace Model.Formation
             new Vector2Int(1, -1)
         };
 
-        public Agile()
-            : base("애자일", 4)
+        public Agile() : base("애자일", 4)
         {
+            burfs = new List<IBurf>
+            {
+                new DamageSplashBurf(0.25),
+                new SocialityBurf(8)
+            };
         }
 
         protected override IEnumerable<Vector2Int> RelativeFormation
@@ -26,6 +30,17 @@ namespace Model.Formation
             get
             {
                 return relativeFormationLocations;
+            }
+        }
+
+        protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
+        {
+            foreach (var programmer in programmers.ToList())
+            {
+                foreach (var burf in burfs.ToList())
+                {
+                    programmer.Status.AddBurf(burf);
+                }
             }
         }
     }

@@ -138,7 +138,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 CurrentAppliedFormation = formation;
 
                 CommonLogger.LogFormat("UnitManager::CheckProgrammerFormation => 진형 '{0}'가 적용됨.", CurrentAppliedFormation.Name);
-                //TODO: Apply Formation to Programmers
+                CurrentAppliedFormation.AttachBurfs(Programmers);
 
                 break;
             }
@@ -256,13 +256,56 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void InvokeSkill(ProjectSingleAttackSkill skill)
     {
-        Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))].Hurt((int)skill.Damage);
+        var programmer = Programmers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
+        if (programmer.Status.isValidBurfs("Splash"))
+        {
+            foreach(var iter in Programmers)
+            {
+                iter.Hurt((int)(skill.Damage / Programmers.Count()));
+            }
+        }
+        else if(programmer.Status.isValidBurfs("Spread")){
+            double ratio = ((DamageSpreadBurf)(programmer.Status.Burfs.Where(burf => burf.IconName.Equals("Spread")).Single())).SpreadRatio;
+            foreach (var iter in Programmers)
+            {
+                if(iter == programmer)
+                {
+                    iter.Hurt((int)(skill.Damage * (1 - ratio)));
+                }
+                else
+                {
+                    iter.Hurt((int)(skill.Damage * ratio / (Programmers.Count() - 1)));
+                }
+            }
+        }
+        else
+        {
+            programmer.Hurt((int)skill.Damage);
+        }
     }
     private void InvokeSkill(ProjectMultiAttackSkill skill)
     {
         foreach(var programmer in Programmers)
         {
-            programmer.Hurt((int)skill.Damage);
+            if (programmer.Status.isValidBurfs("Spread"))
+            {
+                double ratio = ((DamageSpreadBurf)(programmer.Status.Burfs.Where(burf => burf.IconName.Equals("Spread")).Single())).SpreadRatio;
+                foreach (var iter in Programmers)
+                {
+                    if (iter == programmer)
+                    {
+                        iter.Hurt((int)(skill.Damage * (1 - ratio)));
+                    }
+                    else
+                    {
+                        iter.Hurt((int)(skill.Damage * ratio / (Programmers.Count() - 1)));
+                    }
+                }
+            }
+            else
+            {
+                programmer.Hurt((int)skill.Damage);
+            }
         }
     }
     private void InvokeSkill(ProjectSingleDeburfSkill skill)
