@@ -46,8 +46,9 @@ public class BurfPresenter : PointEventTrigger
             var textComponent = createdItem.transform.GetComponentsInChildren<Text>();
 
             imageComponent.sprite = ResourceLoadUtility.LoadIcon(burf.IconName);
-
-            textComponent[0].text = burf.RemainingTurn.ToString();
+            
+            textComponent[0].text = burf.RemainingTurn > 10000 ?
+                "∞" : burf.RemainingTurn.ToString();
             textComponent[1].text = burf.Description;
         }
 
