@@ -8,6 +8,9 @@ using System.Xml.Linq;
 
 public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, IXmlConvertible, IXmlStateRecoverable
 {
+    public const int Layer = 8;
+
+    public event Action OnActionStarted = delegate { };
     public event Action OnActionFinished = delegate { };
 
     public event Action<Vector3> OnMovingStarted = delegate { };
@@ -20,6 +23,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public event Action<int> OnDamaged = delegate { };
     public event Action OnDeath = delegate { };
+    
 
     public ProgrammerStatus Status
     {
@@ -110,6 +114,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public void Move(Vector3 deltaPosition)
     {
+        OnActionStarted();
+
         CommonLogger.LogFormat("Programmer::Move => 프로그래머가 이동 명령을 받음. DeltaPosition = {0}", deltaPosition);
         StopCoroutine("StartMove");
 
@@ -151,6 +157,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public void UseSkill()
     {
+        OnActionStarted();
+
         CommonLogger.Log("Programmer::UseSkill => 프로그래머의 스킬 사용이 시작됨.");
         StartCoroutine(StartUseSkill());
     }
@@ -182,6 +190,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public void DisposeRegisteredEvents()
     {
+        OnActionStarted = delegate { };
         OnActionFinished = delegate { };
         OnMovingEnded = delegate { };
         OnSkillStarted = delegate { };

@@ -5,6 +5,8 @@ using Model;
 
 public class Cell : MonoBehaviour, IEventDisposable
 {
+    public const int Layer = 9;
+
     public event Action<GameObject> OnMouseClicked = delegate { };
 
     [SerializeField]

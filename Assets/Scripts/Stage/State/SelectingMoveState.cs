@@ -7,6 +7,12 @@ public class SelectingMoveState : DispatchableState
     public event Action OnMovingStarted = delegate { };
 
     private Programmer selectedProgrammer;
+    private bool isBlockMoving;
+
+    protected override void ProcessEnterState()
+    {
+        isBlockMoving = false;
+    }
 
     protected override void ProcessExitState()
     {
@@ -45,23 +51,27 @@ public class SelectingMoveState : DispatchableState
 
     private void MoveProgrammerToCell(GameObject selectedObject)
     {
-        OnMovingStarted();
-
-        var cellComponent = selectedObject.GetComponent<Cell>();
-
-        if (cellComponent != null)
+        if (isBlockMoving == false)
         {
-            var programmerFieldPosition = Manager.StageField.VectorToIndices(selectedProgrammer.transform.position);
-            var positionDifference = cellComponent.PositionInField - programmerFieldPosition;
+            OnMovingStarted();
 
-            var vectorDifference = Manager.StageField.IndicesTransformToVector(positionDifference);
+            var cellComponent = selectedObject.GetComponent<Cell>();
 
-            selectedProgrammer.Move(vectorDifference);
+            if (cellComponent != null)
+            {
+                var programmerFieldPosition = Manager.StageField.VectorToIndices(selectedProgrammer.transform.position);
+                var positionDifference = cellComponent.PositionInField - programmerFieldPosition;
+
+                var vectorDifference = Manager.StageField.IndicesTransformToVector(positionDifference);
+
+                selectedProgrammer.Move(vectorDifference);
+            }
         }
     }
 
     public void TransitionToIdle()
     {
         PlayingAnimator.SetStateTrigger(StateParameter.Idle);
+        isBlockMoving = true;
     }
 }

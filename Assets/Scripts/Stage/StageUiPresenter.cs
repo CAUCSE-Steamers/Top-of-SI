@@ -15,6 +15,8 @@ public class StageUiPresenter : MonoBehaviour
     private StageInformationPresenter stageInformationPresenter;
     [SerializeField]
     private StageNoticeUiPresenter stageNoticeUiPresenter;
+    [SerializeField]
+    private GameObject blockingUi;
 
     private void Start()
     {
@@ -32,7 +34,18 @@ public class StageUiPresenter : MonoBehaviour
         var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
         moveState.OnMovingStarted += () => objectInformationPresenter.SetEffectActiveState(false);
 
+        foreach (var programmer in StageManager.Instance.Unit.Programmers)
+        {
+            programmer.OnActionStarted += () => SetBlockUiState(true);
+            programmer.OnActionFinished += () => SetBlockUiState(false);
+        }
+
         objectInformationPresenter.OnSkillInvoked += InvokeSkill;
+    }
+
+    private void SetBlockUiState(bool newState)
+    {
+        blockingUi.SetActive(newState);
     }
 
     private void StartUiSynchronizing()

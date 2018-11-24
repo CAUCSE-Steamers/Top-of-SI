@@ -123,8 +123,18 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         foreach (var programmer in programmerActingDictionary.Keys)
         {
             programmer.OnMovingEnded += CheckProgrammerFormation;
+
+            programmer.OnActionStarted += () =>
+            {
+                StageManager.Instance.StageField.BlockCellClicking();
+                programmer.gameObject.layer = Physics.IgnoreRaycastLayer;
+            };
+
             programmer.OnActionFinished += () =>
             {
+                StageManager.Instance.StageField.UnblockCellClicking();
+                programmer.gameObject.layer = Programmer.Layer;
+
                 programmerActingDictionary[programmer] = true;
                 ChangeTurnToBossIfAllProgrammersPerformAction();
             };
