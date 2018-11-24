@@ -225,13 +225,13 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
     {
         if (Status.IsOnVacation == false)
         {
-            DebugLogger.LogWarningFormat("Programmer::GoVacation => 프로그래머 '{0}'는 휴가를 떠나지 않은 상태에서 복귀하려고 합니다.", name);
+            DebugLogger.LogWarningFormat("Programmer::ReturnFromVacation => 프로그래머 '{0}'는 휴가를 떠나지 않은 상태에서 복귀하려고 합니다.", name);
         }
 
         Heal(VacationHealthQuantity(elapsedDays));
         Status.StartVacationDay = null;
 
-        CommonLogger.LogFormat("Programmer::GoVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
+        CommonLogger.LogFormat("Programmer::ReturnFromVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
 
         OnActionFinished();
     }
