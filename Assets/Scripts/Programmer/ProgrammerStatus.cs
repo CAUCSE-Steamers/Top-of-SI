@@ -102,10 +102,17 @@ namespace Model
 
         public void AddSociality(int quantity)
         {
-            if ((int)(Sociality / 10) < (int)((Sociality + quantity) / 10))
+            int currentSocialityBonusLevel = Sociality / 10;
+            int updatedSocialityBonusLevel = (Sociality + quantity) / 10;
+            int levelDifference = updatedSocialityBonusLevel - currentSocialityBonusLevel;
+
+            if (levelDifference > 0)
             {
-                HealRate += 0.03;
+                CommonLogger.LogFormat("ProgrammerStatus::AddSociality => 사교성 증가 효과로 회복량이 {0}만큼 증가함.", 0.03 * levelDifference);
+                HealRate += 0.03 * levelDifference;
             }
+
+            Sociality += quantity;
         }
 
         public int Sociality
