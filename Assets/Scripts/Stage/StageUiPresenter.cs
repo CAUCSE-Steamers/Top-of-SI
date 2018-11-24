@@ -227,7 +227,7 @@ public class StageUiPresenter : MonoBehaviour
         StageManager.Instance.Unit.CheckProgrammerFormation(Vector3.zero);
     }
 
-    private void ChangeProgrammerAlphaColor(Programmer programmer, float alphaValue)
+    public void ChangeProgrammerAlphaColor(Programmer programmer, float alphaValue)
     {
         foreach (var renderer in programmer.GetComponentsInChildren<Renderer>())
         {

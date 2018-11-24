@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using Model;
+using System.Linq;
 
 public class StageStatusManager : MonoBehaviour, IEventDisposable
 {
@@ -36,6 +37,10 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
 
         unitManager.OnTurnChanged += SetToGameOverIfDayIsEqualToLimitAndTurnChangedToBoss;
         unitManager.OnTurnChanged += IncreaseDayIfTurnChangedToPlayer;
+
+        OnStatusChanged += SetTurnStageToEnd;
+        OnStatusChanged += ForceReturningFromVacationWhenStageFinished;
+
         this.maximumDayLimit = maximumDayLimit;
         this.unitManager = unitManager;
 
@@ -45,6 +50,14 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         ElapsedDays = 0;
 
         CommonLogger.Log("StageStatusManager::InitializeStageStatus => 초기화 완료");
+    }
+
+    private void SetTurnStageToEnd(StageStatus turn)
+    {
+        if (turn != StageStatus.InProgress)
+        {
+            unitManager.Turn = TurnState.GameEnd;
+        }
     }
 
     public void RegisterEventAfterInit(UnitManager unitManager)
@@ -127,5 +140,20 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         OnStageDirectionChanged = delegate { };
 
         CommonLogger.Log("StageStatusManager::DisposeRegisteredEvents => 이벤트 Disposing 완료.");
+    }
+
+    private void ForceReturningFromVacationWhenStageFinished(StageStatus stageStatus)
+    {
+        if (stageStatus != StageStatus.InProgress)
+        {
+            CommonLogger.Log(unitManager.Programmers.Where(programmer => programmer.Status.IsOnVacation).Count());
+
+            foreach (var programmer in unitManager.Programmers.Where(programmer => programmer.Status.IsOnVacation).ToList())
+            {
+                CommonLogger.LogFormat("UnitManager::ForceReturningFromVacationWhenStageFinished => 스테이지가 종료되어 {0}가 휴가에서 강제로 돌아옴.", programmer.Status.Name);
+                programmer.ReturnFromVacation(ElapsedDays);
+                StageManager.Instance.StageUi.ChangeProgrammerAlphaColor(programmer, 1f);
+            }
+        }
     }
 }
