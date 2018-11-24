@@ -57,12 +57,12 @@ namespace Model
         public void Modify(ProgrammerStatus status)
         {
             status.AddSociality(Sociality);
-            CommonLogger.LogFormat("SocialityBurf::Modify => 프로그래머 '{0}'의 리더십이 {1}만큼 증가함.", status.Name, Sociality);
+            CommonLogger.LogFormat("SocialityBurf::Modify => 프로그래머 '{0}'의 사교성이 {1}만큼 증가함.", status.Name, Sociality);
         }
 
         public void Unmodify(ProgrammerStatus status)
         {
-            CommonLogger.LogFormat("SocialityBurf::Unmodify => 프로그래머 '{0}'에 적용된 리더십 버프가 해제됨.", status.Name);
+            CommonLogger.LogFormat("SocialityBurf::Unmodify => 프로그래머 '{0}'에 적용된 사교성 버프가 해제됨.", status.Name);
         }
     }
 }
