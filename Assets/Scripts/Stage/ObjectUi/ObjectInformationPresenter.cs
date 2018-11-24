@@ -139,7 +139,7 @@ public class ObjectInformationPresenter : MonoBehaviour
         
         var informationTexts = vacationPanel.GetComponentsInChildren<Text>();
         informationTexts[0].text = string.Format("휴가 복귀 (+ 정신력 {0})", programmer.VacationHealthQuantity(elapsedDay));
-        informationTexts[1].text = string.Format("휴가 유지 (잔여 휴가 일수 : {0}일)", 2);
+        informationTexts[1].text = string.Format("휴가 유지 (잔여 휴가 일수 : {0}일)", programmer.Status.RemainingVacationDay);
     }
 
     private void RenderActiveSkills(Programmer programmer)

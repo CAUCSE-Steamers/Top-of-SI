@@ -271,7 +271,7 @@ public class StageUiPresenter : MonoBehaviour
 
     private void HandleMissedSkill(ActiveSkill activeSkill)
     {
-        RenderBossText("공격이 빗나갔습니다!");
+        RenderPlayerText("공격이 빗나갔습니다!");
     }
 
     public void RenderBossSkillNotice(ProjectSkill skill)
@@ -279,8 +279,8 @@ public class StageUiPresenter : MonoBehaviour
         stageNoticeUiPresenter.RenderBossSkillNotice(skill);
     }
 
-    public void RenderBossText(string text)
+    public void RenderPlayerText(string text)
     {
-        stageNoticeUiPresenter.RenderBossText(text);
+        stageNoticeUiPresenter.RenderPlayerText(text);
     }
 }

@@ -89,13 +89,22 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
         this.boss = boss;
         this.stageField = stageField;
-
+        
         SubscribeToBoss();
         SubscribeToProgrammers();
 
         Turn = TurnState.Player;
+        SetVacationLimitToProgrammers();
 
         CommonLogger.Log("UnitManager::SetUnits => 초기화 완료.");
+    }
+
+    private void SetVacationLimitToProgrammers()
+    {
+        foreach (var programmer in Programmers)
+        {
+            programmer.Status.RemainingVacationDay = StageManager.Instance.CurrentStage.ElapsedDayLimit / 3;
+        }
     }
 
     private void ApplyBurfsIfTurnChangedToPlayer(TurnState turn)

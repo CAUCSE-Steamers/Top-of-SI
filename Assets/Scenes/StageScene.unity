@@ -4921,8 +4921,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftBossSkillText: {fileID: 1211291601}
   rightBossSkillText: {fileID: 1399763096}
-  leftBossNoticeText: {fileID: 1305884764}
-  rightBossNoticeText: {fileID: 975310316}
+  leftPlayerText: {fileID: 1305884764}
+  rightPlayerText: {fileID: 975310316}
 --- !u!1 &410181087
 GameObject:
   m_ObjectHideFlags: 0
@@ -10494,8 +10494,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 391.99994, y: -143.99998}
-  m_SizeDelta: {x: 496, y: 30}
+  m_AnchoredPosition: {x: 245, y: -143.99998}
+  m_SizeDelta: {x: 682.9, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &975310316
 MonoBehaviour:
@@ -10509,7 +10509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.8758622, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -10523,13 +10523,14 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uACF5\uACA9\uC774 \uBE57\uB098\uAC14\uC2B5\uB2C8\uB2E4!"
+  m_Text: "\uACF5\uACA9\uC774 \uBE57\uB098\uAC14\uC2B5\uB2C8\uB2E4! \uACF5\uACA9\uC774
+    \uBE57\uB098\uAC14\uC2B5\uB2C8\uB2E4! \uACF5\uACA9\uC774 \uBE57\uB098\uAC14\uC2B5\uB2C8\uB2E4!"
 --- !u!222 &975310317
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13516,8 +13517,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -337, y: -143.99995}
-  m_SizeDelta: {x: 496, y: 30}
+  m_AnchoredPosition: {x: -247, y: -143.99995}
+  m_SizeDelta: {x: 663.9, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1305884764
 MonoBehaviour:
@@ -13531,7 +13532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.8758622, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -13545,13 +13546,14 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uACF5\uACA9\uC774 \uBE57\uB098\uAC14\uC2B5\uB2C8\uB2E4!"
+  m_Text: "\uACF5\uACA9\uC774 \uBE57\uB098\uAC14\uC2B5\uB2C8\uB2E4! \uACF5\uACA9\uC774
+    \uBE57\uB098\uAC14\uC2B5\uB2C8\uB2E4! \uACF5\uACA9\uC774 \uBE57\uB098\uAC14\uC2B5\uB2C8\uB2E4!"
 --- !u!222 &1305884765
 CanvasRenderer:
   m_ObjectHideFlags: 0

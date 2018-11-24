@@ -230,7 +230,7 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         return healQuantity;
     }
 
-    public void ReturnFromVacation(int elapsedDays)
+    public void ReturnFromVacation(int elapsedDays, bool isFinishAction = true)
     {
         if (Status.IsOnVacation == false)
         {
@@ -242,7 +242,10 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
         CommonLogger.LogFormat("Programmer::ReturnFromVacation => 프로그래머 '{0}'가 {1}일 째에 휴가에서 복귀합니다.", name, elapsedDays);
 
-        OnActionFinished();
+        if (isFinishAction)
+        {
+            OnActionFinished();
+        }
     }
     
     public void ApplyPersistentStatusBurfs()
