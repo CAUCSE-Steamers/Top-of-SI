@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class DamageSpreadBurf : IBurf, IStatusModificationCommand
+    public class DamageSpreadBurf : IBurf, ITupleAcceptableCommand<Programmer, double>
     {
         public DamageSpreadBurf(double ratio, double decreaseRatio)
         {
@@ -32,7 +32,7 @@ namespace Model
         {
             get
             {
-                return string.Format("자신이 받은 데미지의 {0} 배를 다른 프로그래머들에게 전달한다.", SpreadRatio);
+                return string.Format("피격 데미지의 {0}배를 다른 프로그래머가 대신 나누어 받습니다.", SpreadRatio);
             }
         }
 
@@ -40,7 +40,7 @@ namespace Model
         {
             get
             {
-                return "Spread";
+                return "Delegate";
             }
 
         }
@@ -49,7 +49,7 @@ namespace Model
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -57,18 +57,40 @@ namespace Model
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
-        public void Modify(ProgrammerStatus status)
+        public void Accept(Programmer programmer, double damage)
         {
-            
+            double spreadedDamage = damage * SpreadRatio;
+            double decreasedDamage = damage * (1 - SpreadRatio);
+
+            var programmers = StageManager.Instance.Unit.Programmers;
+
+            if (programmers.Count() == 1)
+            {
+                programmers.Single().Hurt((int) damage);
+            }
+            else
+            {
+                foreach (var stageProgrammer in programmers)
+                {
+                    if (stageProgrammer.Equals(programmer))
+                    {
+                        stageProgrammer.Hurt((int) decreasedDamage);
+                    }
+                    else
+                    {
+                        stageProgrammer.Hurt((int) spreadedDamage);
+                    }
+                }
+            }
         }
 
-        public void Unmodify(ProgrammerStatus status)
+        public void Leave(Programmer first, double second)
         {
-            
+
         }
     }
 }
