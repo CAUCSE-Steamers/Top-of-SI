@@ -76,6 +76,7 @@ public class StageUiPresenter : MonoBehaviour
 
         if (confirmingVacation)
         {
+            ChangeProgrammerAlphaColor(vacationState.SelectedProgrammer, 0.4f);
             vacationState.ConfirmVacation();
         }
 
@@ -213,14 +214,26 @@ public class StageUiPresenter : MonoBehaviour
         var idleState = stateAnimator.GetBehaviour<IdleState>();
         var currentSelectedProgrammer = idleState.SelectedObject.GetComponent<Programmer>();
         int elapsedDays = StageManager.Instance.Status.ElapsedDays;
-
+        
         if (isReturning)
         {
             currentSelectedProgrammer.ReturnFromVacation(elapsedDays);
+            ChangeProgrammerAlphaColor(currentSelectedProgrammer, 1f);
         }
 
         currentSelectedProgrammer.ActFinish();
         objectInformationPresenter.ResetInformationUi();
+    }
+
+    private void ChangeProgrammerAlphaColor(Programmer programmer, float alphaValue)
+    {
+        foreach (var renderer in programmer.GetComponentsInChildren<Renderer>())
+        {
+            foreach (var material in renderer.materials)
+            {
+                material.color = new Color(1, 1, 1, alphaValue);
+            }
+        }
     }
 
     private void HandleMissedSkill(ActiveSkill activeSkill)
