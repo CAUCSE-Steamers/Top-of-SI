@@ -21,7 +21,7 @@ namespace Model
         {
             get
             {
-                return DamageBurfRatio >= 1.0;
+                return DamageBurfRatio >= 0.0;
             }
         }
 
