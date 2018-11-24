@@ -184,20 +184,6 @@ namespace Model
             return burf != null;
         }
 
-        public bool isValidBurfs(String Name)
-        {
-            foreach(var iter in Burfs.ToList())
-            {
-                if(iter.IconName.Equals(Name))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-
-
         public IEnumerable<IBurf> DecayBurfAndFetchExpiredBurfs()
         {
             burfs.ForEach(burf => --burf.RemainingTurn);
