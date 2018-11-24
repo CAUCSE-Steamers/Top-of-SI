@@ -208,6 +208,21 @@ public class StageUiPresenter : MonoBehaviour
         idleState.ResetSelectedObject();
     }
 
+    public void ActOnVacation(bool isReturning)
+    {
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
+        var currentSelectedProgrammer = idleState.SelectedObject.GetComponent<Programmer>();
+        int elapsedDays = StageManager.Instance.Status.ElapsedDays;
+
+        if (isReturning)
+        {
+            currentSelectedProgrammer.ReturnFromVacation(elapsedDays);
+        }
+
+        currentSelectedProgrammer.ActFinish();
+        objectInformationPresenter.ResetInformationUi();
+    }
+
     private void HandleMissedSkill(ActiveSkill activeSkill)
     {
         RenderBossText("공격이 빗나갔습니다!");

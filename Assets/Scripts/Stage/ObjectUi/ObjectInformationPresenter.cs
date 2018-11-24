@@ -19,7 +19,8 @@ public class ObjectInformationPresenter : MonoBehaviour
     private SkillPresenter skillPresenterTemplate;
     [SerializeField]
     private GameObject actionBlockingObject;
-
+    [SerializeField]
+    private GameObject vacationPanel;
     [SerializeField]
     private GameObject selectedEffectObject;
 
@@ -36,6 +37,7 @@ public class ObjectInformationPresenter : MonoBehaviour
     public void ResetInformationUi()
     {
         actionBlockingObject.SetActive(false);
+        vacationPanel.SetActive(false);
 
         SetEffectActiveState(false);
         SetDefaultActionState(false);
@@ -104,6 +106,9 @@ public class ObjectInformationPresenter : MonoBehaviour
 
     private void RenderSkillPanel(Programmer programmer)
     {
+        skillPanelObject.gameObject.SetActive(false);
+        vacationPanel.SetActive(false);
+
         actionBlockingObject.SetActive(StageManager.Instance.Unit.IsAbleToAct(programmer) == false);
 
         // TODO: 스테이지 끝나면 휴가에서 강제 송환해야..
@@ -119,11 +124,19 @@ public class ObjectInformationPresenter : MonoBehaviour
 
     private void RenderReturnFromVacation(Programmer programmer)
     {
+        vacationPanel.SetActive(true);
 
+        int elapsedDay = StageManager.Instance.Status.ElapsedDays;
+        
+        var informationTexts = vacationPanel.GetComponentsInChildren<Text>();
+        informationTexts[0].text = string.Format("휴가 복귀 (+ 정신력 {0})", programmer.VacationHealthQuantity(elapsedDay));
+        informationTexts[1].text = string.Format("휴가 유지 (잔여 휴가 일수 : {0}일)", 2);
     }
 
     private void RenderActiveSkills(Programmer programmer)
     {
+        skillPanelObject.gameObject.SetActive(true);
+
         foreach (var activeSkill in programmer.Ability.AcquiredActiveSkills
                                                       .Where(skill => skill.Information.AcquisitionLevel > 0))
         {
