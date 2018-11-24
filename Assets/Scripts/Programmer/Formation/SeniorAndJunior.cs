@@ -33,7 +33,17 @@ namespace Model.Formation
 
         protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
         {
-            throw new NotImplementedException();
+            foreach(var iter in programmers.ToList())
+            {
+                if(iter == central)
+                {
+                    iter.Status.AddBurf(burfs.ToList()[1]);
+                }
+                else
+                {
+                    iter.Status.AddBurf(burfs.ToList()[0]);
+                }
+            }
         }
     }
 }
