@@ -274,6 +274,14 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         ApplySkillBurf(newBurf as ISkillModificationCommand);
     }
 
+    public void UnregisterBurf(IBurf burf)
+    {
+        UnapplyStatusBurf(burf as IStatusModificationCommand);
+        UnapplySkillBurf(burf as ISkillModificationCommand);
+
+        Status.RemoveBurf(burf);
+    }
+
     public void DecayBurfs()
     {
         var expiredBurfs = Status.DecayBurfAndFetchExpiredBurfs();

@@ -37,7 +37,7 @@ namespace Model.Formation
         {
             foreach (var programmer in programmers.ToList())
             {
-                if (programmer == central)
+                if (programmer.Equals(CenterProgrammer))
                 {
                     programmer.Status.AddBurf(burfs.First());
                 }

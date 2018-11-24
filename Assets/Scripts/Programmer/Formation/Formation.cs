@@ -10,7 +10,6 @@ namespace Model.Formation
     public abstract class Formation
     {
         public readonly static IEnumerable<Formation> formations;
-        protected static Programmer central;
 
         protected IEnumerable<IBurf> burfs;
 
@@ -41,6 +40,11 @@ namespace Model.Formation
             get; private set;
         }
 
+        public Programmer CenterProgrammer
+        {
+            get; private set;
+        }
+
         public IEnumerable<Programmer> AffectedProgrammers
         {
             get; private set;
@@ -60,7 +64,7 @@ namespace Model.Formation
             {
                 foreach (var burf in burfs)
                 {
-                    programmer.Status.RemoveBurf(burf);
+                    programmer.UnregisterBurf(burf);
                 }
             }
         }
@@ -83,11 +87,12 @@ namespace Model.Formation
             var centralLocation = stageField.VectorToIndices(programmer.transform.position);
             var relativePositions = FetchRelativePositionsFor(centralLocation);
             var isValid = relativePositions.Distinct()
-                                    .All(position => RelativeFormation.Contains(position));
+                                           .All(position => RelativeFormation.Contains(position));
             if (isValid)
             {
-                central = programmer;
+                CenterProgrammer = programmer;
             }
+
             return isValid;
         }
 
