@@ -87,9 +87,16 @@ namespace Model
 
         public void AddLeadership(int quantity)
         {
-            if ((int)(Leadership / 10) < (int)((Leadership + quantity) / 10))
+            int currentLeadershipBonusLevel = Leadership / 10;
+            int updatedLeadershipBonusLevel = (Leadership + quantity) / 10;
+            int levelDifference = updatedLeadershipBonusLevel - currentLeadershipBonusLevel;
+
+            if (levelDifference > 0)
             {
-                Health += 3;
+                CommonLogger.LogFormat("ProgrammerStatus::AddLeadership => 리더쉽 증가 효과로 정신력/총 정신력이 {0}만큼 증가함.", 3 * levelDifference);
+
+                FullHealth += 3 * levelDifference;
+                Health += 3 * levelDifference;
             }
 
             Leadership += quantity;
