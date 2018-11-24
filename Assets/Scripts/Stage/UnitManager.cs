@@ -127,13 +127,21 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             programmer.OnActionStarted += () =>
             {
                 StageManager.Instance.StageField.BlockCellClicking();
-                programmer.gameObject.layer = Physics.IgnoreRaycastLayer;
+
+                foreach (var prog in Programmers)
+                {
+                    prog.gameObject.layer = 2;
+                }
             };
 
             programmer.OnActionFinished += () =>
             {
                 StageManager.Instance.StageField.UnblockCellClicking();
-                programmer.gameObject.layer = Programmer.Layer;
+
+                foreach (var prog in Programmers)
+                {
+                    prog.gameObject.layer = Programmer.Layer;
+                }
 
                 programmerActingDictionary[programmer] = true;
                 ChangeTurnToBossIfAllProgrammersPerformAction();
