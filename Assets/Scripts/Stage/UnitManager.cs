@@ -45,6 +45,15 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         }
     }
 
+    public IEnumerable<Programmer> NotVacationProgrammers
+    {
+        get
+        {
+            return Programmers.Where(programmer => programmer.Status.IsOnVacation == false);
+        }
+    }
+
+
     public AbstractProject Boss
     {
         get
@@ -253,18 +262,18 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void InvokeSkill(ProjectSingleAttackSkill skill)
     {
-        Programmers.Where(programmer => programmer.Status.IsOnVacation == false).ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))].Hurt((int)skill.Damage);
+        NotVacationProgrammers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))].Hurt((int)skill.Damage);
     }
     private void InvokeSkill(ProjectMultiAttackSkill skill)
     {
-        foreach(var programmer in Programmers.Where(programmer => programmer.Status.IsOnVacation == false))
+        foreach(var programmer in NotVacationProgrammers)
         {
             programmer.Hurt((int)skill.Damage);
         }
     }
     private void InvokeSkill(ProjectSingleDeburfSkill skill)
     {
-        Programmer targetProgrammer = Programmers.Where(programmer => programmer.Status.IsOnVacation == false).ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
+        Programmer targetProgrammer = NotVacationProgrammers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
         DeburfType blockMove = targetProgrammer.Deburf(skill.Deburf);
         if((blockMove & DeburfType.DisableMovement) == DeburfType.DisableMovement)
         {
@@ -274,7 +283,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     private void InvokeSkill(ProjectMultiDeburfSkill skill)
     {
         DeburfType outOfProgrammer = DeburfType.None;
-        foreach (var programmer in Programmers.Where(programmer => programmer.Status.IsOnVacation == false))
+        foreach (var programmer in NotVacationProgrammers)
         {
             outOfProgrammer = (outOfProgrammer | programmer.Deburf(skill.Deburf));
         }
