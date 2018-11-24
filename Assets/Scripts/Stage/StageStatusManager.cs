@@ -146,8 +146,6 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
     {
         if (stageStatus != StageStatus.InProgress)
         {
-            CommonLogger.Log(unitManager.Programmers.Where(programmer => programmer.Status.IsOnVacation).Count());
-
             foreach (var programmer in unitManager.Programmers.Where(programmer => programmer.Status.IsOnVacation).ToList())
             {
                 CommonLogger.LogFormat("UnitManager::ForceReturningFromVacationWhenStageFinished => 스테이지가 종료되어 {0}가 휴가에서 강제로 돌아옴.", programmer.Status.Name);
