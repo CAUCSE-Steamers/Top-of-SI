@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class LeadershipBurf : IBurf, IStatusModificationCommand
+    public class LeadershipBurf : IBurf, IStatusModificationCommand
     {
         public LeadershipBurf(int leadership)
         {
@@ -26,7 +26,7 @@ namespace Model
         {
             get
             {
-                return string.Format("자신의 리더십을 {0} 증가시킨다.", Leadership);
+                return string.Format("매 턴마다 리더쉽이 {0}만큼 증가합니다.", Leadership);
             }
         }
 
@@ -34,7 +34,7 @@ namespace Model
         {
             get
             {
-                return "Leadership";
+                return "Leader";
             }
         }
 
@@ -50,7 +50,7 @@ namespace Model
         {
             get
             {
-                return true;
+                return Leadership > 0;
             }
         }
 
@@ -62,7 +62,7 @@ namespace Model
 
         public void Unmodify(ProgrammerStatus status)
         {
-            CommonLogger.LogFormat("LeadershipBurf::Modify => 프로그래머 '{0}'에 적용된 리더십 버프가 해제됨.", status.Name);
+            CommonLogger.LogFormat("LeadershipBurf::Unmodify => 프로그래머 '{0}'에 적용된 리더십 버프가 해제됨.", status.Name);
         }
     }
 }
