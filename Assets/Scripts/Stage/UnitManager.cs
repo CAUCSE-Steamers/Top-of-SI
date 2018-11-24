@@ -109,7 +109,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void ApplyBurfsIfTurnChangedToPlayer(TurnState turn)
     {
-        if (Turn == TurnState.Player)
+        if (turn == TurnState.Player)
         {
             foreach (var programmer in Programmers)
             {
@@ -381,7 +381,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void PermitProgrammersActionIfTurnChangedToPlayer(TurnState turn)
     {
-        if (Turn == TurnState.Player)
+        if (turn == TurnState.Player)
         {
             foreach (var programmer in programmerActingDictionary.Keys.ToArray())
             {
@@ -408,7 +408,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void DecreaseActiveSkillCooldownIfTurnChangedToPlayer(TurnState turn)
     {
-        if (Turn == TurnState.Player)
+        if (turn == TurnState.Player)
         {
             foreach (var activeSkill in Programmers.SelectMany(programmer => programmer.Ability.AcquiredActiveSkills))
             {
