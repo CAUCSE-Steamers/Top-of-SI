@@ -178,7 +178,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                     Turn != TurnState.GameEnd)
                 {
                     Turn = TurnState.GameEnd;
-                    StageManager.Instance.StageUi.TransitionToFailure();
+                    StageManager.Instance.StageUi.TransitionToFailure("프로젝트에 투입된 모든 프로그래머가 퇴사했습니다!");
                 }
 
                 var deadProgrammerSpec = LobbyManager.Instance.CurrentPlayer

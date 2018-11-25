@@ -76,7 +76,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         {
             CommonLogger.LogFormat("StageStatusManager::SetToGameOverIfDayExceeded => 진행 일시가 {0}일을 초과함. 게임 오버!", MaximumDayLimit);
             CurrentStatus = StageStatus.Failure;
-            StageManager.Instance.StageUi.TransitionToFailure();
+            StageManager.Instance.StageUi.TransitionToFailure(string.Format("프로젝트 진행 일시가 {0}일을 초과했습니다.", MaximumDayLimit));
         }
     }
 
@@ -86,14 +86,20 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         {
             CommonLogger.LogFormat("StageStatusManager::SetToGameOverIfDayExceeded => 진행 일시가 최대 제한 일수인 {0}일과 같은 상태에서 플레이어 턴이 종료됨. 게임 오버!", ElapsedDays);
             CurrentStatus = StageStatus.Failure;
-            StageManager.Instance.StageUi.TransitionToFailure();
+            StageManager.Instance.StageUi.TransitionToFailure(string.Format("프로젝트 진행 일시가 {0}일을 초과했습니다.", MaximumDayLimit));
         }
     }
 
     private void SetToStageClear()
     {
         CurrentStatus = StageStatus.Victory;
-        StageManager.Instance.StageUi.TransitionToVictory();
+
+        int reward = StageManager.Instance.CurrentStage.Reward;
+
+        StageManager.Instance.StageUi.TransitionToVictory("프로젝트 기한 내에 프로젝트를 완수했습니다!",
+            string.Format("프로젝트 완수로 {0} 골드를 획득했습니다!", reward));
+
+        LobbyManager.Instance.CurrentPlayer.Money += reward;
     }
 
     public StageStatus CurrentStatus

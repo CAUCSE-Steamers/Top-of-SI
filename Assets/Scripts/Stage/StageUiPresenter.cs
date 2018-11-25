@@ -16,6 +16,10 @@ public class StageUiPresenter : MonoBehaviour
     [SerializeField]
     private StageNoticeUiPresenter stageNoticeUiPresenter;
     [SerializeField]
+    private FinishPresenter victoryPresenter;
+    [SerializeField]
+    private FinishPresenter failurePresenter;
+    [SerializeField]
     private GameObject blockingUi;
 
     private void Start()
@@ -157,13 +161,15 @@ public class StageUiPresenter : MonoBehaviour
         stateAnimator.GetBehaviour<IdleState>().TransitionToFailureState();
     }
 
-    public void TransitionToFailure()
+    public void TransitionToFailure(params string[] messages)
     {
+        failurePresenter.Present(messages);
         stateAnimator.GetBehaviour<IdleState>().TransitionToFailureState();
     }
 
-    public void TransitionToVictory()
+    public void TransitionToVictory(params string[] messages)
     {
+        victoryPresenter.Present(messages);
         stateAnimator.GetBehaviour<IdleState>().TransitionToVictoryState();
     }
 
