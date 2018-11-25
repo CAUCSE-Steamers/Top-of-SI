@@ -10,7 +10,6 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
     public event Action<int> OnElapsedDayChanged = delegate { };
     public event Action<Direction> OnStageDirectionChanged = delegate { };
 
-    private int maximumDayLimit;
     private int elapsedDays;
     private StageStatus currentStatus;
     private Direction stageDirection;
@@ -29,6 +28,11 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         }
     }
 
+    public int MaximumDayLimit
+    {
+        get; set;
+    }
+
     public void InitializeStageStatus(int maximumDayLimit, UnitManager unitManager)
     {
         CommonLogger.Log("StageStatusManager::InitializeStageStatus => 초기화 시작");
@@ -39,8 +43,9 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         unitManager.OnTurnChanged += IncreaseDayIfTurnChangedToPlayer;
         OnStatusChanged += SetTurnStageToEnd;
         OnStatusChanged += ForceReturningFromVacationWhenStageFinished;
+        OnStatusChanged += ForceUnapplyAllBurfsWhenStageFinished;
 
-        this.maximumDayLimit = maximumDayLimit;
+        this.MaximumDayLimit = maximumDayLimit;
         this.unitManager = unitManager;
 
         StageDirection = Direction.Right;
@@ -67,9 +72,9 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
 
     private void SetToGameOverIfDayExceeded(int currentDays)
     {
-        if (currentDays > maximumDayLimit)
+        if (currentDays > MaximumDayLimit)
         {
-            CommonLogger.LogFormat("StageStatusManager::SetToGameOverIfDayExceeded => 진행 일시가 {0}일을 초과함. 게임 오버!", maximumDayLimit);
+            CommonLogger.LogFormat("StageStatusManager::SetToGameOverIfDayExceeded => 진행 일시가 {0}일을 초과함. 게임 오버!", MaximumDayLimit);
             CurrentStatus = StageStatus.Failure;
             StageManager.Instance.StageUi.TransitionToFailure();
         }
@@ -77,7 +82,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
 
     private void SetToGameOverIfDayIsEqualToLimitAndTurnChangedToBoss(TurnState turn)
     {
-        if (turn == TurnState.Boss && ElapsedDays == maximumDayLimit)
+        if (turn == TurnState.Boss && ElapsedDays == MaximumDayLimit)
         {
             CommonLogger.LogFormat("StageStatusManager::SetToGameOverIfDayExceeded => 진행 일시가 최대 제한 일수인 {0}일과 같은 상태에서 플레이어 턴이 종료됨. 게임 오버!", ElapsedDays);
             CurrentStatus = StageStatus.Failure;
@@ -115,7 +120,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
 
     public void setDayLimit(double ratio)
     {
-        this.maximumDayLimit = (int)(this.maximumDayLimit * (1 - ratio) + 0.5);
+        this.MaximumDayLimit = (int)(this.MaximumDayLimit * (1 - ratio) + 0.5);
     }
 
     public int ElapsedDays
@@ -180,6 +185,22 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
                 programmer.ReturnFromVacation(ElapsedDays);
 
                 StageManager.Instance.StageUi.ChangeProgrammerAlphaColor(programmer, 1f);
+            }
+        }
+    }
+
+    private void ForceUnapplyAllBurfsWhenStageFinished(StageStatus stageStatus)
+    {
+        if (stageStatus != StageStatus.InProgress)
+        {
+            CommonLogger.LogFormat("StageStatusManager::ForceUnapplyAllBurfsWhenStageFinished => 스테이지가 종료되어 버프가 강제로 해제됨.");
+
+            foreach (var programmer in unitManager.Programmers)
+            {
+                foreach (var burf in programmer.Status.Burfs)
+                {
+                    programmer.UnregisterBurf(burf);
+                }
             }
         }
     }

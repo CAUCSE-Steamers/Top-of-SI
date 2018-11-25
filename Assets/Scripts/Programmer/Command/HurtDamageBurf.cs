@@ -54,6 +54,14 @@ namespace Model
             get; set;
         }
 
+        public IBurf Clone()
+        {
+            return new HurtDamageBurf(AdditionalDamageRatio)
+            {
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Modify(ProgrammerStatus status)
         {
             status.AdditionalDamageRatio += AdditionalDamageRatio;

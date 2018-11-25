@@ -16,12 +16,13 @@ namespace Model
             Animation = "Shout"
         };
 
-        private static List<DeBurfStructure> deburf = new List<DeBurfStructure>
+        private static IEnumerable<IBurf> deburfs = new List<IBurf>
         {
-            new DeBurfStructure(DeburfType.IncreaseMentalUsage, Int32.MaxValue, 1)
+            new CostIncrementBurf(1.0) { RemainingTurn = 4 },
         };
 
-        public IEServiceDecision() : base(deburf, information, 3)
+        public IEServiceDecision() 
+            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, 3)
         {
 
         }

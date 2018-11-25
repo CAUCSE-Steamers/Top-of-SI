@@ -121,7 +121,7 @@ public class StageManager : MonoBehaviour, IDisposable
     public void SetStage()
     {
         CommonLogger.Log("StageManager::SetStage => 초기화 시작");
-        CurrentStage = LobbyManager.Instance.SelectedStage;
+        CurrentStage = LobbyManager.Instance.SelectedStage.Clone();
         StageField = fieldSpawner.SpawnField();
         
         Status.InitializeStageStatus(maximumDayLimit: CurrentStage.ElapsedDayLimit, unitManager: Unit);

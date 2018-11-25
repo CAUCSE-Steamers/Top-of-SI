@@ -5,14 +5,14 @@ using System.Text;
 
 namespace Model
 {
-    public class SocialityBurf : IBurf, IStatusModificationCommand
+    public class MovableBurf : IBurf, IStatusModificationCommand
     {
-        public SocialityBurf(int sociality)
+        public MovableBurf(bool moveState)
         {
-            Sociality = sociality;
+            MoveState = moveState;
         }
 
-        public int Sociality
+        public bool MoveState
         {
             get; private set;
         }
@@ -26,7 +26,7 @@ namespace Model
         {
             get
             {
-                return string.Format("매 턴마다 사교성이 {0}만큼 증가합니다.", Sociality);
+                return string.Format("이동이 제한됩니다.");
             }
         }
 
@@ -34,7 +34,7 @@ namespace Model
         {
             get
             {
-                return "Call";
+                return "Stone";
             }
         }
 
@@ -42,7 +42,7 @@ namespace Model
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -50,13 +50,13 @@ namespace Model
         {
             get
             {
-                return Sociality > 0;
+                return MoveState == true;
             }
         }
 
         public IBurf Clone()
         {
-            return new SocialityBurf(Sociality)
+            return new MovableBurf(MoveState)
             {
                 RemainingTurn = this.RemainingTurn
             };
@@ -64,13 +64,14 @@ namespace Model
 
         public void Modify(ProgrammerStatus status)
         {
-            status.AddSociality(Sociality);
-            CommonLogger.LogFormat("SocialityBurf::Modify => 프로그래머 '{0}'의 사교성이 {1}만큼 증가함.", status.Name, Sociality);
+            status.IsMovable = MoveState;
+            CommonLogger.LogFormat("MovableBurf::Modify => 프로그래머 '{0}'의 이동 여부가 재설정됨. 값 = {1}", status.Name, MoveState);
         }
 
         public void Unmodify(ProgrammerStatus status)
         {
-            CommonLogger.LogFormat("SocialityBurf::Unmodify => 프로그래머 '{0}'에 적용된 사교성 버프가 해제됨.", status.Name);
+            status.IsMovable = !MoveState;
+            CommonLogger.LogFormat("MovableBurf::Unmodify => 프로그래머 '{0}'의 이동 여부가 재설정됨. 값 = {1}", status.Name, !MoveState);
         }
     }
 }

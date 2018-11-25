@@ -31,5 +31,7 @@ namespace Model
         {
             get;
         }
+
+        IBurf Clone();
     }
 }

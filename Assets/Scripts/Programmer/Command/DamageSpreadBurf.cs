@@ -61,6 +61,14 @@ namespace Model
             }
         }
 
+        public IBurf Clone()
+        {
+            return new DamageSpreadBurf(SpreadRatio, DecreaseRatio)
+            {
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Accept(Programmer programmer, double damage)
         {
             double spreadedDamage = damage * SpreadRatio;

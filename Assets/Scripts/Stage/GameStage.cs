@@ -15,6 +15,23 @@ namespace Model
             Boss = new ProjectSpec();
         }
 
+        public GameStage Clone()
+        {
+            var clonedGameStage = new GameStage
+            {
+                Title = this.Title,
+                ElapsedDayLimit = this.ElapsedDayLimit,
+                IconName = this.IconName,
+                Reward = this.Reward,
+                MainStage = this.MainStage,
+                Boss = this.Boss,
+                ProgrammerSpecs = this.ProgrammerSpecs
+            };
+
+            clonedGameStage.objectives = new List<IStageObjective>(Objectives);
+            return clonedGameStage;
+        }
+
         public string Title
         {
             get; set;
