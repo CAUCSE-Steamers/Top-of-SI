@@ -159,7 +159,8 @@ public class StageUiPresenter : MonoBehaviour
             onTrueValue: stateAnimator.GetBehaviour<PauseState>().TransitionToIdle,
             onFalseValue: delegate { }
         );
-        stateAnimator.GetBehaviour<IdleState>().TransitionToFailureState();
+
+        TransitionToFailure("프로젝트 완수를 포기하셨습니다.");
     }
 
     public void TransitionToFailure(params string[] messages)
