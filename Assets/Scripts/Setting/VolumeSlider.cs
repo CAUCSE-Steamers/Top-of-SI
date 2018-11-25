@@ -14,6 +14,11 @@ public class VolumeSlider : MonoBehaviour
 
     private void Start()
     {
+        float volumeValue = 0.0f;
+
+        audioMixer.GetFloat(volumeParameterName, out volumeValue);
+        slider.value = volumeValue;
+
         slider.onValueChanged.AddListener(value =>
         {
             audioMixer.SetFloat(volumeParameterName, value);
