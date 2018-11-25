@@ -43,6 +43,7 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
         unitManager.OnTurnChanged += IncreaseDayIfTurnChangedToPlayer;
         OnStatusChanged += SetTurnStageToEnd;
         OnStatusChanged += ForceReturningFromVacationWhenStageFinished;
+        OnStatusChanged += ForceUnapplyAllBurfsWhenStageFinished;
 
         this.MaximumDayLimit = maximumDayLimit;
         this.unitManager = unitManager;
@@ -184,6 +185,22 @@ public class StageStatusManager : MonoBehaviour, IEventDisposable
                 programmer.ReturnFromVacation(ElapsedDays);
 
                 StageManager.Instance.StageUi.ChangeProgrammerAlphaColor(programmer, 1f);
+            }
+        }
+    }
+
+    private void ForceUnapplyAllBurfsWhenStageFinished(StageStatus stageStatus)
+    {
+        if (stageStatus != StageStatus.InProgress)
+        {
+            CommonLogger.LogFormat("StageStatusManager::ForceUnapplyAllBurfsWhenStageFinished => 스테이지가 종료되어 버프가 강제로 해제됨.");
+
+            foreach (var programmer in unitManager.Programmers)
+            {
+                foreach (var burf in programmer.Status.Burfs)
+                {
+                    programmer.UnregisterBurf(burf);
+                }
             }
         }
     }
