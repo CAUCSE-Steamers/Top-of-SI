@@ -36,6 +36,7 @@ namespace Model
 
             FullHealth = Health;
             Cost = new Money(30, 300, 200);
+            HealRate = 0.0;
             Leadership = 0;
             Sociality = 0;
         }
@@ -45,7 +46,6 @@ namespace Model
             StartVacationDay = null;
             AdditionalDamageRatio = 0.0;
             AdditionalSkillCostRatio = 0.0;
-            HealRate = 0.0;
             RemainingVacationDay = 0;
             IsMovable = true;
             burfs.Clear();
