@@ -16,10 +16,9 @@ namespace Model
             Animation = "Shout"
         };
 
-        // TODO: Block burf
         private static IEnumerable<IBurf> deburfs = new List<IBurf>
         {
-            new MaximumLimitChangedBurf(-0.2) { RemainingTurn = 2 }
+            new MovableBurf(false) { RemainingTurn = 2 }
         };
 
         public StaticRendering() 

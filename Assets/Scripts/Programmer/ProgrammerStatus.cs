@@ -47,7 +47,13 @@ namespace Model
             AdditionalSkillCostRatio = 0.0;
             HealRate = 0.0;
             RemainingVacationDay = 0;
+            IsMovable = true;
             burfs.Clear();
+        }
+
+        public bool IsMovable
+        {
+            get; set;
         }
 
         public int? StartVacationDay
