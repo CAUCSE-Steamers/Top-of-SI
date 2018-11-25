@@ -8,10 +8,6 @@ namespace Model
 {
     public class ProjectMultiDeburfSkill : ProjectSkill
     {
-        public ProjectMultiDeburfSkill(ProjectSkillInformation information, double defaultCooldown) : base(information, defaultCooldown)
-        {
-        }
-
         public ProjectMultiDeburfSkill(IEnumerable<IBurf> programmerBurfs, ProjectSkillInformation information, double defaultCooldown) : base(information, defaultCooldown)
         {
             Deburf = programmerBurfs;

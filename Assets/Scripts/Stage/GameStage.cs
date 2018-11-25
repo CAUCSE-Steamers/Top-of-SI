@@ -17,13 +17,19 @@ namespace Model
 
         public GameStage Clone()
         {
-            return new GameStage
+            var clonedGameStage = new GameStage
             {
                 Title = this.Title,
                 ElapsedDayLimit = this.ElapsedDayLimit,
                 IconName = this.IconName,
                 Reward = this.Reward,
+                MainStage = this.MainStage,
+                Boss = this.Boss,
+                ProgrammerSpecs = this.ProgrammerSpecs
             };
+
+            clonedGameStage.objectives = new List<IStageObjective>(Objectives);
+            return clonedGameStage;
         }
 
         public string Title

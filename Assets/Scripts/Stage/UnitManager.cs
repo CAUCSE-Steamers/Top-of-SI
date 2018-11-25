@@ -338,7 +338,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         var programmer = NotVacationProgrammers.ElementAt(randomIndex);
 
         ApplyDamage(programmer, skill.Damage);
-        return;
     }
 
     private void InvokeSkill(ProjectMultiAttackSkill skill)
@@ -346,31 +345,46 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         foreach (var programmer in NotVacationProgrammers)
         {
             ApplyDamage(programmer, skill.Damage);
-            continue;
         }
     }
 
     private void InvokeSkill(ProjectSingleDeburfSkill skill)
     {
-        Programmer targetProgrammer = NotVacationProgrammers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
-        DeburfType blockMove = targetProgrammer.Deburf(skill.Deburf);
-        if((blockMove & DeburfType.DisableMovement) == DeburfType.DisableMovement)
-        {
-            //TODO : let programmer can't move
-        }
+        int ramdomIndex = Random.Range(0, Programmers.Count());
+        var targetProgrammer = NotVacationProgrammers.ElementAt(ramdomIndex);
+
+        AttachBurfToProgrammer(targetProgrammer, skill.Deburf);
     }
+
     private void InvokeSkill(ProjectMultiDeburfSkill skill)
     {
-        DeburfType outOfProgrammer = DeburfType.None;
+        foreach (var stageModificationBurf in skill.Deburf.OfType<IStageModificationCommand>())
+        {
+            stageModificationBurf.Modify(StageManager.Instance.CurrentStage);
+        }
+
         foreach (var programmer in NotVacationProgrammers)
         {
-            outOfProgrammer = (outOfProgrammer | programmer.Deburf(skill.Deburf));
-        }
-        if ((outOfProgrammer & DeburfType.ShortenDeadLine) == outOfProgrammer)
-        {
-            StageManager.Instance.Status.setDayLimit(skill.Deburf[0].Factor);
+            AttachBurfToProgrammer(programmer, skill.Deburf.Where(deburf => deburf as IStageModificationCommand == null));
         }
     }
+
+    private void AttachBurfToProgrammer(Programmer programmer, IEnumerable<IBurf> burfs)
+    {
+        foreach (var burf in burfs)
+        {
+            if (burf as IStageModificationCommand != null)
+            {
+                var stageModificationCommand = burf as IStageModificationCommand;
+                stageModificationCommand.Modify(StageManager.Instance.CurrentStage);
+            }
+            else
+            {
+                programmer.RegisterBurf(burf);
+            }
+        }
+    }
+
     private void InvokeSkill(ProjectBurfSkill skill)
     {
         Boss.Burf(skill.Burf);

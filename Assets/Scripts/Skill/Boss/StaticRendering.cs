@@ -7,7 +7,6 @@ namespace Model
 {
     public class StaticRendering : ProjectSingleDeburfSkill
     {
-        
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.SingleDeburf,
@@ -17,12 +16,14 @@ namespace Model
             Animation = "Shout"
         };
 
-        private static List<DeBurfStructure> deburf = new List<DeBurfStructure>
+        // TODO: Block burf
+        private static IEnumerable<IBurf> deburfs = new List<IBurf>
         {
-            new DeBurfStructure(DeburfType.DisableMovement, Int32.MaxValue, 0)
+            new MaximumLimitChangedBurf(-0.2) { RemainingTurn = 2 }
         };
 
-        public StaticRendering() : base(deburf, information, 4)
+        public StaticRendering() 
+            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, 4)
         {
 
         }
