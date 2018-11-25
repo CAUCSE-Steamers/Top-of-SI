@@ -37,7 +37,12 @@ public class StageUiPresenter : MonoBehaviour
 
         foreach (var programmer in StageManager.Instance.Unit.Programmers)
         {
-            programmer.OnActionStarted += () => SetBlockUiState(true);
+            programmer.OnActionStarted += () =>
+            {
+                objectInformationPresenter.ResetInformationUi();
+                SetBlockUiState(true);
+            };
+
             programmer.OnActionFinished += () => SetBlockUiState(false);
         }
 
@@ -231,11 +236,14 @@ public class StageUiPresenter : MonoBehaviour
         }
 
         var boss = StageManager.Instance.Unit.Boss;
+
         currentSelectedProgrammer.UseSkill();
         currentSelectedProgrammer.SpendSkillCost(skill.Cost);
+
         skill.OnSkillMissed += HandleMissedSkill;
-        skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype, currentSelectedProgrammer.getDamageDecreaseRatio());
+        skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype);
         skill.OnSkillMissed -= HandleMissedSkill;
+
         objectInformationPresenter.ResetInformationUi();
         idleState.ResetSelectedObject();
     }

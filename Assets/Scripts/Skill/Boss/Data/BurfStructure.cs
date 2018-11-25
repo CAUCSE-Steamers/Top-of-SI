@@ -34,6 +34,11 @@ namespace Model
             Turn--;
         }
 
+        public BurfStructure Clone()
+        {
+            return new BurfStructure(Type, Turn, Factor);
+        }
+
         public void RecoverStateFromXml(string rawXml)
         {
             var rootElement = XElement.Parse(rawXml);

@@ -18,7 +18,7 @@ public class CooldownPresenter
 
         float alphaRatio = 0.8f - (0.6f * (float) (defaultCooldown - remainingCooldown) / (float) defaultCooldown);
         backgroundImage.color = new Color(currentColor.r, currentColor.g, currentColor.b, alphaRatio);
-        cooldownText.text = remainingCooldown.ToString();
+        cooldownText.text = ((int) Math.Ceiling(remainingCooldown)).ToString();
 
         backgroundImage.gameObject.SetActive(true);
         cooldownText.gameObject.SetActive(true);

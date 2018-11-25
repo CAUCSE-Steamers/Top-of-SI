@@ -20,9 +20,9 @@ namespace Model.Formation
         {
             burfs = new List<IBurf>
             {
-                new DamageSpreadBurf(0.33, 0),
-                new LeadershipBurf(5),
-                new HealBurf(5, 5)
+                new TargetedDamageSharingBurf(0.33) { RemainingTurn = int.MaxValue },
+                new LeadershipBurf(5) { RemainingTurn = int.MaxValue },
+                new HealBurf(5, 5) { RemainingTurn = int.MaxValue }
             };
         }
 
@@ -36,16 +36,18 @@ namespace Model.Formation
 
         protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
         {
-            foreach (var programmer in programmers.ToList())
+            foreach (var programmer in programmers)
             {
-                if(programmer == central)
+                if (programmer.Equals(CenterProgrammer))
                 {
-                    programmer.Status.AddBurf(burfs.ToList()[1]);
-                    programmer.Status.AddBurf(burfs.ToList()[2]);
+                    (burfs.ElementAt(0) as TargetedDamageSharingBurf).TargetProgrammer = programmer;
+
+                    programmer.RegisterBurf(burfs.ElementAt(1));
+                    programmer.RegisterBurf(burfs.ElementAt(2));
                 }
                 else
                 {
-                    programmer.Status.AddBurf(burfs.First());
+                    programmer.RegisterBurf(burfs.ElementAt(0));
                 }
             }
         }

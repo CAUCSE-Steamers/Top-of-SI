@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class DamageSplashBurf : IBurf, IStatusModificationCommand
+    public class DamageSplashBurf : IBurf, IConstantAcceptableCommand<double>
     {
         public DamageSplashBurf(double decreaseRatio)
         {
@@ -26,7 +26,7 @@ namespace Model
         {
             get
             {
-                return string.Format("자신이 받은 데미지를 다른 프로그래머들과 공유한다.");
+                return string.Format("피격 시 다른 프로그래머들과 나눠진 데미지를 공유합니다.");
             }
         }
 
@@ -34,7 +34,7 @@ namespace Model
         {
             get
             {
-                return "Splash";
+                return "Sharing";
             }
 
         }
@@ -43,7 +43,7 @@ namespace Model
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -55,12 +55,19 @@ namespace Model
             }
         }
 
-        public void Modify(ProgrammerStatus status)
+        public void Accept(double hurtDamage)
         {
+            var programmers = StageManager.Instance.Unit.Programmers;
 
+            double dividedDamage = hurtDamage / programmers.Count();
+
+            foreach (var programmer in programmers)
+            {
+                programmer.Hurt((int) dividedDamage);
+            }
         }
 
-        public void Unmodify(ProgrammerStatus status)
+        public void Leave(double value)
         {
 
         }

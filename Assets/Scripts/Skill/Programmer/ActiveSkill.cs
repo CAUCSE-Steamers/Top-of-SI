@@ -15,6 +15,7 @@ namespace Model
         public event Action<ActiveSkill> OnSkillMissed = delegate { };
 
         private double baseDamage = 1.0;
+        private double additionalCooldownRatio;
         private double initialCooldown;
         private double accuracy;
         private int cost;
@@ -40,7 +41,7 @@ namespace Model
             get; private set;
         }
 
-        public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType, double decreaseDamageRatio = 0.0)
+        public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType)
         {
             if (Random.Range(0f, 1f) > Accuracy)
             {
@@ -57,7 +58,8 @@ namespace Model
                 {
                     critical += Information.CriticalRatio;
                 }
-                hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical * (1 - decreaseDamageRatio)));
+
+                hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical));
 
                 RemainingCooldown = DefaultCooldown;
             }
@@ -73,7 +75,7 @@ namespace Model
 
         public void DecreaseCooldown()
         {
-            if (RemainingCooldown >= 1.0)
+            if (RemainingCooldown > 0.0)
             {
                 RemainingCooldown -= 1.0;
             }
@@ -108,7 +110,18 @@ namespace Model
 
         public double AdditionlCooldownRatio
         {
-            get; set;
+            get
+            {
+                return additionalCooldownRatio;
+            }
+            set
+            {
+                double currentProgressedCooldownRatio = 1.0 - (RemainingCooldown / DefaultCooldown);
+
+                additionalCooldownRatio = value;
+
+                RemainingCooldown = DefaultCooldown * (1.0 - currentProgressedCooldownRatio);
+            }
         }
 
         public double DefaultCooldown

@@ -47,7 +47,7 @@ namespace Model
                 Name = this.Name,
                 FullHealth = this.FullHealth,
                 Health = this.Health,
-                Burf = new List<BurfStructure>(this.Burf)
+                Burf = new List<BurfStructure>(Burf.Select(burf => burf.Clone()))
             };
         }
 

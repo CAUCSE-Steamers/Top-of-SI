@@ -82,8 +82,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         Status = new ProgrammerStatus
         {
             PortraitName = "UnityChan",
-            FullHealth = 1000,
-            Health = 1000,
+            FullHealth = 50,
+            Health = 50,
             Name = "테스트 보스"
         };
         
@@ -274,6 +274,14 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         ApplySkillBurf(newBurf as ISkillModificationCommand);
     }
 
+    public void UnregisterBurf(IBurf burf)
+    {
+        UnapplyStatusBurf(burf as IStatusModificationCommand);
+        UnapplySkillBurf(burf as ISkillModificationCommand);
+
+        Status.RemoveBurf(burf);
+    }
+
     public void DecayBurfs()
     {
         var expiredBurfs = Status.DecayBurfAndFetchExpiredBurfs();
@@ -347,27 +355,12 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public void SpendSkillCost(int cost)
     {
-        foreach(var iter in Status.Deburf)
-        {
-            if((iter.Type & DeburfType.IncreaseMentalUsage) == DeburfType.IncreaseMentalUsage)
-            {
-                cost = (int)(cost * (1 + iter.Factor));
-            }
-        }
-        Status.Health -= cost;
-    }
+        Status.Health -= (int) (cost * (1 + Status.AdditionalSkillCostRatio));
 
-    public double getDamageDecreaseRatio()
-    {
-        double ret = 0;
-        foreach(var iter in Status.Deburf)
+        if (IsAlive == false)
         {
-            if((iter.Type & DeburfType.DecreaseAttack) == DeburfType.DecreaseAttack)
-            {
-                ret += iter.Factor;
-            }
+            OnDeath();
         }
-        return ret > 1? 1 : ret;
     }
 
     public XElement ToXmlElement()

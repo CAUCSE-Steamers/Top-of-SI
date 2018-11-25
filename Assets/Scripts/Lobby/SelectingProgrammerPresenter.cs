@@ -34,14 +34,15 @@ public class SelectingProgrammerPresenter : MonoBehaviour
                                                .Last();
 
             var willBeSelected = !selectedRepresentImage.gameObject.activeSelf;
-            selectedRepresentImage.gameObject.SetActive(willBeSelected);
 
-            if (willBeSelected)
+            if (willBeSelected && selectedSpecs.Count < selectedProgrammerCells.Length)
             {
+                selectedRepresentImage.gameObject.SetActive(true);
                 selectedSpecs.Add(spec);
             }
             else
             {
+                selectedRepresentImage.gameObject.SetActive(false);
                 selectedSpecs.Remove(spec);
             }
 

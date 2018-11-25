@@ -35,6 +35,11 @@ namespace Model
 
         public ProjectAbility Clone()
         {
+            foreach (var skill in ProjectSkills)
+            {
+                skill.ForceCooldownToAvailable();
+            }
+
             return new ProjectAbility(new List<ProjectSkill>(this.ProjectSkills), this.ProjType)
             {
                 Techtype = this.Techtype,

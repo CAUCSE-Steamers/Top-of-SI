@@ -16,11 +16,11 @@ namespace Model.Formation
 
         public PairProgramming() : base("페어 프로그래밍", 2)
         {
-
             burfs = new List<IBurf>
             {
-                new DamageSplashBurf(-0.1),
-                new SocialityBurf(3)
+                new HurtDamageBurf(-0.1) { RemainingTurn = int.MaxValue },
+                new DamageSplashBurf(0.0) { RemainingTurn = int.MaxValue },
+                new SocialityBurf(3) { RemainingTurn = int.MaxValue }
             };
         }
 
@@ -34,11 +34,11 @@ namespace Model.Formation
 
         protected override void RegisterBurfs(IEnumerable<Programmer> programmers)
         {
-            foreach(var programmer in programmers.ToList())
+            foreach (var programmer in programmers)
             {
-                foreach(var burf in burfs.ToList())
+                foreach (var burf in burfs)
                 {
-                    programmer.Status.AddBurf(burf);
+                    programmer.RegisterBurf(burf);
                 }
             }
         }

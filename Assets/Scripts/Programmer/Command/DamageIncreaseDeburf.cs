@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Model
 {
-    class DamageIncreaseDeburf : IBurf, IStatusModificationCommand
+    public class DamageIncreaseDeburf : IBurf, IStatusModificationCommand
     {
-        private double xRatio;
         public DamageIncreaseDeburf(double ratio)
         {
             IncreaseRatio = ratio;
@@ -27,7 +26,7 @@ namespace Model
         {
             get
             {
-                return string.Format("자신이 받은 데미지를 {0} 배 증가시킨다.", IncreaseRatio);
+                return string.Format("피격 데미지가 {0}배 추가 적용됩니다.", IncreaseRatio);
             }
         }
 
@@ -35,7 +34,7 @@ namespace Model
         {
             get
             {
-                return "DamageIncrease";
+                return "Blood";
             }
 
         }
@@ -44,7 +43,7 @@ namespace Model
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -52,18 +51,22 @@ namespace Model
         {
             get
             {
-                return false;
+                return IncreaseRatio < 0.0;
             }
         }
 
         public void Modify(ProgrammerStatus status)
         {
             status.AdditionalDamageRatio += IncreaseRatio;
+
+            CommonLogger.LogFormat("DamageIncreaseDeburf::Modify => 프로그래머 '{0}'가 피격 데미지 버프를 받음. 피격 데미지 비율이 {1} 증가함. 현재 : {2}", status.Name, IncreaseRatio, status.AdditionalDamageRatio);
         }
 
         public void Unmodify(ProgrammerStatus status)
         {
             status.AdditionalDamageRatio -= IncreaseRatio;
+
+            CommonLogger.LogFormat("DamageIncreaseDeburf::Modify => 프로그래머 '{0}'의 피격 데미지 버프가 해제됨. 피격 데미지 비율이 {1} 감소함. 현재 : {2}", status.Name, IncreaseRatio, status.AdditionalDamageRatio);
         }
     }
 }

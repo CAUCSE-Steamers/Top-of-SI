@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class SocialityBurf : IBurf, IStatusModificationCommand
+    public class SocialityBurf : IBurf, IStatusModificationCommand
     {
         public SocialityBurf(int sociality)
         {
@@ -26,7 +26,7 @@ namespace Model
         {
             get
             {
-                return string.Format("자신의 리더십을 {0} 증가시킨다.", Sociality);
+                return string.Format("매 턴마다 사교성이 {0}만큼 증가합니다.", Sociality);
             }
         }
 
@@ -34,7 +34,7 @@ namespace Model
         {
             get
             {
-                return "Sociality";
+                return "Call";
             }
         }
 
@@ -50,19 +50,19 @@ namespace Model
         {
             get
             {
-                return true;
+                return Sociality > 0;
             }
         }
 
         public void Modify(ProgrammerStatus status)
         {
             status.AddSociality(Sociality);
-            CommonLogger.LogFormat("LeadershipBurf::Modify => 프로그래머 '{0}'의 리더십이 {1}만큼 증가함.", status.Name, Sociality);
+            CommonLogger.LogFormat("SocialityBurf::Modify => 프로그래머 '{0}'의 사교성이 {1}만큼 증가함.", status.Name, Sociality);
         }
 
         public void Unmodify(ProgrammerStatus status)
         {
-            CommonLogger.LogFormat("LeadershipBurf::Modify => 프로그래머 '{0}'에 적용된 리더십 버프가 해제됨.", status.Name);
+            CommonLogger.LogFormat("SocialityBurf::Unmodify => 프로그래머 '{0}'에 적용된 사교성 버프가 해제됨.", status.Name);
         }
     }
 }

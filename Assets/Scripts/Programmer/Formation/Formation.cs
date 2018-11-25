@@ -10,8 +10,9 @@ namespace Model.Formation
     public abstract class Formation
     {
         public readonly static IEnumerable<Formation> formations;
-        protected static Programmer central;
+
         protected IEnumerable<IBurf> burfs;
+
         static Formation()
         {
             var formationType = typeof(Formation);
@@ -39,26 +40,31 @@ namespace Model.Formation
             get; private set;
         }
 
+        public Programmer CenterProgrammer
+        {
+            get; private set;
+        }
+
         public IEnumerable<Programmer> AffectedProgrammers
         {
-            get; protected set;
+            get; private set;
         }
 
         public void AttachBurfs(IEnumerable<Programmer> programmers)
         {
-            AffectedProgrammers = programmers;
-            RegisterBurfs(programmers);
+            AffectedProgrammers = programmers.ToList();
+            RegisterBurfs(AffectedProgrammers);
         }
 
         protected abstract void RegisterBurfs(IEnumerable<Programmer> programmers);
 
-        public virtual void DetachBurfs()
+        public void DetachBurfs()
         {
-            foreach (var programmer in AffectedProgrammers.ToList())
+            foreach (var programmer in AffectedProgrammers)
             {
                 foreach (var burf in burfs)
                 {
-                    programmer.Status.RemoveBurf(burf);
+                    programmer.UnregisterBurf(burf);
                 }
             }
         }
@@ -81,11 +87,12 @@ namespace Model.Formation
             var centralLocation = stageField.VectorToIndices(programmer.transform.position);
             var relativePositions = FetchRelativePositionsFor(centralLocation);
             var isValid = relativePositions.Distinct()
-                                    .All(position => RelativeFormation.Contains(position));
+                                           .All(position => RelativeFormation.Contains(position));
             if (isValid)
             {
-                central = programmer;
+                CenterProgrammer = programmer;
             }
+
             return isValid;
         }
 

@@ -32,12 +32,22 @@ namespace Model
 
         public ProgrammerStatus()
         {
+            ResetStageParameters();
+
             FullHealth = Health;
-            AdditionalDamageRatio = 0.0;
             Cost = new Money(30, 300, 200);
+            Leadership = 0;
+            Sociality = 0;
+        }
+
+        public void ResetStageParameters()
+        {
+            StartVacationDay = null;
+            AdditionalDamageRatio = 0.0;
+            AdditionalSkillCostRatio = 0.0;
             HealRate = 0.0;
-            Leadership = 10;
-            Sociality = 10;
+            RemainingVacationDay = 0;
+            burfs.Clear();
         }
 
         public int? StartVacationDay
@@ -54,6 +64,11 @@ namespace Model
         }
 
         public double AdditionalDamageRatio
+        {
+            get; set;
+        }
+
+        public double AdditionalSkillCostRatio
         {
             get; set;
         }
@@ -78,9 +93,16 @@ namespace Model
 
         public void AddLeadership(int quantity)
         {
-            if ((int)(Leadership / 10) < (int)((Leadership + quantity) / 10))
+            int currentLeadershipBonusLevel = Leadership / 10;
+            int updatedLeadershipBonusLevel = (Leadership + quantity) / 10;
+            int levelDifference = updatedLeadershipBonusLevel - currentLeadershipBonusLevel;
+
+            if (levelDifference > 0)
             {
-                Health += 3;
+                CommonLogger.LogFormat("ProgrammerStatus::AddLeadership => 리더쉽 증가 효과로 정신력/총 정신력이 {0}만큼 증가함.", 3 * levelDifference);
+
+                FullHealth += 3 * levelDifference;
+                Health += 3 * levelDifference;
             }
 
             Leadership += quantity;
@@ -93,10 +115,17 @@ namespace Model
 
         public void AddSociality(int quantity)
         {
-            if ((int)(Sociality / 10) < (int)((Sociality + quantity) / 10))
+            int currentSocialityBonusLevel = Sociality / 10;
+            int updatedSocialityBonusLevel = (Sociality + quantity) / 10;
+            int levelDifference = updatedSocialityBonusLevel - currentSocialityBonusLevel;
+
+            if (levelDifference > 0)
             {
-                HealRate += 0.03;
+                CommonLogger.LogFormat("ProgrammerStatus::AddSociality => 사교성 증가 효과로 회복량이 {0}만큼 증가함.", 0.03 * levelDifference);
+                HealRate += 0.03 * levelDifference;
             }
+
+            Sociality += quantity;
         }
 
         public int Sociality
@@ -149,19 +178,17 @@ namespace Model
             }
         }
 
-        public bool isValidBurfs(String Name)
+        public TBurf GetBurf<TBurf>() where TBurf : IBurf
         {
-            foreach(var iter in Burfs.ToList())
-            {
-                if(iter.IconName.Equals(Name))
-                {
-                    return true;
-                }
-            }
-            return false;
+            var burf = Burfs.OfType<TBurf>().FirstOrDefault();
+            return burf;
         }
 
-
+        public bool HasBurf<TBurf>() where TBurf : IBurf
+        {
+            var burf = Burfs.OfType<TBurf>().FirstOrDefault();
+            return burf != null;
+        }
 
         public IEnumerable<IBurf> DecayBurfAndFetchExpiredBurfs()
         {

@@ -19,7 +19,7 @@ public class StatusPresenter : MonoBehaviour
     {
         burfUi.OnPointerEntered += sender =>
         {
-            if (Status != null)
+            if (Status != null && Status.PositiveBurfs.Count() > 0)
             {
                 burfUi.EnableBurfPopup();
             }
@@ -27,7 +27,7 @@ public class StatusPresenter : MonoBehaviour
 
         deburfUi.OnPointerEntered += sender =>
         {
-            if (Status != null)
+            if (Status != null && Status.NegativeBurfs.Count() > 0)
             {
                 deburfUi.EnableBurfPopup();
             }
@@ -59,12 +59,15 @@ public class StatusPresenter : MonoBehaviour
 
     private void PresentFormationStatus()
     {
-        var appliedFormation = StageManager.Instance.Unit.CurrentAppliedFormation;
-        if (appliedFormation != null)
+        if (Status.IsOnVacation == false)
         {
-            formationUi.SetActiveState(true);
-            formationUi.SetText(string.Format("{0} 적용중", appliedFormation.Name));
-        }
+            var appliedFormation = StageManager.Instance.Unit.CurrentAppliedFormation;
+            if (appliedFormation != null)
+            {
+                formationUi.SetActiveState(true);
+                formationUi.SetText(string.Format("{0} 적용중", appliedFormation.Name));
+            }
+        }        
     }
 
     private void SetTextsActiveState(bool newState)

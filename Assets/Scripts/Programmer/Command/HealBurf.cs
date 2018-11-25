@@ -72,7 +72,7 @@ namespace Model
         public void Unmodify(ProgrammerStatus status)
         {
             // Do nothing
-            CommonLogger.LogFormat("HealBurf::Modify => 프로그래머 '{0}'에 적용된 힐 버프가 해제됨.", status.Name);
+            CommonLogger.LogFormat("HealBurf::Unmodify => 프로그래머 '{0}'에 적용된 힐 버프가 해제됨.", status.Name);
         }
     }
 }

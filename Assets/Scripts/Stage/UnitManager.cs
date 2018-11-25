@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 public class UnitManager : MonoBehaviour, IEventDisposable
 {
     public readonly static IEnumerable<Vector2Int> ProgrammerMovableIndices = new List<Vector2Int>
@@ -109,7 +111,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void ApplyBurfsIfTurnChangedToPlayer(TurnState turn)
     {
-        if (Turn == TurnState.Player)
+        if (turn == TurnState.Player)
         {
             foreach (var programmer in Programmers)
             {
@@ -131,8 +133,6 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         foreach (var programmer in programmerActingDictionary.Keys)
         {
-            programmer.OnMovingEnded += CheckProgrammerFormation;
-
             programmer.OnActionStarted += () =>
             {
                 StageManager.Instance.StageField.BlockCellClicking();
@@ -153,6 +153,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 }
 
                 programmerActingDictionary[programmer] = true;
+                CheckProgrammerFormation(Vector3.zero);
                 ChangeTurnToBossIfAllProgrammersPerformAction();
             };
 
@@ -162,7 +163,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     public void CheckProgrammerFormation(Vector3 position)
     {
-        CurrentAppliedFormation = null;
+        ResetAppliedFormation();
 
         foreach (var formation in Formation.formations)
         {
@@ -171,11 +172,21 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 CurrentAppliedFormation = formation;
 
                 CommonLogger.LogFormat("UnitManager::CheckProgrammerFormation => 진형 '{0}'가 적용됨.", CurrentAppliedFormation.Name);
-                CurrentAppliedFormation.AttachBurfs(Programmers);
+                CurrentAppliedFormation.AttachBurfs(NotVacationProgrammers);
 
                 break;
             }
         }
+    }
+
+    private void ResetAppliedFormation()
+    {
+        if (CurrentAppliedFormation != null)
+        {
+            CurrentAppliedFormation.DetachBurfs();
+        }
+
+        CurrentAppliedFormation = null;
     }
 
     public Formation CurrentAppliedFormation
@@ -298,61 +309,47 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         }
     }
 
-    private void InvokeSkill(ProjectSingleAttackSkill skill)
+    private void ApplyDamage(Programmer programmer, double damage)
     {
-        var programmer = NotVacationProgrammers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
-        if (programmer.Status.isValidBurfs("Splash"))
+        if (programmer.Status.HasBurf<DamageSplashBurf>())
         {
-            foreach(var iter in Programmers)
-            {
-                iter.Hurt((int)(skill.Damage / Programmers.Count()));
-            }
+            var burf = programmer.Status.GetBurf<DamageSplashBurf>();
+            burf.Accept(damage);
         }
-        else if(programmer.Status.isValidBurfs("Spread")){
-            double ratio = ((DamageSpreadBurf)(programmer.Status.Burfs.Where(burf => burf.IconName.Equals("Spread")).Single())).SpreadRatio;
-            foreach (var iter in Programmers)
-            {
-                if(iter == programmer)
-                {
-                    iter.Hurt((int)(skill.Damage * (1 - ratio)));
-                }
-                else
-                {
-                    iter.Hurt((int)(skill.Damage * ratio / (Programmers.Count() - 1)));
-                }
-            }
+        else if (programmer.Status.HasBurf<DamageSpreadBurf>())
+        {
+            var burf = programmer.Status.GetBurf<DamageSpreadBurf>();
+            burf.Accept(programmer, damage);
+        }
+        else if (programmer.Status.HasBurf<TargetedDamageSharingBurf>())
+        {
+            var burf = programmer.Status.GetBurf<TargetedDamageSharingBurf>();
+            burf.Accept(programmer, damage);
         }
         else
         {
-            programmer.Hurt((int)skill.Damage);
+            programmer.Hurt((int) damage);
         }
+    }
+
+    private void InvokeSkill(ProjectSingleAttackSkill skill)
+    {
+        int randomIndex = Random.Range(0, Programmers.Count());
+        var programmer = NotVacationProgrammers.ElementAt(randomIndex);
+
+        ApplyDamage(programmer, skill.Damage);
+        return;
     }
 
     private void InvokeSkill(ProjectMultiAttackSkill skill)
     {
-        foreach(var programmer in NotVacationProgrammers)
+        foreach (var programmer in NotVacationProgrammers)
         {
-            if (programmer.Status.isValidBurfs("Spread"))
-            {
-                double ratio = ((DamageSpreadBurf)(programmer.Status.Burfs.Where(burf => burf.IconName.Equals("Spread")).Single())).SpreadRatio;
-                foreach (var iter in Programmers)
-                {
-                    if (iter == programmer)
-                    {
-                        iter.Hurt((int)(skill.Damage * (1 - ratio)));
-                    }
-                    else
-                    {
-                        iter.Hurt((int)(skill.Damage * ratio / (Programmers.Count() - 1)));
-                    }
-                }
-            }
-            else
-            {
-                programmer.Hurt((int)skill.Damage);
-            }
+            ApplyDamage(programmer, skill.Damage);
+            continue;
         }
     }
+
     private void InvokeSkill(ProjectSingleDeburfSkill skill)
     {
         Programmer targetProgrammer = NotVacationProgrammers.ToList()[(int)(UnityEngine.Random.Range(0, Programmers.Count()))];
@@ -381,7 +378,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void PermitProgrammersActionIfTurnChangedToPlayer(TurnState turn)
     {
-        if (Turn == TurnState.Player)
+        if (turn == TurnState.Player)
         {
             foreach (var programmer in programmerActingDictionary.Keys.ToArray())
             {
@@ -408,7 +405,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
     private void DecreaseActiveSkillCooldownIfTurnChangedToPlayer(TurnState turn)
     {
-        if (Turn == TurnState.Player)
+        if (turn == TurnState.Player)
         {
             foreach (var activeSkill in Programmers.SelectMany(programmer => programmer.Ability.AcquiredActiveSkills))
             {
