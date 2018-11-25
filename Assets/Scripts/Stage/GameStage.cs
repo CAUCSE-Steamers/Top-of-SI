@@ -15,6 +15,17 @@ namespace Model
             Boss = new ProjectSpec();
         }
 
+        public GameStage Clone()
+        {
+            return new GameStage
+            {
+                Title = this.Title,
+                ElapsedDayLimit = this.ElapsedDayLimit,
+                IconName = this.IconName,
+                Reward = this.Reward,
+            };
+        }
+
         public string Title
         {
             get; set;
