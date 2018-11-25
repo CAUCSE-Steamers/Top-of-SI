@@ -122,10 +122,11 @@ public class StageUiPresenter : MonoBehaviour
     {
         var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
         moveState.DisableCellEffect(gameObject);
-        moveState.TransitionToIdle();
 
         var idleState = stateAnimator.GetBehaviour<IdleState>();
         idleState.ReserveSetSelectedObject(moveState.SelectedProgrammer.gameObject);
+
+        moveState.TransitionToIdle();
 
         objectInformationPresenter.RenderSkillPanel(moveState.SelectedProgrammer);
     }
