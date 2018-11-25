@@ -380,7 +380,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
             }
             else
             {
-                programmer.RegisterBurf(burf);
+                programmer.RegisterBurf(burf.Clone());
             }
         }
     }
