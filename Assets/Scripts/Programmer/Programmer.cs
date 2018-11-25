@@ -363,19 +363,6 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         }
     }
 
-    public double getDamageDecreaseRatio()
-    {
-        double ret = 0;
-        foreach(var iter in Status.Deburf)
-        {
-            if((iter.Type & DeburfType.DecreaseAttack) == DeburfType.DecreaseAttack)
-            {
-                ret += iter.Factor;
-            }
-        }
-        return ret > 1? 1 : ret;
-    }
-
     public XElement ToXmlElement()
     {
         return new XElement("Programmer", Status.ToXmlElement(),

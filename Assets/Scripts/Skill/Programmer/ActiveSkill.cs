@@ -41,7 +41,7 @@ namespace Model
             get; private set;
         }
 
-        public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType, double decreaseDamageRatio = 0.0)
+        public void ApplySkill(IHurtable hurtable, ProjectType projectType, RequiredTechType techType)
         {
             if (Random.Range(0f, 1f) > Accuracy)
             {
@@ -58,7 +58,8 @@ namespace Model
                 {
                     critical += Information.CriticalRatio;
                 }
-                hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical * (1 - decreaseDamageRatio)));
+
+                hurtable.Hurt((int)(CalculateDamage(projectType, techType) * critical));
 
                 RemainingCooldown = DefaultCooldown;
             }

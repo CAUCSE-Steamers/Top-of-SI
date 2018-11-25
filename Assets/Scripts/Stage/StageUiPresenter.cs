@@ -241,7 +241,7 @@ public class StageUiPresenter : MonoBehaviour
         currentSelectedProgrammer.SpendSkillCost(skill.Cost);
 
         skill.OnSkillMissed += HandleMissedSkill;
-        skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype, currentSelectedProgrammer.getDamageDecreaseRatio());
+        skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype);
         skill.OnSkillMissed -= HandleMissedSkill;
 
         objectInformationPresenter.ResetInformationUi();
