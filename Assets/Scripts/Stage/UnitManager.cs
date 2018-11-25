@@ -105,7 +105,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         foreach (var programmer in Programmers)
         {
-            programmer.Status.RemainingVacationDay = StageManager.Instance.CurrentStage.ElapsedDayLimit;
+            programmer.Status.RemainingVacationDay = StageManager.Instance.CurrentStage.ElapsedDayLimit / 3;
         }
     }
 

@@ -85,18 +85,21 @@ public class ObjectInformationPresenter : MonoBehaviour
     private void RenderProgrammer(Programmer programmer)
     {
         SetDefaultActionState(true);
-        SetMoveActionState(programmer);
+        SetDefaultActionState(programmer);
         RenderStatus(programmer);
         RenderSelectionEffect(programmer);
         RenderSkillPanel(programmer);
     }
 
-    private void SetMoveActionState(Programmer programmer)
+    private void SetDefaultActionState(Programmer programmer)
     {
         var defaultActionImages = skillPanelObject.GetComponentsInChildren<Image>(true);
 
         defaultActionImages[0].GetComponent<Button>().interactable = programmer.Status.IsMovable;
         defaultActionImages[1].gameObject.SetActive(programmer.Status.IsMovable == false);
+
+        defaultActionImages[2].GetComponent<Button>().interactable = programmer.Status.RemainingVacationDay > 0;
+        defaultActionImages[3].gameObject.SetActive(programmer.Status.RemainingVacationDay <= 0);
     }
 
     private void RenderStatus(Programmer programmer)
