@@ -27,13 +27,19 @@ namespace Model
             BaseDamage = baseDamage;
             initialCooldown = defaultCooldown;
 
+            ResetStageParameters();
+
             Information.LearnEnabled = true;
-            RemainingCooldown = 0.0;
-            AdditionalDamageRatio = 0.0;
-            AdditionlCooldownRatio = 0.0;
             Accuracy = 0.0;
             Information.CriticalRatio = 0.5;
             Information.CriticalProbability = 0.9;
+        }
+
+        public void ResetStageParameters()
+        {
+            RemainingCooldown = 0.0;
+            AdditionalDamageRatio = 0.0;
+            AdditionlCooldownRatio = 0.0;
         }
 
         public double RemainingCooldown

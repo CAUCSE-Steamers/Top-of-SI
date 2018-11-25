@@ -154,6 +154,12 @@ public class StageManager : MonoBehaviour, IDisposable
 
             newProgrammer.transform.position = randomVector;
             newProgrammer.Ability = programmerSpec.Ability;
+
+            foreach (var activeSkill in newProgrammer.Ability.AcquiredActiveSkills)
+            {
+                activeSkill.ResetStageParameters();
+            }
+
             newProgrammer.Status = programmerSpec.Status;
 
             newProgrammer.Status.ResetStageParameters();
