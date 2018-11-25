@@ -69,6 +69,7 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
                     Ability = new TestProject().Ability,
                     Status = new TestProject().Status
                 },
+                Reward = 100,
                 IconName = "Cpp"
             },
             new GameStage
@@ -80,6 +81,7 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
                     Ability = new TestProject().Ability,
                     Status = new TestProject().Status
                 },
+                Reward = 200,
                 IconName = "CSharp"
             },
             new GameStage
@@ -91,6 +93,7 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
                     Ability = new TestProject().Ability,
                     Status = new TestProject().Status
                 },
+                Reward = 300,
                 IconName = "Java"
             }
         };
@@ -125,6 +128,7 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         
         lobbyUi = presenter;
 
+        lobbyUi.UpdateMoney(CurrentPlayer.Money);
         OnChangeStage += lobbyUi.UpdateProject;
         SelectedStage = stages[0];
     }
