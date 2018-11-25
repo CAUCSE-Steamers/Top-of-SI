@@ -32,18 +32,19 @@ namespace Model
 
         public ProgrammerStatus()
         {
+            ResetStageParameters();
+
             FullHealth = Health;
-            AdditionalDamageRatio = 0.0;
             Cost = new Money(30, 300, 200);
-            HealRate = 0.0;
-            Leadership = 10;
-            Sociality = 10;
+            Leadership = 0;
+            Sociality = 0;
         }
 
         public void ResetStageParameters()
         {
             StartVacationDay = null;
             AdditionalDamageRatio = 0.0;
+            AdditionalSkillCostRatio = 0.0;
             HealRate = 0.0;
             RemainingVacationDay = 0;
             burfs.Clear();
@@ -63,6 +64,11 @@ namespace Model
         }
 
         public double AdditionalDamageRatio
+        {
+            get; set;
+        }
+
+        public double AdditionalSkillCostRatio
         {
             get; set;
         }

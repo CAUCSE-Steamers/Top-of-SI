@@ -236,11 +236,14 @@ public class StageUiPresenter : MonoBehaviour
         }
 
         var boss = StageManager.Instance.Unit.Boss;
+
         currentSelectedProgrammer.UseSkill();
         currentSelectedProgrammer.SpendSkillCost(skill.Cost);
+
         skill.OnSkillMissed += HandleMissedSkill;
         skill.ApplySkill(boss, boss.Ability.ProjType, boss.Ability.Techtype, currentSelectedProgrammer.getDamageDecreaseRatio());
         skill.OnSkillMissed -= HandleMissedSkill;
+
         objectInformationPresenter.ResetInformationUi();
         idleState.ResetSelectedObject();
     }

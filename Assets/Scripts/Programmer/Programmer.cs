@@ -82,8 +82,8 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
         Status = new ProgrammerStatus
         {
             PortraitName = "UnityChan",
-            FullHealth = 1000,
-            Health = 1000,
+            FullHealth = 50,
+            Health = 50,
             Name = "테스트 보스"
         };
         
@@ -355,14 +355,12 @@ public class Programmer : MonoBehaviour, IEventDisposable, IHurtable, IDeburf, I
 
     public void SpendSkillCost(int cost)
     {
-        foreach(var iter in Status.Deburf)
+        Status.Health -= (int) (cost * (1 + Status.AdditionalSkillCostRatio));
+
+        if (IsAlive == false)
         {
-            if((iter.Type & DeburfType.IncreaseMentalUsage) == DeburfType.IncreaseMentalUsage)
-            {
-                cost = (int)(cost * (1 + iter.Factor));
-            }
+            OnDeath();
         }
-        Status.Health -= cost;
     }
 
     public double getDamageDecreaseRatio()
