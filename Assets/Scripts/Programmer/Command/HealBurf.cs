@@ -61,6 +61,14 @@ namespace Model
             get; set;
         }
 
+        public IBurf Clone()
+        {
+            return new HealBurf(HealQuantity, FullIncreasingQuantity)
+            {
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Modify(ProgrammerStatus status)
         {
             status.FullHealth += FullIncreasingQuantity;

@@ -55,6 +55,14 @@ namespace Model
             }
         }
 
+        public IBurf Clone()
+        {
+            return new DamageSplashBurf(DecreaseRatio)
+            {
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Accept(double hurtDamage)
         {
             var programmers = StageManager.Instance.Unit.Programmers;

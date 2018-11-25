@@ -54,6 +54,14 @@ namespace Model
             get; set;
         }
 
+        public IBurf Clone()
+        {
+            return new SkillCooldownBurf(CooldownRatio)
+            {
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Modify(ActiveSkill activeSkill)
         {
             if (activeSkill.Information.Type != SkillType.None)

@@ -55,6 +55,14 @@ namespace Model
             }
         }
 
+        public IBurf Clone()
+        {
+            return new DamageIncreaseDeburf(IncreaseRatio)
+            {
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Modify(ProgrammerStatus status)
         {
             status.AdditionalDamageRatio += IncreaseRatio;

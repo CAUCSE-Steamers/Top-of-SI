@@ -54,6 +54,14 @@ namespace Model
             }
         }
 
+        public IBurf Clone()
+        {
+            return new CostIncrementBurf(IncrementRatio)
+            {
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Modify(ProgrammerStatus status)
         {
             status.AdditionalSkillCostRatio += IncrementRatio;

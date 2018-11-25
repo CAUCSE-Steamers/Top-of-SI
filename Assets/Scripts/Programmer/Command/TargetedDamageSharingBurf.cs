@@ -60,6 +60,15 @@ namespace Model
             }
         }
 
+        public IBurf Clone()
+        {
+            return new TargetedDamageSharingBurf(SharingRatio)
+            {
+                TargetProgrammer = this.TargetProgrammer,
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Accept(Programmer programmer, double hurtDamage)
         {
             double sharedDamage = hurtDamage * SharingRatio;

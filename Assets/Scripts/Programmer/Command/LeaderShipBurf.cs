@@ -54,6 +54,14 @@ namespace Model
             }
         }
 
+        public IBurf Clone()
+        {
+            return new LeadershipBurf(Leadership)
+            {
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Modify(ProgrammerStatus status)
         {
             status.AddLeadership(Leadership);

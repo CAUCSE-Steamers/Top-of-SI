@@ -54,6 +54,14 @@ namespace Model
             }
         }
 
+        public IBurf Clone()
+        {
+            return new SocialityBurf(Sociality)
+            {
+                RemainingTurn = this.RemainingTurn
+            };
+        }
+
         public void Modify(ProgrammerStatus status)
         {
             status.AddSociality(Sociality);
