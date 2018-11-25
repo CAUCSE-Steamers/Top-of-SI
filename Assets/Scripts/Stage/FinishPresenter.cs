@@ -8,9 +8,16 @@ public class FinishPresenter : MonoBehaviour
     private Transform objectivePanelObject;
     [SerializeField]
     private ObjectiveUiTemplate objectiveTemplate;
+    [SerializeField]
+    private AudioClip effectSound;
 
     public void Present(params string[] messages)
     {
+        if (effectSound != null)
+        {
+            SoundManager.Instance.FetchAvailableSource().PlayOneShot(effectSound);
+        }
+
         RemoveOldObjectives();
         RenderMessages(messages);
     }

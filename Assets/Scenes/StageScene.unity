@@ -6921,6 +6921,7 @@ MonoBehaviour:
   objectivePanelObject: {fileID: 822031597}
   objectiveTemplate: {fileID: 114998003199374798, guid: 454d7e77301221e459628dc2c3d13232,
     type: 2}
+  effectSound: {fileID: 8300000, guid: b116787f495f2d84797350cde3db1d4d, type: 3}
 --- !u!1 &670840828
 GameObject:
   m_ObjectHideFlags: 0
@@ -18235,6 +18236,7 @@ MonoBehaviour:
   objectivePanelObject: {fileID: 168633711}
   objectiveTemplate: {fileID: 114998003199374798, guid: 454d7e77301221e459628dc2c3d13232,
     type: 2}
+  effectSound: {fileID: 8300000, guid: bfd9e6d10f69e5646aa562f258990bbd, type: 3}
 --- !u!1 &1961385521
 GameObject:
   m_ObjectHideFlags: 0
