@@ -12,6 +12,7 @@ public class ProgramController : MonoBehaviour
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
 #else
+        Application.Quit();
         Process.GetCurrentProcess().Kill();
 #endif
     }
