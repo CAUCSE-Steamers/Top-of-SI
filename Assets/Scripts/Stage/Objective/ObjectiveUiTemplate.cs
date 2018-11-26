@@ -15,4 +15,9 @@ public class ObjectiveUiTemplate : MonoBehaviour
     {
         descriptionText.text = objective.Description;
     }
+
+    public void Render(string naiveText)
+    {
+        descriptionText.text = naiveText;
+    }
 }

@@ -2789,6 +2789,69 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 1, z: 0.3}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!1 &168633710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 168633711}
+  - component: {fileID: 168633713}
+  - component: {fileID: 168633712}
+  m_Layer: 5
+  m_Name: ObjectivePanel (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &168633711
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 168633710}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1934290710}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -5.549988, y: -6.199951}
+  m_SizeDelta: {x: -558.2999, y: -452.04852}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &168633712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 168633710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 5
+    m_Bottom: 5
+  m_ChildAlignment: 0
+  m_Spacing: 15
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 0
+--- !u!222 &168633713
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 168633710}
 --- !u!1 &186492582
 GameObject:
   m_ObjectHideFlags: 0
@@ -3583,6 +3646,7 @@ RectTransform:
   - {fileID: 533112816}
   - {fileID: 363723485}
   - {fileID: 578724919}
+  - {fileID: 822031597}
   m_Father: {fileID: 663705790}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4864,6 +4928,8 @@ MonoBehaviour:
   objectInformationPresenter: {fileID: 403914968}
   stageInformationPresenter: {fileID: 403914966}
   stageNoticeUiPresenter: {fileID: 403914970}
+  victoryPresenter: {fileID: 1934290713}
+  failurePresenter: {fileID: 663705793}
   blockingUi: {fileID: 997337556}
 --- !u!114 &403914968
 MonoBehaviour:
@@ -6781,6 +6847,7 @@ GameObject:
   - component: {fileID: 663705790}
   - component: {fileID: 663705792}
   - component: {fileID: 663705791}
+  - component: {fileID: 663705793}
   m_Layer: 5
   m_Name: FailureUi
   m_TagString: Untagged
@@ -6840,6 +6907,21 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 663705789}
+--- !u!114 &663705793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 663705789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9bb2b771b9340e4aaed4eeeeb96b5cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectivePanelObject: {fileID: 822031597}
+  objectiveTemplate: {fileID: 114998003199374798, guid: 454d7e77301221e459628dc2c3d13232,
+    type: 2}
+  effectSound: {fileID: 8300000, guid: b116787f495f2d84797350cde3db1d4d, type: 3}
 --- !u!1 &670840828
 GameObject:
   m_ObjectHideFlags: 0
@@ -9359,6 +9441,69 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 817503669}
+--- !u!1 &822031596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 822031597}
+  - component: {fileID: 822031599}
+  - component: {fileID: 822031598}
+  m_Layer: 5
+  m_Name: ObjectivePanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &822031597
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 822031596}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 317957125}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -5.5499573, y: -6.199951}
+  m_SizeDelta: {x: -78.29999, y: -132.4}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &822031598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 822031596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 5
+    m_Bottom: 5
+  m_ChildAlignment: 0
+  m_Spacing: 15
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 0
+--- !u!222 &822031599
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 822031596}
 --- !u!1 &838092359
 GameObject:
   m_ObjectHideFlags: 0
@@ -18016,6 +18161,7 @@ GameObject:
   - component: {fileID: 1934290710}
   - component: {fileID: 1934290712}
   - component: {fileID: 1934290711}
+  - component: {fileID: 1934290713}
   m_Layer: 5
   m_Name: VictoryUi
   m_TagString: Untagged
@@ -18034,6 +18180,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1268244834}
+  - {fileID: 168633711}
   m_Father: {fileID: 403914964}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18075,6 +18222,21 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1934290709}
+--- !u!114 &1934290713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1934290709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9bb2b771b9340e4aaed4eeeeb96b5cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectivePanelObject: {fileID: 168633711}
+  objectiveTemplate: {fileID: 114998003199374798, guid: 454d7e77301221e459628dc2c3d13232,
+    type: 2}
+  effectSound: {fileID: 8300000, guid: bfd9e6d10f69e5646aa562f258990bbd, type: 3}
 --- !u!1 &1961385521
 GameObject:
   m_ObjectHideFlags: 0

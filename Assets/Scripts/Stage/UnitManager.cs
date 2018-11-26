@@ -81,6 +81,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
         CurrentAppliedFormation = null;
 
+        OnTurnChanged += RemoveDeadPlayerIfTurnChangedToPlayer;
         OnTurnChanged += RequestBossActionIfTurnChangedToBoss;
         OnTurnChanged += PermitProgrammersActionIfTurnChangedToPlayer;
         OnTurnChanged += ApplyBurfsIfTurnChangedToPlayer;
@@ -99,6 +100,19 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         SetVacationLimitToProgrammers();
 
         CommonLogger.Log("UnitManager::SetUnits => 초기화 완료.");
+    }
+
+    private void RemoveDeadPlayerIfTurnChangedToPlayer(TurnState turn)
+    {
+        if (turn == TurnState.Player)
+        {
+            foreach (var programmer in Programmers.Where(programmer => programmer.IsAlive == false)
+                                                  .ToList())
+            {
+                CommonLogger.LogFormat("UnitManager::RemoveDeadPlayerIfTurnChangedToPlayer => 프로그래머 {0}가 사망하여 스테이지 내에서 제외됨.", programmer.Status.Name);
+                programmerActingDictionary.Remove(programmer);
+            }
+        }
     }
 
     private void SetVacationLimitToProgrammers()
@@ -155,6 +169,25 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 programmerActingDictionary[programmer] = true;
                 CheckProgrammerFormation(Vector3.zero);
                 ChangeTurnToBossIfAllProgrammersPerformAction();
+            };
+
+            programmer.OnDeath += () =>
+            {
+                var currentProgrammers = Programmers.ToList();
+                if (currentProgrammers.All(stageProgrammer => stageProgrammer.IsAlive == false) &&
+                    Turn != TurnState.GameEnd)
+                {
+                    Turn = TurnState.GameEnd;
+                    StageManager.Instance.StageUi.TransitionToFailure("프로젝트에 투입된 모든 프로그래머가 퇴사했습니다!");
+                }
+
+                var deadProgrammerSpec = LobbyManager.Instance.CurrentPlayer
+                                                              .ProgrammerSpecs
+                                                              .Where(spec => spec.Ability.Equals(programmer.Ability) &&
+                                                                             spec.Status.Equals(programmer.Status))
+                                                              .Single();
+
+                LobbyManager.Instance.CurrentPlayer.ProgrammerSpecs.Remove(deadProgrammerSpec);
             };
 
             CheckProgrammerFormation(programmer.transform.position);
@@ -305,7 +338,10 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 }
             }
 
-            boss.InvokeFinished();
+            if (Turn != TurnState.GameEnd)
+            {
+                boss.InvokeFinished();
+            }
         }
     }
 

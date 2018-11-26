@@ -16,6 +16,10 @@ public class StageUiPresenter : MonoBehaviour
     [SerializeField]
     private StageNoticeUiPresenter stageNoticeUiPresenter;
     [SerializeField]
+    private FinishPresenter victoryPresenter;
+    [SerializeField]
+    private FinishPresenter failurePresenter;
+    [SerializeField]
     private GameObject blockingUi;
 
     private void Start()
@@ -118,10 +122,11 @@ public class StageUiPresenter : MonoBehaviour
     {
         var moveState = stateAnimator.GetBehaviour<SelectingMoveState>();
         moveState.DisableCellEffect(gameObject);
-        moveState.TransitionToIdle();
 
         var idleState = stateAnimator.GetBehaviour<IdleState>();
         idleState.ReserveSetSelectedObject(moveState.SelectedProgrammer.gameObject);
+
+        moveState.TransitionToIdle();
 
         objectInformationPresenter.RenderSkillPanel(moveState.SelectedProgrammer);
     }
@@ -154,16 +159,19 @@ public class StageUiPresenter : MonoBehaviour
             onTrueValue: stateAnimator.GetBehaviour<PauseState>().TransitionToIdle,
             onFalseValue: delegate { }
         );
+
+        TransitionToFailure("프로젝트 완수를 포기하셨습니다.");
+    }
+
+    public void TransitionToFailure(params string[] messages)
+    {
+        failurePresenter.Present(messages);
         stateAnimator.GetBehaviour<IdleState>().TransitionToFailureState();
     }
 
-    public void TransitionToFailure()
+    public void TransitionToVictory(params string[] messages)
     {
-        stateAnimator.GetBehaviour<IdleState>().TransitionToFailureState();
-    }
-
-    public void TransitionToVictory()
-    {
+        victoryPresenter.Present(messages);
         stateAnimator.GetBehaviour<IdleState>().TransitionToVictoryState();
     }
 
