@@ -69,6 +69,13 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         }
     }
 
+    public void ChangeProgrammers(IEnumerable<Programmer> programmers)
+    {
+        programmerActingDictionary =
+            programmers.ToDictionary(keySelector: programmer => programmer,
+                                     elementSelector: programmer => false);
+    }
+
     public void SetUnits(IEnumerable<Programmer> programmers, AbstractProject boss, Field stageField)
     {
         CommonLogger.Log("UnitManager::SetUnits => 초기화 시작.");
@@ -86,9 +93,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         OnTurnChanged += PermitProgrammersActionIfTurnChangedToPlayer;
         OnTurnChanged += ApplyBurfsIfTurnChangedToPlayer;
         OnTurnChanged += DecreaseActiveSkillCooldownIfTurnChangedToPlayer;
-        programmerActingDictionary =
-            programmers.ToDictionary(keySelector: programmer => programmer,
-                                     elementSelector: programmer => false);
+        ChangeProgrammers(programmers);
 
         this.boss = boss;
         this.stageField = stageField;
@@ -106,11 +111,24 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         if (turn == TurnState.Player)
         {
-            foreach (var programmer in Programmers.Where(programmer => programmer.IsAlive == false)
-                                                  .ToList())
+            int totalSeverancePay = 0;
+            var deadProgrammers = Programmers.Where(programmer => programmer.IsAlive == false)
+                                             .ToList();
+
+            foreach (var programmer in deadProgrammers)
             {
                 CommonLogger.LogFormat("UnitManager::RemoveDeadPlayerIfTurnChangedToPlayer => 프로그래머 {0}가 사망하여 스테이지 내에서 제외됨.", programmer.Status.Name);
                 programmerActingDictionary.Remove(programmer);
+                totalSeverancePay += programmer.Status.Cost.Fire;
+            }
+
+            if (totalSeverancePay > 0)
+            {
+                if (Turn != TurnState.GameEnd)
+                {
+                    StageManager.Instance.StageUi.RenderDeathText(deadProgrammers);
+                }
+                // TODO: Spend money!
             }
         }
     }

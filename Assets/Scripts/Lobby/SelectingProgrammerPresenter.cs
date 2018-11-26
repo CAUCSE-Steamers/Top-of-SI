@@ -28,6 +28,8 @@ public class SelectingProgrammerPresenter : MonoBehaviour
             selectedProgrammerCell.SetActive(false);
         }
 
+        programmerListPresenter.Present();
+
         programmerListPresenter.OnCellButtonClicked += (sender, spec) =>
         {
             var selectedRepresentImage = sender.GetComponentsInChildren<Image>(includeInactive: true)
