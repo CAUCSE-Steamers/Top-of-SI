@@ -28,7 +28,7 @@ public class SelectingProgrammerPresenter : MonoBehaviour
             selectedProgrammerCell.SetActive(false);
         }
 
-        programmerListPresenter.Present();
+        programmerListPresenter.Present(LobbyManager.Instance.CurrentPlayer.ProgrammerSpecs);
 
         programmerListPresenter.OnCellButtonClicked += (sender, spec) =>
         {

@@ -312,15 +312,16 @@ public class StageUiPresenter : MonoBehaviour
         var names = string.Join(", ", deadProgrammers.Select(programmer => programmer.Status.Name).ToArray());
         var deadBodyText = string.Format("프로그래머 {0}가 업무를 감당하지 못하고 퇴사했습니다!", names);
 
-        modalPresenter.AddClickAction(() => RenderPaymentText(deadProgrammers));
+        modalPresenter.AddClickAction(() => RenderAlternativeProgrammerSelection(deadProgrammers));
         
         modalPresenter.Present("퇴사!", deadBodyText);
     }
 
-    public void RenderAlternativeProgrammerSelection()
+    public void RenderAlternativeProgrammerSelection(IEnumerable<Programmer> deadProgrammers)
     {
         modalPresenter.SetActive(false);
         alternativeProgrammerPresenter.gameObject.SetActive(true);
+        alternativeProgrammerPresenter.DeadProgrammers = deadProgrammers;
         alternativeProgrammerPresenter.Present(StageManager.Instance.Unit.Programmers);
     }
 

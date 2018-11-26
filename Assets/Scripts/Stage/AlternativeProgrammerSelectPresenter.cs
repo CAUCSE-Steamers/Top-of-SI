@@ -18,6 +18,11 @@ public class AlternativeProgrammerSelectPresenter : MonoBehaviour
     private ICollection<ProgrammerSpec> selectedSpecs;
     private int blankProgrammers;
 
+    public IEnumerable<Programmer> DeadProgrammers
+    {
+        get; set;
+    }
+
     public void Present(IEnumerable<Programmer> programmers)
     {
         selectedSpecs = new List<ProgrammerSpec>();
@@ -45,7 +50,13 @@ public class AlternativeProgrammerSelectPresenter : MonoBehaviour
             PresentSelectedPanel(programmers);
         };
 
-        programmerListPresenter.Present();
+        var usedProgrammerSpecs
+            = from spec in LobbyManager.Instance.CurrentPlayer.ProgrammerSpecs
+              from status in StageManager.Instance.Unit.Programmers.Select(programmer => programmer.Status)
+              where spec.Status.Equals(status)
+              select spec;
+
+        programmerListPresenter.Present(LobbyManager.Instance.CurrentPlayer.ProgrammerSpecs.Except(usedProgrammerSpecs));
         PresentSelectedPanel(programmers);
     }
 
@@ -76,10 +87,13 @@ public class AlternativeProgrammerSelectPresenter : MonoBehaviour
 
     public void FA()
     {
-        StageManager.Instance.MakeProgrammers(selectedSpecs);
+        //StageManager.Instance.MakeProgrammers(selectedSpecs);
 
+        modalPresenter.ResetClickAction();
         modalPresenter.SetActive(true);
-        //        StageManager.Instance.StageUi.RenderPaymentText();
+
+        StageManager.Instance.StageUi.RenderPaymentText(DeadProgrammers);
+
         this.gameObject.SetActive(false);
     }
 }

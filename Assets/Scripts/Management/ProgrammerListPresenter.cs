@@ -14,24 +14,10 @@ public class ProgrammerListPresenter : MonoBehaviour
     [SerializeField]
     private Transform programmerPanelObject;
     
-    public void Present(IEnumerable<ProgrammerStatus> fixedStatus = null)
+    public void Present(IEnumerable<ProgrammerSpec> specs)
     {
         RemoveExistingCells();
-        ConstructFixedCells(fixedStatus);
-        ConstructCells();
-    }
-
-    private void ConstructFixedCells(IEnumerable<ProgrammerStatus> fixedStatus)
-    {
-        if (fixedStatus != null)
-        {
-            foreach (var programmerStatus in fixedStatus)
-            {
-                var createdCell = Instantiate(programmerCellTemplate, programmerPanelObject);
-                SetCellUi(createdCell, new ProgrammerSpec() { Status = programmerStatus });
-                SetCellBlocked(createdCell);
-            }
-        }
+        ConstructCells(specs);
     }
 
     private void SetCellBlocked(GameObject cellObject)
@@ -51,10 +37,9 @@ public class ProgrammerListPresenter : MonoBehaviour
         }
     }
 
-    private void ConstructCells()
+    private void ConstructCells(IEnumerable<ProgrammerSpec> specs)
     {
-        var currentPlayer = LobbyManager.Instance.CurrentPlayer;
-        foreach (var programmerSpec in currentPlayer.ProgrammerSpecs)
+        foreach (var programmerSpec in specs)
         {
             var createdCell = Instantiate(programmerCellTemplate, programmerPanelObject);
             SetCellUi(createdCell, programmerSpec);
