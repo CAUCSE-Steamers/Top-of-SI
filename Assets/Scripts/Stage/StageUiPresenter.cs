@@ -27,6 +27,20 @@ public class StageUiPresenter : MonoBehaviour
     [SerializeField]
     private AlternativeProgrammerSelectPresenter alternativeProgrammerPresenter;
 
+    public void SetNewProgrammer(Programmer newProgrammer)
+    {
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
+        idleState.AddProgrammerEvent(newProgrammer);
+        
+        newProgrammer.OnActionStarted += () =>
+        {
+            objectInformationPresenter.ResetInformationUi();
+            SetBlockUiState(true);
+        };
+
+        newProgrammer.OnActionFinished += () => SetBlockUiState(false);
+    }
+
     private void Start()
     {
         objectInformationPresenter.ResetInformationUi();

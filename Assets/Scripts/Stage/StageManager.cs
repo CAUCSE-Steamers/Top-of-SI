@@ -138,11 +138,18 @@ public class StageManager : MonoBehaviour, IDisposable
     private void InitializeProgrammers()
     {
         Programmers.Clear();
-        MakeProgrammers(LobbyManager.Instance.SelectedStage.ProgrammerSpecs);
+
+        var newProgrammers = MakeProgrammers(LobbyManager.Instance.SelectedStage.ProgrammerSpecs);
+        foreach (var newProgrammer in newProgrammers)
+        {
+            Programmers.Add(newProgrammer);
+        }
     }
 
-    public void MakeProgrammers(IEnumerable<ProgrammerSpec> specs)
+    public IEnumerable<Programmer> MakeProgrammers(IEnumerable<ProgrammerSpec> specs)
     {
+        var newProgrammers = new List<Programmer>();
+
         foreach (var programmerSpec in specs)
         {
             programmerSpec.Status.DisposeRegisteredEvents();
@@ -162,8 +169,10 @@ public class StageManager : MonoBehaviour, IDisposable
 
             newProgrammer.Status.ResetStageParameters();
 
-            Programmers.Add(newProgrammer);
+            newProgrammers.Add(newProgrammer);
         }
+
+        return newProgrammers;
     }
 
     private void InitializeBoss()

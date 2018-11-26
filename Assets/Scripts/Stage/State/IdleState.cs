@@ -54,6 +54,11 @@ public class IdleState : DispatchableState
         }
     }
 
+    public void AddProgrammerEvent(Programmer programmer)
+    {
+        programmer.OnMouseClicked += ChangeSelectedProgrammer;
+    }
+
     protected override void ProcessExitState()
     {
         foreach (var programmer in Manager.Unit.Programmers)

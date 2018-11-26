@@ -85,9 +85,21 @@ public class AlternativeProgrammerSelectPresenter : MonoBehaviour
         }
     }
 
-    public void FA()
+    public void AddNewAlternativeProgrammers()
     {
-        //StageManager.Instance.MakeProgrammers(selectedSpecs);
+        var newProgrammers = StageManager.Instance.MakeProgrammers(selectedSpecs);
+
+        foreach (var programmer in newProgrammers)
+        {
+            Debug.Log("Created!!");
+            StageManager.Instance.Unit.AddProgrammer(programmer);
+            StageManager.Instance.StageUi.SetNewProgrammer(programmer);
+
+            float rotationDirection = StageManager.Instance.Status.StageDirection == Direction.Right ?
+               -90f : 90f;
+
+            programmer.transform.rotation = Quaternion.Euler(0, rotationDirection, 0);
+        }
 
         modalPresenter.ResetClickAction();
         modalPresenter.SetActive(true);
