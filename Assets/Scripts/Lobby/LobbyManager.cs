@@ -128,6 +128,11 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         
         lobbyUi = presenter;
 
+        if (CurrentPlayer.Money < 0)
+        {
+            CommonLogger.Log("++++++++++++++++++++++++ GAME OVER ++++++++++++++++++++++++++++");
+        }
+
         lobbyUi.UpdateMoney(CurrentPlayer.Money);
         OnChangeStage += lobbyUi.UpdateProject;
         SelectedStage = stages[0];

@@ -91,7 +91,6 @@ public class AlternativeProgrammerSelectPresenter : MonoBehaviour
 
         foreach (var programmer in newProgrammers)
         {
-            Debug.Log("Created!!");
             StageManager.Instance.Unit.AddProgrammer(programmer);
             StageManager.Instance.StageUi.SetNewProgrammer(programmer);
 
