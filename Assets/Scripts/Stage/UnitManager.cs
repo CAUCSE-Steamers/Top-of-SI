@@ -219,6 +219,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         RegisterEventsToProgrammer(newProgrammer);
 
         newProgrammer.Status.RemainingVacationDay = initialMaximumVacationDay;
+        CheckProgrammerFormation(Vector3.zero);
     }
 
     public void CheckProgrammerFormation(Vector3 position)
