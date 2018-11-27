@@ -31,12 +31,7 @@ namespace Model
             MainStageLevel = 0;
             ClearedStageNames = new List<string>();
 
-            ProgrammerSpecs = new List<ProgrammerSpec>
-            {
-                new ProgrammerSpec(),
-                new ProgrammerSpec(),
-                new ProgrammerSpec()
-            };
+            ProgrammerSpecs = new List<ProgrammerSpec>();
         }
 
         public XElement ToXmlElement()

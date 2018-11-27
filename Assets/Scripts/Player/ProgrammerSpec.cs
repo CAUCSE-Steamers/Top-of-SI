@@ -24,8 +24,8 @@ namespace Model
             Status = new ProgrammerStatus
             {
                 PortraitName = "UnityChan",
-                FullHealth = 10,
-                Health = 10,
+                FullHealth = 50,
+                Health = 50,
                 Name = "테스트 보스"
             };
         }
