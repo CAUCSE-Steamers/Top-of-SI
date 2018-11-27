@@ -161,6 +161,11 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
             SubStages.Where(stage => CurrentPlayer.ClearedStageNames.Contains(stage.Title) == false)
         );
 
+        if (currentAvailableStages.Count == 0)
+        {
+            CommonLogger.Log("++++++++++++++++++++++++ GAME CLEAR ++++++++++++++++++++++++++++");
+        }
+
         SelectedStage = currentAvailableStages.FirstOrDefault();
     }
 
