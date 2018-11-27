@@ -173,8 +173,7 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
     {
         CurrentPlayer = new Player();
         currentAvailableStages = new List<GameStage>();
-        // TODO: Delete this
-        TempLobby();
+        allStages = new List<GameStage>();
 
         var lobbyUiObject = GameObject.Find("LobbyUi");
         if (lobbyUiObject != null)
@@ -203,17 +202,15 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
     public void LoadStages()
     {
-        var projectPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Stage.xml";
-        var rootElement = XElement.Parse(File.ReadAllText(projectPath));
+        var projectContent = ResourceLoadUtility.LoadData("Stage").text;
 
-        if (File.Exists(projectPath))
+        var rootElement = XElement.Parse(projectContent);
+
+        foreach (var stageElement in rootElement.Elements("Stage"))
         {
-            foreach (var stageElement in rootElement.Elements("Stage"))
-            {
-                var newStage = new GameStage();
-                newStage.RecoverStateFromXml(stageElement.ToString());
-                allStages.Add(newStage);
-            }
+            var newStage = new GameStage();
+            newStage.RecoverStateFromXml(stageElement.ToString());
+            allStages.Add(newStage);
         }
     }
 

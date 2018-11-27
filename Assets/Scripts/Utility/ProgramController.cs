@@ -24,4 +24,25 @@ public class ProgramController : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+
+
+    public void LoadPlayer()
+    {
+        LobbyManager.Instance.LoadPlayer();
+    }
+
+    public void SavePlayer()
+    {
+        LobbyManager.Instance.SavePlayer();
+    }
+
+    public void LoadStages()
+    {
+        LobbyManager.Instance.LoadStages();
+    }
+
+    public void SaveStages()
+    {
+        LobbyManager.Instance.SaveStages();
+    }
 }

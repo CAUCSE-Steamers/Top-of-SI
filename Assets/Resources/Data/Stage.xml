@@ -1,0 +1,41 @@
+<Stages>
+  <Stage Icon="Cpp" Title="Test Project" TimeLimit="5" Reward="100" MainStage="false">
+    <ProjectSpec>
+      <ProjectStatus Health="2" FullHealth="2" Name="TestBoss" />
+      <ProjectAbility ProjectType="0" TechType="8192">
+        <Skills>
+          <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
+            <ProjSkillInfo SkillType="2" TechType="8192" MaxLevel="1" Animation="Attack" />
+            <Specialized Damage="10" />
+          </ProjectSkill>
+        </Skills>
+      </ProjectAbility>
+    </ProjectSpec>
+  </Stage>
+  <Stage Icon="CSharp" Title="Web Project" TimeLimit="4" Reward="200" MainStage="true">
+    <ProjectSpec>
+      <ProjectStatus Health="2" FullHealth="2" Name="TestBoss" />
+      <ProjectAbility ProjectType="0" TechType="8192">
+        <Skills>
+          <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
+            <ProjSkillInfo SkillType="2" TechType="8192" MaxLevel="1" Animation="Attack" />
+            <Specialized Damage="10" />
+          </ProjectSkill>
+        </Skills>
+      </ProjectAbility>
+    </ProjectSpec>
+  </Stage>
+  <Stage Icon="Java" Title="iOS Project" TimeLimit="3" Reward="300" MainStage="false">
+    <ProjectSpec>
+      <ProjectStatus Health="2" FullHealth="2" Name="TestBoss" />
+      <ProjectAbility ProjectType="0" TechType="8192">
+        <Skills>
+          <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
+            <ProjSkillInfo SkillType="2" TechType="8192" MaxLevel="1" Animation="Attack" />
+            <Specialized Damage="10" />
+          </ProjectSkill>
+        </Skills>
+      </ProjectAbility>
+    </ProjectSpec>
+  </Stage>
+</Stages>

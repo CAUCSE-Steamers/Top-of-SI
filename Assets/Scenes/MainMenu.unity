@@ -697,7 +697,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 722211443}
+      - m_Target: {fileID: 954376565}
         m_MethodName: LoadPlayer
         m_Mode: 1
         m_Arguments:
@@ -709,7 +709,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 954376565}
-        m_MethodName: 
+        m_MethodName: LoadStages
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
