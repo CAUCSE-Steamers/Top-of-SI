@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -144,7 +145,7 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
         if (CurrentPlayer.Money < 0)
         {
-            CommonLogger.Log("++++++++++++++++++++++++ GAME OVER ++++++++++++++++++++++++++++");
+            SceneManager.LoadScene("GameOver");
         }
 
         lobbyUi.UpdateMoney(CurrentPlayer.Money);
@@ -161,9 +162,9 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
             SubStages.Where(stage => CurrentPlayer.ClearedStageNames.Contains(stage.Title) == false)
         );
 
-        if (currentAvailableStages.Count == 0)
+        if (MainStages.Count() == 0)
         {
-            CommonLogger.Log("++++++++++++++++++++++++ GAME CLEAR ++++++++++++++++++++++++++++");
+            SceneManager.LoadScene("GameClear");
         }
 
         SelectedStage = currentAvailableStages.FirstOrDefault();
