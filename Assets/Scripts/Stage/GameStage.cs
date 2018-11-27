@@ -91,11 +91,13 @@ namespace Model
 
             Boss = new ProjectSpec();
             Boss.RecoverStateFromXml(rootElement.Element("ProjectSpec").ToString());
+
+            objectives.Clear();
+            objectives.Add(new ElapsedDayObjective(this));
         }
 
         public XElement ToXmlElement()
         {
-            // TODO: objectives?
             return new XElement("Stage",
                 new XAttribute("Title", Title),
                 new XAttribute("TimeLimit", ElapsedDayLimit),
