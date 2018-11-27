@@ -37,7 +37,24 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         }
     }
 
-    List<GameStage> stages;
+    private List<GameStage> currentAvailableStages;
+    private List<GameStage> allStages;
+
+    private IEnumerable<GameStage> MainStages
+    {
+        get
+        {
+            return allStages.Where(stage => stage.MainStage == true);
+        }
+    }
+
+    private IEnumerable<GameStage> SubStages
+    {
+        get
+        {
+            return allStages.Where(stage => stage.MainStage == false);
+        }
+    }
 
     private LobbyUiPresenter lobbyUi;
 
@@ -59,7 +76,7 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
     private void TempLobby()
     {
-        stages = new List<GameStage>{
+        allStages = new List<GameStage>{
             new GameStage
             {
                 Title = "Test Project",
@@ -82,7 +99,8 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
                     Status = new TestProject().Status
                 },
                 Reward = 200,
-                IconName = "CSharp"
+                IconName = "CSharp",
+                MainStage = true
             },
             new GameStage
             {
@@ -98,28 +116,24 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
             }
         };
 
-
-
-        stages[0].AddObjectives(new List<IStageObjective>
+        allStages[0].AddObjectives(new List<IStageObjective>
             {
-                new ElapsedDayObjective(stages[0]),
+                new ElapsedDayObjective(allStages[0]),
                 new StringObjective("테스트 목표 1"),
                 new StringObjective("테스트 목표 2"),
                 new StringObjective("테스트 목표 3"),
             });
 
-        stages[1].AddObjectives(new List<IStageObjective>
+        allStages[1].AddObjectives(new List<IStageObjective>
         {
-            new ElapsedDayObjective(stages[1]),
+            new ElapsedDayObjective(allStages[1]),
             new StringObjective("테스트 목표"),
         });
-        stages[2].AddObjectives(new List<IStageObjective>
+        allStages[2].AddObjectives(new List<IStageObjective>
         {
-            new ElapsedDayObjective(stages[2]),
+            new ElapsedDayObjective(allStages[2]),
             new StringObjective("테스트 목표"),
         });
-
-        selectedStage = stages[0];
     }
 
     public void RefreshPresenter(LobbyUiPresenter presenter)
@@ -135,26 +149,44 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
         lobbyUi.UpdateMoney(CurrentPlayer.Money);
         OnChangeStage += lobbyUi.UpdateProject;
-        SelectedStage = stages[0];
+
+        currentAvailableStages = new List<GameStage>();
+        
+        if (CurrentPlayer.MainStageLevel < MainStages.Count())
+        {
+            currentAvailableStages.Add(MainStages.ElementAt(CurrentPlayer.MainStageLevel));
+        }
+
+        currentAvailableStages.AddRange(
+            SubStages.Where(stage => CurrentPlayer.ClearedStageNames.Contains(stage.Title) == false)
+        );
+
+        SelectedStage = currentAvailableStages.FirstOrDefault();
     }
 
     private void Start()
     {
         CurrentPlayer = new Player();
-        stages = new List<GameStage>();
+        currentAvailableStages = new List<GameStage>();
+        // TODO: Delete this
         TempLobby();
-     
-        RefreshPresenter(GameObject.Find("LobbyUi").GetComponent<LobbyUiPresenter>());
-        //SaveStages();
-        //LoadStages();
+
+        var lobbyUiObject = GameObject.Find("LobbyUi");
+        if (lobbyUiObject != null)
+        {
+            RefreshPresenter(GameObject.Find("LobbyUi").GetComponent<LobbyUiPresenter>());
+        }
     }
 
     public void LoadPlayer()
     {
         var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
 
-        var rootElement = XElement.Parse(File.ReadAllText(savePath));
-        CurrentPlayer.RecoverStateFromXml(rootElement.ToString());
+        if (File.Exists(savePath))
+        {
+            var rootElement = XElement.Parse(File.ReadAllText(savePath));
+            CurrentPlayer.RecoverStateFromXml(rootElement.ToString());
+        }
     }
 
     public void SavePlayer()
@@ -169,11 +201,14 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         var projectPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Stage.xml";
         var rootElement = XElement.Parse(File.ReadAllText(projectPath));
 
-        foreach (var stageElement in rootElement.Elements("Stage"))
+        if (File.Exists(projectPath))
         {
-            var newStage = new GameStage();
-            newStage.RecoverStateFromXml(stageElement.ToString());
-            stages.Add(newStage);
+            foreach (var stageElement in rootElement.Elements("Stage"))
+            {
+                var newStage = new GameStage();
+                newStage.RecoverStateFromXml(stageElement.ToString());
+                allStages.Add(newStage);
+            }
         }
     }
 
@@ -181,28 +216,28 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
     {
         var projectPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Stage.xml";
         var stageRootElement = new XElement("Stages",
-            stages.Select(stage => stage.ToXmlElement()));
+            allStages.Select(stage => stage.ToXmlElement()));
 
         File.WriteAllText(projectPath, stageRootElement.ToString());
     }
 
     public void ChangeToNextProject()
     {
-        var index = stages.IndexOf(selectedStage);
+        var index = currentAvailableStages.IndexOf(selectedStage);
 
-        if (index == (stages.Count - 1))
+        if (index == (currentAvailableStages.Count - 1))
         {
             return;
         }
         else
         {
-            SelectedStage = stages[index + 1];
+            SelectedStage = currentAvailableStages[index + 1];
         }
     }
 
     public void ChangeToPreviousProject()
     {
-        var index = stages.IndexOf(selectedStage);
+        var index = currentAvailableStages.IndexOf(selectedStage);
 
         if (index == 0)
         {
@@ -210,13 +245,13 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         }
         else
         {
-            SelectedStage = stages[index - 1];
+            SelectedStage = currentAvailableStages[index - 1];
         }
     }
 
     bool isFirstProject(GameStage stage)
     {
-        if (stages.IndexOf(stage) == 0)
+        if (currentAvailableStages.IndexOf(stage) == 0)
         {
             return true;
         }
@@ -228,7 +263,7 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
     bool isLastProject(GameStage stage)
     {
-        if (stages.IndexOf(stage) == (stages.Count - 1))
+        if (currentAvailableStages.IndexOf(stage) == (currentAvailableStages.Count - 1))
         {
             return true;
         }
