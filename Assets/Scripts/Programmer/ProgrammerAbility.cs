@@ -35,6 +35,8 @@ namespace Model
         {
             var element = XElement.Parse(rawXml);
 
+            acquiredActiveSkills.Clear();
+
             foreach (var skillElement in element.Element("AcquiredSkills").Elements())
             {
                 acquiredActiveSkills.Add(ActiveSkill.ParseXml(skillElement));

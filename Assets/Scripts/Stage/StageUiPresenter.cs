@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Collections.Generic;
 using System;
+using System.Text;
 using System.Linq;
 using Model;
 
@@ -21,6 +22,24 @@ public class StageUiPresenter : MonoBehaviour
     private FinishPresenter failurePresenter;
     [SerializeField]
     private GameObject blockingUi;
+    [SerializeField]
+    private ModalPresenter modalPresenter;
+    [SerializeField]
+    private AlternativeProgrammerSelectPresenter alternativeProgrammerPresenter;
+
+    public void SetNewProgrammer(Programmer newProgrammer)
+    {
+        var idleState = stateAnimator.GetBehaviour<IdleState>();
+        idleState.AddProgrammerEvent(newProgrammer);
+        
+        newProgrammer.OnActionStarted += () =>
+        {
+            objectInformationPresenter.ResetInformationUi();
+            SetBlockUiState(true);
+        };
+
+        newProgrammer.OnActionFinished += () => SetBlockUiState(false);
+    }
 
     private void Start()
     {
@@ -298,5 +317,43 @@ public class StageUiPresenter : MonoBehaviour
     public void RenderPlayerText(string text)
     {
         stageNoticeUiPresenter.RenderPlayerText(text);
+    }
+
+    public void RenderDeathText(IEnumerable<Programmer> deadProgrammers)
+    {
+        modalPresenter.SetActive(true);
+
+        var names = string.Join(", ", deadProgrammers.Select(programmer => programmer.Status.Name).ToArray());
+        var deadBodyText = string.Format("프로그래머 {0}가 업무를 감당하지 못하고 퇴사했습니다!", names);
+
+        modalPresenter.AddClickAction(() => RenderAlternativeProgrammerSelection(deadProgrammers));
+        
+        modalPresenter.Present("퇴사!", deadBodyText);
+    }
+
+    public void RenderAlternativeProgrammerSelection(IEnumerable<Programmer> deadProgrammers)
+    {
+        modalPresenter.SetActive(false);
+        alternativeProgrammerPresenter.gameObject.SetActive(true);
+        alternativeProgrammerPresenter.DeadProgrammers = deadProgrammers;
+        alternativeProgrammerPresenter.Present(StageManager.Instance.Unit.Programmers);
+    }
+
+    public void RenderPaymentText(IEnumerable<Programmer> deadProgrammers)
+    {
+        modalPresenter.ResetClickAction();
+
+        modalPresenter.AddClickAction(() =>
+        {
+            modalPresenter.ResetClickAction();
+            modalPresenter.SetActive(false);
+        });
+
+        var names = string.Join(", ", deadProgrammers.Select(programmer => programmer.Status.Name).ToArray());
+        int payment = deadProgrammers.Aggregate(0, (totalPay, programmer) => totalPay + programmer.Status.Cost.Fire);
+
+        LobbyManager.Instance.CurrentPlayer.Money -= payment;
+        modalPresenter.Present("퇴직금 지출",
+            string.Format("프로그래머 {0}의 퇴직금으로 총 {1} 골드가 소모되었습니다.", names, payment));
     }
 }

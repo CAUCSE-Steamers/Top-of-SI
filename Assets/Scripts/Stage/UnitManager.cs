@@ -32,6 +32,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     private AbstractProject boss;
     private TurnState currentTurn;
     private Field stageField;
+    private int initialMaximumVacationDay;
 
     public IEnumerable<Programmer> Programmers
     {
@@ -86,9 +87,9 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         OnTurnChanged += PermitProgrammersActionIfTurnChangedToPlayer;
         OnTurnChanged += ApplyBurfsIfTurnChangedToPlayer;
         OnTurnChanged += DecreaseActiveSkillCooldownIfTurnChangedToPlayer;
-        programmerActingDictionary =
-            programmers.ToDictionary(keySelector: programmer => programmer,
-                                     elementSelector: programmer => false);
+
+        programmerActingDictionary = programmers.ToDictionary(keySelector: programmer => programmer,
+                                                              elementSelector: programmer => false);
 
         this.boss = boss;
         this.stageField = stageField;
@@ -106,20 +107,34 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         if (turn == TurnState.Player)
         {
-            foreach (var programmer in Programmers.Where(programmer => programmer.IsAlive == false)
-                                                  .ToList())
+            int totalSeverancePay = 0;
+            var deadProgrammers = Programmers.Where(programmer => programmer.IsAlive == false)
+                                             .ToList();
+
+            foreach (var programmer in deadProgrammers)
             {
                 CommonLogger.LogFormat("UnitManager::RemoveDeadPlayerIfTurnChangedToPlayer => 프로그래머 {0}가 사망하여 스테이지 내에서 제외됨.", programmer.Status.Name);
                 programmerActingDictionary.Remove(programmer);
+                totalSeverancePay += programmer.Status.Cost.Fire;
+            }
+
+            if (totalSeverancePay > 0)
+            {
+                if (Turn != TurnState.GameEnd)
+                {
+                    StageManager.Instance.StageUi.RenderDeathText(deadProgrammers);
+                }
+                // TODO: Spend money!
             }
         }
     }
 
     private void SetVacationLimitToProgrammers()
     {
+        initialMaximumVacationDay = StageManager.Instance.CurrentStage.ElapsedDayLimit / 3;
         foreach (var programmer in Programmers)
         {
-            programmer.Status.RemainingVacationDay = StageManager.Instance.CurrentStage.ElapsedDayLimit / 3;
+            programmer.Status.RemainingVacationDay = initialMaximumVacationDay;
         }
     }
 
@@ -147,51 +162,64 @@ public class UnitManager : MonoBehaviour, IEventDisposable
     {
         foreach (var programmer in programmerActingDictionary.Keys)
         {
-            programmer.OnActionStarted += () =>
-            {
-                StageManager.Instance.StageField.BlockCellClicking();
-
-                foreach (var prog in Programmers)
-                {
-                    prog.gameObject.layer = 2;
-                }
-            };
-
-            programmer.OnActionFinished += () =>
-            {
-                StageManager.Instance.StageField.UnblockCellClicking();
-
-                foreach (var prog in Programmers)
-                {
-                    prog.gameObject.layer = Programmer.Layer;
-                }
-
-                programmerActingDictionary[programmer] = true;
-                CheckProgrammerFormation(Vector3.zero);
-                ChangeTurnToBossIfAllProgrammersPerformAction();
-            };
-
-            programmer.OnDeath += () =>
-            {
-                var currentProgrammers = Programmers.ToList();
-                if (currentProgrammers.All(stageProgrammer => stageProgrammer.IsAlive == false) &&
-                    Turn != TurnState.GameEnd)
-                {
-                    Turn = TurnState.GameEnd;
-                    StageManager.Instance.StageUi.TransitionToFailure("프로젝트에 투입된 모든 프로그래머가 퇴사했습니다!");
-                }
-
-                var deadProgrammerSpec = LobbyManager.Instance.CurrentPlayer
-                                                              .ProgrammerSpecs
-                                                              .Where(spec => spec.Ability.Equals(programmer.Ability) &&
-                                                                             spec.Status.Equals(programmer.Status))
-                                                              .Single();
-
-                LobbyManager.Instance.CurrentPlayer.ProgrammerSpecs.Remove(deadProgrammerSpec);
-            };
-
+            RegisterEventsToProgrammer(programmer);
             CheckProgrammerFormation(programmer.transform.position);
         }
+    }
+
+    private void RegisterEventsToProgrammer(Programmer programmer)
+    {
+        programmer.OnActionStarted += () =>
+        {
+            StageManager.Instance.StageField.BlockCellClicking();
+
+            foreach (var prog in Programmers)
+            {
+                prog.gameObject.layer = 2;
+            }
+        };
+
+        programmer.OnActionFinished += () =>
+        {
+            StageManager.Instance.StageField.UnblockCellClicking();
+
+            foreach (var prog in Programmers)
+            {
+                prog.gameObject.layer = Programmer.Layer;
+            }
+
+            programmerActingDictionary[programmer] = true;
+            CheckProgrammerFormation(Vector3.zero);
+            ChangeTurnToBossIfAllProgrammersPerformAction();
+        };
+
+        programmer.OnDeath += () =>
+        {
+            var currentProgrammers = Programmers.ToList();
+            if (currentProgrammers.All(stageProgrammer => stageProgrammer.IsAlive == false) &&
+                Turn != TurnState.GameEnd)
+            {
+                Turn = TurnState.GameEnd;
+                StageManager.Instance.StageUi.TransitionToFailure("프로젝트에 투입된 모든 프로그래머가 퇴사했습니다!");
+            }
+
+            var deadProgrammerSpec = LobbyManager.Instance.CurrentPlayer
+                                                          .ProgrammerSpecs
+                                                          .Where(spec => spec.Ability.Equals(programmer.Ability) &&
+                                                                         spec.Status.Equals(programmer.Status))
+                                                          .Single();
+
+            LobbyManager.Instance.CurrentPlayer.ProgrammerSpecs.Remove(deadProgrammerSpec);
+        };
+    }
+
+    public void AddProgrammer(Programmer newProgrammer)
+    {
+        programmerActingDictionary.Add(newProgrammer, false);
+        RegisterEventsToProgrammer(newProgrammer);
+
+        newProgrammer.Status.RemainingVacationDay = initialMaximumVacationDay;
+        CheckProgrammerFormation(Vector3.zero);
     }
 
     public void CheckProgrammerFormation(Vector3 position)

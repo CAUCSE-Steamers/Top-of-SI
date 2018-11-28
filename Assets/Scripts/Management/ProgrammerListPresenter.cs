@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 using Model;
 using System;
 
@@ -13,10 +14,16 @@ public class ProgrammerListPresenter : MonoBehaviour
     [SerializeField]
     private Transform programmerPanelObject;
     
-    public void Present()
+    public void Present(IEnumerable<ProgrammerSpec> specs)
     {
         RemoveExistingCells();
-        ConstructCells();
+        ConstructCells(specs);
+    }
+
+    private void SetCellBlocked(GameObject cellObject)
+    {
+        var cellButton = cellObject.GetComponentInChildren<Button>();
+        cellButton.enabled = false;
     }
 
     private void RemoveExistingCells()
@@ -30,10 +37,9 @@ public class ProgrammerListPresenter : MonoBehaviour
         }
     }
 
-    private void ConstructCells()
+    private void ConstructCells(IEnumerable<ProgrammerSpec> specs)
     {
-        var currentPlayer = LobbyManager.Instance.CurrentPlayer;
-        foreach (var programmerSpec in currentPlayer.ProgrammerSpecs)
+        foreach (var programmerSpec in specs)
         {
             var createdCell = Instantiate(programmerCellTemplate, programmerPanelObject);
             SetCellUi(createdCell, programmerSpec);
@@ -52,6 +58,7 @@ public class ProgrammerListPresenter : MonoBehaviour
     {
         var cellButton = cellObject.GetComponentInChildren<Button>();
         cellButton.onClick.AddListener(() => OnCellButtonClicked(cellObject, programmerSpec));
+        cellButton.interactable = true;
         cellButton.enabled = true;
     }
 }

@@ -29,7 +29,7 @@ public class ManagementPresenter : MonoBehaviour
     public void Present()
     {
         moneyText.text = currentPlayer.Money.ToString();
-        programmerListPresenter.Present();
+        programmerListPresenter.Present(LobbyManager.Instance.CurrentPlayer.ProgrammerSpecs);
         informationPresenter.Refresh();
     }
 }

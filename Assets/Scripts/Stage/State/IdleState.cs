@@ -54,6 +54,11 @@ public class IdleState : DispatchableState
         }
     }
 
+    public void AddProgrammerEvent(Programmer programmer)
+    {
+        programmer.OnMouseClicked += ChangeSelectedProgrammer;
+    }
+
     protected override void ProcessExitState()
     {
         foreach (var programmer in Manager.Unit.Programmers)
@@ -88,11 +93,25 @@ public class IdleState : DispatchableState
 
     public void TransitionToPauseState()
     {
+        var state = PlayingAnimator.GetBehaviour<PauseState>();
+
+        if (SelectedObject != null)
+        {
+            state.SelectedProgrammer = SelectedObject.GetComponent<Programmer>();
+        }
+
         PlayingAnimator.SetStateBool(StateParameter.Pause, true);
     }
 
     public void TransitionToSettingState()
     {
+        var state = PlayingAnimator.GetBehaviour<SettingState>();
+
+        if (SelectedObject != null)
+        {
+            state.SelectedProgrammer = SelectedObject.GetComponent<Programmer>();
+        }
+
         PlayingAnimator.SetStateBool(StateParameter.Setting, true);
     }
 

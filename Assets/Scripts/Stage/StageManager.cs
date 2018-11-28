@@ -138,19 +138,24 @@ public class StageManager : MonoBehaviour, IDisposable
     private void InitializeProgrammers()
     {
         Programmers.Clear();
-        HashSet<Vector3> programmerPositions = new HashSet<Vector3>();
 
-        foreach (var programmerSpec in CurrentStage.ProgrammerSpecs)
+        var newProgrammers = MakeProgrammers(LobbyManager.Instance.SelectedStage.ProgrammerSpecs);
+        foreach (var newProgrammer in newProgrammers)
+        {
+            Programmers.Add(newProgrammer);
+        }
+    }
+
+    public IEnumerable<Programmer> MakeProgrammers(IEnumerable<ProgrammerSpec> specs)
+    {
+        var newProgrammers = new List<Programmer>();
+
+        foreach (var programmerSpec in specs)
         {
             programmerSpec.Status.DisposeRegisteredEvents();
 
             var newProgrammer = Instantiate(programmerTemplate);
             var randomVector = StageField.GetRandomVector();
-
-            while (programmerPositions.Contains(randomVector))
-            {
-                randomVector = StageField.GetRandomVector();
-            }
 
             newProgrammer.transform.position = randomVector;
             newProgrammer.Ability = programmerSpec.Ability;
@@ -164,9 +169,10 @@ public class StageManager : MonoBehaviour, IDisposable
 
             newProgrammer.Status.ResetStageParameters();
 
-            programmerPositions.Add(randomVector);
-            Programmers.Add(newProgrammer);
+            newProgrammers.Add(newProgrammer);
         }
+
+        return newProgrammers;
     }
 
     private void InitializeBoss()

@@ -15,7 +15,7 @@ namespace Model
 
         public ProgrammerStatus Status
         {
-            get; private set;
+            get; set;
         }
 
         public ProgrammerSpec()
@@ -24,8 +24,8 @@ namespace Model
             Status = new ProgrammerStatus
             {
                 PortraitName = "UnityChan",
-                FullHealth = 1000,
-                Health = 1000,
+                FullHealth = 50,
+                Health = 50,
                 Name = "테스트 보스"
             };
         }

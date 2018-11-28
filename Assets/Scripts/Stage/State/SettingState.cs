@@ -13,8 +13,16 @@ public class SettingState : DispatchableState
         Time.timeScale = 1.0f;
     }
 
+    public Programmer SelectedProgrammer
+    {
+        get; set;
+    }
+
     public void TransitionToIdle()
     {
+        var state = PlayingAnimator.GetBehaviour<IdleState>();
+        state.ReserveSetSelectedObject(SelectedProgrammer.gameObject);
+
         PlayingAnimator.SetStateBool(StateParameter.Setting, false);
     }
 }
