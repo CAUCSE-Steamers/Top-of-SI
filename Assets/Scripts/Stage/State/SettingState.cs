@@ -20,8 +20,11 @@ public class SettingState : DispatchableState
 
     public void TransitionToIdle()
     {
-        var state = PlayingAnimator.GetBehaviour<IdleState>();
-        state.ReserveSetSelectedObject(SelectedProgrammer.gameObject);
+        if (SelectedProgrammer != null)
+        {
+            var state = PlayingAnimator.GetBehaviour<IdleState>();
+            state.ReserveSetSelectedObject(SelectedProgrammer.gameObject);
+        }
 
         PlayingAnimator.SetStateBool(StateParameter.Setting, false);
     }
