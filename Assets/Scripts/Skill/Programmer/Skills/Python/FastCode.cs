@@ -25,7 +25,7 @@ namespace Model
 
         public double CalculateAppliedCooldown(double baseCooldown)
         {
-            return baseCooldown * -(Information.AcquisitionLevel * 0.01);
+            return baseCooldown * (1 - (Information.AcquisitionLevel * 0.01));
         }
     }
 }
