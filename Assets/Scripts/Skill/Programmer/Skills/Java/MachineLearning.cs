@@ -25,17 +25,17 @@ namespace Model
 
         public double CalculateAppliedAccuracy(double accuracy)
         {
-            return accuracy * (1 + (Information.AcquisitionLevel * 0.01));
+            return accuracy * (Information.AcquisitionLevel * 0.01);
         }
 
         public double CalculateAppliedCooldown(double baseCooldown)
         {
-            return baseCooldown * (1 + (2 * information.AcquisitionLevel * 0.01));
+            return baseCooldown * (2 * Information.AcquisitionLevel * 0.01);
         }
 
         public double CalculateAppliedDamage(double baseDamage, ProjectType projectType, RequiredTechType techType)
         {
-            return baseDamage * (1 + (Information.AcquisitionLevel * 0.01));
+            return baseDamage * (Information.AcquisitionLevel * 0.01);
         }
     }
 }
