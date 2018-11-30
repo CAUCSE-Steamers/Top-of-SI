@@ -20,11 +20,11 @@ namespace Model
 
         private static IEnumerable<IBurf> deburfs = new List<IBurf>
         {
-            new CostIncrementBurf(1.0) { RemainingTurn = 4 },
+            new CostIncrementBurf(1.0) { RemainingTurn = defaultCooldown },
         };
 
         public IEServiceDecision() 
-            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, 3)
+            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, defaultCooldown)
         {
 
         }

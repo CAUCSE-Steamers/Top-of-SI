@@ -157,15 +157,15 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         {
             currentAvailableStages.Add(MainStages.ElementAt(CurrentPlayer.MainStageLevel));
         }
+        else
+        {
+            SceneManager.LoadScene("GameClear");
+        }
 
         currentAvailableStages.AddRange(
             SubStages.Where(stage => CurrentPlayer.ClearedStageNames.Contains(stage.Title) == false)
         );
-
-        if (MainStages.Count() == 0)
-        {
-            SceneManager.LoadScene("GameClear");
-        }
+        
 
         SelectedStage = currentAvailableStages.FirstOrDefault();
     }
