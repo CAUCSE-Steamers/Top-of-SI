@@ -7,6 +7,8 @@ namespace Model
 {
     public class IEServiceDecision : ProjectMultiDeburfSkill
     {
+        private const int defaultCooldown = 3;
+
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.MultiDeburf,
