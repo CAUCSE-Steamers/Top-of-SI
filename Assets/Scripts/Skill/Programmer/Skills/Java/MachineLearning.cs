@@ -30,7 +30,7 @@ namespace Model
 
         public double CalculateAppliedCooldown(double baseCooldown)
         {
-            return baseCooldown * (1 + (2 * information.AcquisitionLevel * 0.01));
+            return baseCooldown * (1 + (2 * Information.AcquisitionLevel * 0.01));
         }
 
         public double CalculateAppliedDamage(double baseDamage, ProjectType projectType, RequiredTechType techType)

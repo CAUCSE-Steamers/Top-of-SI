@@ -7,6 +7,8 @@ namespace Model
 {
     public class DeadLineChanged : ProjectMultiDeburfSkill
     {
+        private const int defaultCooldown = 3;
+
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.MultiDeburf,
@@ -18,12 +20,12 @@ namespace Model
 
         private static IEnumerable<IBurf> deburfs = new List<IBurf>
         {
-            new CostIncrementBurf(0.25) { RemainingTurn = 4 },
-            new MaximumLimitChangedBurf(-0.2) { RemainingTurn = 1 }
+            new CostIncrementBurf(0.25) { RemainingTurn = defaultCooldown },
+            new MaximumLimitChangedBurf(-0.2) { RemainingTurn = defaultCooldown }
         };
 
         public DeadLineChanged() 
-            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, 3)
+            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, defaultCooldown)
         {
 
         }

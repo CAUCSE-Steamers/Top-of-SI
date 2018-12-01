@@ -7,6 +7,8 @@ namespace Model
 {
     public class StaticRendering : ProjectSingleDeburfSkill
     {
+        private const int defaultCooldown = 4;
+
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.SingleDeburf,
@@ -18,11 +20,11 @@ namespace Model
 
         private static IEnumerable<IBurf> deburfs = new List<IBurf>
         {
-            new MovableBurf(false) { RemainingTurn = 2 }
+            new MovableBurf(false) { RemainingTurn = defaultCooldown }
         };
 
         public StaticRendering() 
-            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, 4)
+            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, defaultCooldown)
         {
 
         }

@@ -7,6 +7,8 @@ namespace Model
 {
     public class LackOfData : ProjectMultiDeburfSkill
     {
+        private const int defaultCooldown = 3;
+
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
             Type = ProjectSkillType.MultiDeburf,
@@ -18,11 +20,11 @@ namespace Model
 
         private static IEnumerable<IBurf> deburfs = new List<IBurf>
         {
-            new SkillDamageBurf(-0.5) { RemainingTurn = 3 }
+            new SkillDamageBurf(-0.5) { RemainingTurn = defaultCooldown }
         };
 
         public LackOfData() 
-            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, 3)
+            : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, defaultCooldown)
         {
 
         }

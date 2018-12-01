@@ -208,7 +208,7 @@ namespace Model
                 foreach (var passiveSkill in AuxiliaryPassiveSkills.OfType<T>()
                                                                    .Where(passiveSkill => (passiveSkill as PassiveSkill).Information.AcquisitionLevel > 0))
                 {
-                    additionalValue += (baseValue - valueApplyingFunction(passiveSkill));
+                    additionalValue += (valueApplyingFunction(passiveSkill) - baseValue);
                 }
             }
 

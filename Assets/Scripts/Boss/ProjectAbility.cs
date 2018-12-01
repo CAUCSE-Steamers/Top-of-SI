@@ -15,7 +15,8 @@ namespace Model
             {
                 Techtype = Techtype | iter.Information.Technique;
             }
-            ProjType = ProjType;
+
+            ProjType = projectType;
         }
 
         public IEnumerable<ProjectSkill> ProjectSkills

@@ -25,7 +25,7 @@ namespace Model
 
         public double CalculateAppliedAccuracy(double accuracy)
         {
-            return accuracy * (1 + (information.AcquisitionLevel * 0.01));
+            return accuracy * (1 + (Information.AcquisitionLevel * 0.01));
         }
     }
 }
