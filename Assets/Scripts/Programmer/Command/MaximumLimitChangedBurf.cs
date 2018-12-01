@@ -65,6 +65,7 @@ namespace Model
         public void Modify(GameStage stage)
         {
             var statusManager = StageManager.Instance.Status;
+            stage.ElapsedDayLimit = (int) (statusManager.MaximumDayLimit * (1 + IncreasingRatio));
             statusManager.MaximumDayLimit = (int) (statusManager.MaximumDayLimit * (1 + IncreasingRatio));
 
             CommonLogger.LogFormat("MaximumLimitChangedBurf::Modify => 프로젝트의 기한이 {0}배 증가함. 현재 : {1}", IncreasingRatio, statusManager.MaximumDayLimit);

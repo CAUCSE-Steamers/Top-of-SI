@@ -106,5 +106,15 @@ namespace Model
                 new XAttribute("Icon", IconName),
                 Boss.ToXmlElement());
         }
+
+        public void AddObjective(IStageObjective stageObjective)
+        {
+            objectives.Add(stageObjective);
+        }
+
+        public void ClearObjectives()
+        {
+            objectives.Clear();
+        }
     }
 }
