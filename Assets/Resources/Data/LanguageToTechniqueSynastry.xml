@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Synastry>
   <Key Name="C">
-    <Matched Name="Web" Value="0.5" />
-    <Matched Name="Server" Value="1.4" />
-    <Matched Name="Android" Value="0.5" />
-    <Matched Name="Network" Value="1.2" />
-    <Matched Name="Desktop" Value="1" />
-    <Matched Name="Embedded" Value="2" />
-    <Matched Name="Database" Value="1" />
-    <Matched Name="DataAnalysis" Value="0.8" />
-    <Matched Name="Ui" Value="0.5" />
-    <Matched Name="Ai" Value="1.1" />
-    <Matched Name="Compiler" Value="2" />
-    <Matched Name="MultiProgramming" Value="1.2" />
-    <Matched Name="Graphic" Value="1.6" />
+    <Matched Name="Web" Value="-0.5" />
+    <Matched Name="Server" Value="0.4" />
+    <Matched Name="Android" Value="-0.5" />
+    <Matched Name="Network" Value="0.2" />
+    <Matched Name="Desktop" Value="0" />
+    <Matched Name="Embedded" Value="1" />
+    <Matched Name="Database" Value="0" />
+    <Matched Name="DataAnalysis" Value="-0.2" />
+    <Matched Name="Ui" Value="-0.5" />
+    <Matched Name="Ai" Value="0.1" />
+    <Matched Name="Compiler" Value="1" />
+    <Matched Name="MultiProgramming" Value="0.2" />
+    <Matched Name="Graphic" Value="0.6" />
   </Key>
   <Key Name="CPlusPlus">
     <Matched Name="Web" Value="-0.4" />
