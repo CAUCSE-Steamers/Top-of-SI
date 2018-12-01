@@ -38,6 +38,7 @@ namespace Model
 
         public override void Hurt(int damage)
         {
+            damage = Mathf.Clamp(damage, 0, int.MaxValue);
             Status.Health = Mathf.Clamp(Status.Health - damage, 0, int.MaxValue);
 
             if (Status.Health <= 0)
