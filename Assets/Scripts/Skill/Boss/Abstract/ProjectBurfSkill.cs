@@ -34,7 +34,7 @@ namespace Model
             var rootElement = XElement.Parse(rawXml);
 
             var structures = new List<BurfStructure>();
-            foreach (var element in rootElement.Elements("DeburfStructure"))
+            foreach (var element in rootElement.Elements("BurfStructure"))
             {
                 var deburf = new BurfStructure(BurfType.None, 0, 0.0);
                 deburf.RecoverStateFromXml(element.ToString());
