@@ -172,7 +172,8 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
     private void Start()
     {
-        CurrentPlayer = new Player();
+        LoadDefaultPlayer();
+
         currentAvailableStages = new List<GameStage>();
         allStages = new List<GameStage>();
 
@@ -183,8 +184,15 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         }
     }
 
+    public void LoadDefaultPlayer()
+    {
+        CurrentPlayer = new Player();
+    }
+
     public void LoadPlayer()
     {
+        LoadDefaultPlayer();
+
         var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
 
         if (File.Exists(savePath))
@@ -203,6 +211,9 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
     public void LoadStages()
     {
+        currentAvailableStages = new List<GameStage>();
+        allStages = new List<GameStage>();
+
         var projectContent = ResourceLoadUtility.LoadData("Stage").text;
 
         var rootElement = XElement.Parse(projectContent);
