@@ -1,20 +1,20 @@
 <Stages>
   <Stage Icon="Cpp" Title="Web Front-end" TimeLimit="8" Reward="800" MainStage="false">
     <ProjectSpec>
-      <ProjectStatus Health="6" FullHealth="6" Name="Team 12" />
+      <ProjectStatus Health="30" FullHealth="30" Name="Team 12" />
       <ProjectAbility ProjectType="1" TechType="513">
         <Skills>
           <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
             <ProjSkillInfo SkillType="2" TechType="8192" MaxLevel="1" Animation="Attack" />
             <Specialized Damage="10" />
           </ProjectSkill>
-          <ProjectSkill Type="Model.RequirementChanged" Cooldown="0">
+          <ProjectSkill Type="Model.RequirementChanged" Cooldown="3">
             <ProjSkillInfo SkillType="0" TechType="8192" MaxLevel="1" Animation="Shout" />
             <Specialized>
               <BurfStructure Type="1" Turn="0" Factor="0.1" />
             </Specialized>
           </ProjectSkill>
-          <ProjectSkill Type="Model.DeadLineChanged" Cooldown="0">
+          <ProjectSkill Type="Model.DeadLineChanged" Cooldown="3">
             <ProjSkillInfo SkillType="8" TechType="8192" MaxLevel="1" Animation="Shout" />
             <Specialized />
           </ProjectSkill>
@@ -32,20 +32,20 @@
   </Stage>
   <Stage Icon="JavaScript" Title="Visualization Program" TimeLimit="6" Reward="500" MainStage="true">
     <ProjectSpec>
-      <ProjectStatus Health="15" FullHealth="15" Name="Visualizer" />
+      <ProjectStatus Health="75" FullHealth="75" Name="Visualizer" />
       <ProjectAbility ProjectType="1" TechType="4097">
         <Skills>
           <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
             <ProjSkillInfo SkillType="2" TechType="8192" MaxLevel="1" Animation="Attack" />
             <Specialized Damage="10" />
           </ProjectSkill>
-          <ProjectSkill Type="Model.RequirementChanged" Cooldown="0">
+          <ProjectSkill Type="Model.RequirementChanged" Cooldown="3">
             <ProjSkillInfo SkillType="0" TechType="8192" MaxLevel="1" Animation="Shout" />
             <Specialized>
               <BurfStructure Type="1" Turn="0" Factor="0.1" />
             </Specialized>
           </ProjectSkill>
-          <ProjectSkill Type="Model.DeadLineChanged" Cooldown="0">
+          <ProjectSkill Type="Model.DeadLineChanged" Cooldown="3">
             <ProjSkillInfo SkillType="8" TechType="8192" MaxLevel="1" Animation="Shout" />
             <Specialized />
           </ProjectSkill>
@@ -63,20 +63,20 @@
   </Stage>
   <Stage Icon="CSharp" Title="Chat Application" TimeLimit="13" Reward="1200" MainStage="false">
     <ProjectSpec>
-      <ProjectStatus Health="40" FullHealth="40" Name="Mococo Talk" />
+      <ProjectStatus Health="400" FullHealth="400" Name="Mococo Talk" />
       <ProjectAbility ProjectType="2" TechType="536">
         <Skills>
           <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
             <ProjSkillInfo SkillType="2" TechType="8192" MaxLevel="1" Animation="Attack" />
             <Specialized Damage="10" />
           </ProjectSkill>
-          <ProjectSkill Type="Model.RequirementChanged" Cooldown="0">
+          <ProjectSkill Type="Model.RequirementChanged" Cooldown="3">
             <ProjSkillInfo SkillType="0" TechType="8192" MaxLevel="1" Animation="Shout" />
             <Specialized>
               <BurfStructure Type="1" Turn="0" Factor="0.1" />
             </Specialized>
           </ProjectSkill>
-          <ProjectSkill Type="Model.DeadLineChanged" Cooldown="0">
+          <ProjectSkill Type="Model.DeadLineChanged" Cooldown="3">
             <ProjSkillInfo SkillType="8" TechType="8192" MaxLevel="1" Animation="Shout" />
             <Specialized />
           </ProjectSkill>
@@ -102,20 +102,20 @@
   </Stage>
   <Stage Icon="Java" Title="Analysis Tool" TimeLimit="19" Reward="3000" MainStage="true">
     <ProjectSpec>
-      <ProjectStatus Health="75" FullHealth="75" Name="Team 4" />
+      <ProjectStatus Health="750" FullHealth="750" Name="Team 4" />
       <ProjectAbility ProjectType="2" TechType="4504">
         <Skills>
           <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
             <ProjSkillInfo SkillType="2" TechType="8192" MaxLevel="1" Animation="Attack" />
             <Specialized Damage="10" />
           </ProjectSkill>
-          <ProjectSkill Type="Model.RequirementChanged" Cooldown="0">
+          <ProjectSkill Type="Model.RequirementChanged" Cooldown="3">
             <ProjSkillInfo SkillType="0" TechType="8192" MaxLevel="1" Animation="Shout" />
             <Specialized>
               <BurfStructure Type="1" Turn="0" Factor="0.1" />
             </Specialized>
           </ProjectSkill>
-          <ProjectSkill Type="Model.DeadLineChanged" Cooldown="0">
+          <ProjectSkill Type="Model.DeadLineChanged" Cooldown="3">
             <ProjSkillInfo SkillType="8" TechType="8192" MaxLevel="1" Animation="Shout" />
             <Specialized />
           </ProjectSkill>
