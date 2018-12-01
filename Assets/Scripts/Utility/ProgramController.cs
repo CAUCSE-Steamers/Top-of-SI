@@ -25,6 +25,10 @@ public class ProgramController : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    public void LoadDefaultPlayer()
+    {
+        LobbyManager.Instance.LoadDefaultPlayer();
+    }
 
     public void LoadPlayer()
     {
