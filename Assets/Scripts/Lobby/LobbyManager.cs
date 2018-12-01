@@ -163,7 +163,8 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         }
 
         currentAvailableStages.AddRange(
-            SubStages.Where(stage => CurrentPlayer.ClearedStageNames.Contains(stage.Title) == false)
+            SubStages
+    //        SubStages.Where(stage => CurrentPlayer.ClearedStageNames.Contains(stage.Title) == false)
         );
         
 
