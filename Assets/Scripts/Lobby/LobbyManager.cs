@@ -194,7 +194,11 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
     {
         LoadDefaultPlayer();
 
+#if UNITY_EDITOR || UNITY_STANDALONE
         var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
+#else
+        var savePath = Application.persistentDataPath + "/Player.xml";
+#endif
 
         if (File.Exists(savePath))
         {
@@ -205,7 +209,11 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
     public void SavePlayer()
     {
+#if UNITY_EDITOR || UNITY_STANDALONE
         var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
+#else
+        var savePath = Application.persistentDataPath + "/Player.xml";
+#endif
 
         File.WriteAllText(savePath, CurrentPlayer.ToXmlElement().ToString());
     }
@@ -229,7 +237,12 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
 
     public void SaveStages()
     {
+#if UNITY_EDITOR || UNITY_STANDALONE
         var projectPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Stage.xml";
+#else
+        var projectPath = Application.persistentDataPath + "/Stage.xml";
+#endif
+
         var stageRootElement = new XElement("Stages",
             allStages.Select(stage => stage.ToXmlElement()));
 
