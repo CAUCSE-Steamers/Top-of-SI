@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Model
 {
-    public class DeadLineChanged : ProjectMultiDeburfSkill
+    public class DeadLineChanged : ProjectMultiDeburfSkill, ISoundProducible
     {
         private const int defaultCooldown = 3;
 
@@ -28,6 +29,14 @@ namespace Model
             : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, defaultCooldown)
         {
 
+        }
+
+        public AudioClip EffectSound
+        {
+            get
+            {
+                return ResourceLoadUtility.LoadEffectClip("Roar");
+            }
         }
     }
 }

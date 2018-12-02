@@ -30,7 +30,7 @@ namespace Model
         {
             get
             {
-                return ResourceLoadUtility.LoadEffectClip("Cannon");
+                return ResourceLoadUtility.LoadEffectClip("Sniper");
             }
         }
 

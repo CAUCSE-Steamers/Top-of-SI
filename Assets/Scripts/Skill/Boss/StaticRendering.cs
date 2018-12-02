@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Model
 {
-    public class StaticRendering : ProjectSingleDeburfSkill
+    public class StaticRendering : ProjectSingleDeburfSkill, ISoundProducible
     {
         private const int defaultCooldown = 4;
 
@@ -27,6 +28,14 @@ namespace Model
             : base(new List<IBurf>(deburfs.Select(deburf => deburf.Clone())), information, defaultCooldown)
         {
 
+        }
+
+        public AudioClip EffectSound
+        {
+            get
+            {
+                return ResourceLoadUtility.LoadEffectClip("monster2");
+            }
         }
     }
 }

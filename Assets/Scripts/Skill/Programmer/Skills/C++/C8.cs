@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Model
 {
-    public class C8 : ActiveSkill
+    public class C8 : ActiveSkill, ISoundProducible
     {
         private static SkillBasicInformation information = new SkillBasicInformation
         {
@@ -23,6 +24,14 @@ namespace Model
         {
             Accuracy = 0.9;
             Cost = 4;
+        }
+
+        public AudioClip EffectSound
+        {
+            get
+            {
+                return ResourceLoadUtility.LoadEffectClip("Mortar Round");
+            }
         }
 
         public override void LevelUP()
