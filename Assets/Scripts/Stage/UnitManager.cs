@@ -270,7 +270,7 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 prog.gameObject.layer = 2;
             }
 
-            StartCoroutine(Delay(0.15f, () => Turn = TurnState.Boss));
+            StartCoroutine(Delay(0.25f, () => Turn = TurnState.Boss));
         }
         else if (currentTurn == TurnState.GameEnd)
         {
@@ -313,6 +313,15 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청하려 했으나, 모든 프로그래머가 휴가 중이므로 취소됨.");
 
                 StageManager.Instance.StageUi.RenderPlayerText("프로젝트가 아무런 행동도 수행하지 않았습니다.");
+
+                StageManager.Instance.StageField.UnblockCellClicking();
+                StageManager.Instance.StageUi.SetBlockUiState(false);
+
+                foreach (var prog in Programmers)
+                {
+                    prog.gameObject.layer = Programmer.Layer;
+                }
+
                 boss.InvokeFinished();
                 return;
             }
