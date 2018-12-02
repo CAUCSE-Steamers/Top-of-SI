@@ -72,7 +72,7 @@ public class StageUiPresenter : MonoBehaviour
         objectInformationPresenter.OnSkillInvoked += InvokeSkill;
     }
 
-    private void SetBlockUiState(bool newState)
+    public void SetBlockUiState(bool newState)
     {
         blockingUi.SetActive(newState);
     }
