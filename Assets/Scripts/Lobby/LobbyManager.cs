@@ -195,9 +195,9 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
         LoadDefaultPlayer();
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-        var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
+        var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Player.xml";
 #else
-        var savePath = Application.persistentDataPath + "/Player.xml";
+        var savePath = Application.persistentDataPath + @"\Player.xml";
 #endif
 
         if (File.Exists(savePath))
@@ -210,9 +210,9 @@ public class LobbyManager : MonoBehaviour, IEventDisposable
     public void SavePlayer()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
-        var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Player.xml";
+        var savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Player.xml";
 #else
-        var savePath = Application.persistentDataPath + "/Player.xml";
+        var savePath = Application.persistentDataPath + @"\Player.xml";
 #endif
 
         File.WriteAllText(savePath, CurrentPlayer.ToXmlElement().ToString());
