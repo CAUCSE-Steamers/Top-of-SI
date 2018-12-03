@@ -14,7 +14,7 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 40,
             IconName = "C",
-            RequiredUpgradeCost = 4,
+            RequiredUpgradeCost = 5,
             DescriptionFunc = level => string.Format("C 언어로 개발한 코드를 다른 곳에 적용할 수 있습니다. C 언어 공격의 쿨타임이 {0}% 감소합니다.", level)
         };
 

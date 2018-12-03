@@ -15,7 +15,7 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 10,
             IconName = "Python",
-            RequiredUpgradeCost = 1,
+            RequiredUpgradeCost = 2,
             DescriptionFunc = level => string.Format("Python으로 코드를 작성합니다. 프로젝트에게 {0}의 데미지를 입힙니다. (쿨타임 1턴, 명중률 80%)", level)
         };
 
