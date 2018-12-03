@@ -283,7 +283,7 @@ public class StageUiPresenter : MonoBehaviour
         
         if (isReturning)
         {
-            currentSelectedProgrammer.ReturnFromVacation(elapsedDays);
+            currentSelectedProgrammer.ReturnFromVacation(elapsedDays, false);
             ChangeProgrammerAlphaColor(currentSelectedProgrammer, 1f);
         }
 
