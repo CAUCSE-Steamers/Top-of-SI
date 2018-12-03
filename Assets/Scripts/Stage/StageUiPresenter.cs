@@ -72,7 +72,7 @@ public class StageUiPresenter : MonoBehaviour
         objectInformationPresenter.OnSkillInvoked += InvokeSkill;
     }
 
-    private void SetBlockUiState(bool newState)
+    public void SetBlockUiState(bool newState)
     {
         blockingUi.SetActive(newState);
     }
@@ -283,7 +283,7 @@ public class StageUiPresenter : MonoBehaviour
         
         if (isReturning)
         {
-            currentSelectedProgrammer.ReturnFromVacation(elapsedDays);
+            currentSelectedProgrammer.ReturnFromVacation(elapsedDays, false);
             ChangeProgrammerAlphaColor(currentSelectedProgrammer, 1f);
         }
 

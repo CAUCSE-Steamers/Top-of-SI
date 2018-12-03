@@ -44,8 +44,12 @@ public class StageNoticeUiPresenter : MonoBehaviour
     {
         StopAllCoroutines();
 
-        PlayerNoticeText.gameObject.SetActive(false);
-        PlayerNoticeText.text = string.Empty;
+        leftPlayerText.gameObject.SetActive(false);
+        rightPlayerText.gameObject.SetActive(false);
+
+        leftPlayerText.text = string.Empty;
+        rightPlayerText.text = string.Empty;
+
         BossSkillText.text = string.Empty;
 
         SetBossSkillNoticeActiveState(true);
@@ -77,7 +81,10 @@ public class StageNoticeUiPresenter : MonoBehaviour
     private IEnumerator AutomaticTurnOffText(Text text, float duration)
     {
         yield return new WaitForSeconds(duration);
-        text.gameObject.SetActive(false);
+        leftBossSkillText.gameObject.SetActive(false);
+        leftPlayerText.gameObject.SetActive(false);
+        rightBossSkillText.gameObject.SetActive(false);
+        rightPlayerText.gameObject.SetActive(false);
     }
 
     private void RenderBossSkillNotice(ProjectMultiAttackSkill multiAttackSkill)
@@ -120,10 +127,13 @@ public class StageNoticeUiPresenter : MonoBehaviour
                     noticeBuilder.AppendFormat("프로젝트가 {0}의 체력을 회복합니다!", healQuantity);
                     break;
                 case BurfType.DecreaseDamage:
+                    noticeBuilder.AppendFormat("프로젝트의 방어력이 향상됩니다!");
                     break;
                 case BurfType.Overwhelming:
+                    noticeBuilder.AppendFormat("프로젝트의 방어력이 향상됩니다!");
                     break;
                 default:
+                    noticeBuilder.AppendFormat("프로젝트에서 수상한 낌새가 감지됩니다.");
                     break;
             }
         }
@@ -135,7 +145,9 @@ public class StageNoticeUiPresenter : MonoBehaviour
     {
         StopAllCoroutines();
 
-        BossSkillText.gameObject.SetActive(false);
+        leftBossSkillText.gameObject.SetActive(false);
+        rightBossSkillText.gameObject.SetActive(false);
+
         PlayerNoticeText.gameObject.SetActive(true);
         PlayerNoticeText.text = text;
 

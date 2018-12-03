@@ -1,6 +1,7 @@
 ﻿using Model;
 using Model.Formation;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -261,7 +262,15 @@ public class UnitManager : MonoBehaviour, IEventDisposable
         {
             CommonLogger.Log("UnitManager::ChangeTurnToBossIfAllProgrammersPerformAction => 모든 프로그래머가 행동을 수행해 턴이 보스로 넘어감.");
 
-            Turn = TurnState.Boss;
+            StageManager.Instance.StageField.BlockCellClicking();
+            StageManager.Instance.StageUi.SetBlockUiState(true);
+
+            foreach (var prog in Programmers)
+            {
+                prog.gameObject.layer = 2;
+            }
+
+            StartCoroutine(Delay(0.25f, () => Turn = TurnState.Boss));
         }
         else if (currentTurn == TurnState.GameEnd)
         {
@@ -304,6 +313,15 @@ public class UnitManager : MonoBehaviour, IEventDisposable
                 CommonLogger.Log("UnitManager::RequestBossActionIfTurnChangedToBoss => 보스에게 행동을 요청하려 했으나, 모든 프로그래머가 휴가 중이므로 취소됨.");
 
                 StageManager.Instance.StageUi.RenderPlayerText("프로젝트가 아무런 행동도 수행하지 않았습니다.");
+
+                StageManager.Instance.StageField.UnblockCellClicking();
+                StageManager.Instance.StageUi.SetBlockUiState(false);
+
+                foreach (var prog in Programmers)
+                {
+                    prog.gameObject.layer = Programmer.Layer;
+                }
+
                 boss.InvokeFinished();
                 return;
             }
@@ -368,9 +386,27 @@ public class UnitManager : MonoBehaviour, IEventDisposable
 
             if (Turn != TurnState.GameEnd)
             {
-                boss.InvokeFinished();
+                StartCoroutine(Delay(0.15f, () =>
+                {
+                    StageManager.Instance.StageField.UnblockCellClicking();
+                    StageManager.Instance.StageUi.SetBlockUiState(false);
+
+                    foreach (var prog in Programmers)
+                    {
+                        prog.gameObject.layer = Programmer.Layer;
+                    }
+
+                    boss.InvokeFinished();
+                }));
             }
         }
+    }
+
+    private IEnumerator Delay(float delayTime, Action action)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        action();
     }
 
     private void ApplyDamage(Programmer programmer, double damage)

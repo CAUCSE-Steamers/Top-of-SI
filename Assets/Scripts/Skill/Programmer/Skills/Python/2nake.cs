@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Model
 {
-    public class Snake : ActiveSkill
+    public class Snake : ActiveSkill, ISoundProducible
     {
         private static SkillBasicInformation information = new SkillBasicInformation
         {
@@ -23,6 +24,14 @@ namespace Model
         {
             Accuracy = 0.8;
             Cost = 2;
+        }
+
+        public AudioClip EffectSound
+        {
+            get
+            {
+                return ResourceLoadUtility.LoadEffectClip("SilenceGun");
+            }
         }
 
         public override void LevelUP()

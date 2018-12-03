@@ -7,6 +7,15 @@ using Model;
 
 using Random = UnityEngine.Random;
 
+[Serializable]
+public class BossTemplate
+{
+    [SerializeField]
+    public ModelType modelType;
+    [SerializeField]
+    public AbstractProject boss;
+}
+
 public class StageManager : MonoBehaviour, IDisposable
 {
     public static StageManager Instance
@@ -24,7 +33,7 @@ public class StageManager : MonoBehaviour, IDisposable
     private Programmer programmerTemplate;
 
     [SerializeField]
-    private AbstractProject bossTemplate;
+    private BossTemplate[] bossTemplates;
     private StageUiPresenter uiPresenter;
 
     private void Awake()
@@ -181,7 +190,12 @@ public class StageManager : MonoBehaviour, IDisposable
 
     private void InitializeBoss()
     {
-        var newBoss = Instantiate(bossTemplate);
+        var selectedBossTemplate = bossTemplates.Where(template => template.modelType == CurrentStage.Boss.Status.Model)
+                                                .Select(template => template.boss)
+                                                .First();
+
+        var newBoss = Instantiate(selectedBossTemplate);
+
         Boss = newBoss;
         Boss.Status = CurrentStage.Boss.Status.Clone();
         Boss.Ability = CurrentStage.Boss.Ability.Clone();

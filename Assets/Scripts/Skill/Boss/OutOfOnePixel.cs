@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Model
 {
-    public class OutOfOnePixel : ProjectSingleAttackSkill
+    public class OutOfOnePixel : ProjectSingleAttackSkill, ISoundProducible
     {
         private static ProjectSkillInformation information = new ProjectSkillInformation
         {
@@ -19,6 +20,14 @@ namespace Model
         public OutOfOnePixel() : base(30, information, 2)
         {
 
+        }
+
+        public AudioClip EffectSound
+        {
+            get
+            {
+                return ResourceLoadUtility.LoadEffectClip("Stab");
+            }
         }
     }
 }

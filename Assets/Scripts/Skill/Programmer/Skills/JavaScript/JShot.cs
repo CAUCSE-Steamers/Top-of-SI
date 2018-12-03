@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Model
 {
-    public class JShot : ActiveSkill
+    public class JShot : ActiveSkill, ISoundProducible
     {
         private static SkillBasicInformation information = new SkillBasicInformation
         {
@@ -23,6 +24,14 @@ namespace Model
         {
             Accuracy = 0.5;
             Cost = 2;
+        }
+
+        public AudioClip EffectSound
+        {
+            get
+            {
+                return ResourceLoadUtility.LoadEffectClip("Cannon");
+            }
         }
 
         public override void LevelUP()
