@@ -14,7 +14,7 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 60,
             IconName = "C",
-            RequiredUpgradeCost = 4,
+            RequiredUpgradeCost = 5,
             DescriptionFunc = level => string.Format("Low-Level C 언어를 배웁니다. 스킬 데미지가 {0}% 증가합니다.", level)
         };
 

@@ -14,7 +14,7 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 10,
             IconName = "Cpp",
-            RequiredUpgradeCost = 8,
+            RequiredUpgradeCost = 5,
             DescriptionFunc = level => string.Format("연산자 오버로딩을 시작합니다. 스킬의 쿨타임과 데미지가 {0}% 증가합니다.", level * 5)
         };
 

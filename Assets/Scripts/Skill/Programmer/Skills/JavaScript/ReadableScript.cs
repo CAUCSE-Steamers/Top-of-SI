@@ -14,7 +14,7 @@ namespace Model
             AcquisitionLevel = 0,
             MaximumLevel = 20,
             IconName = "JavaScript",
-            RequiredUpgradeCost = 3,
+            RequiredUpgradeCost = 10,
             DescriptionFunc = level => string.Format("가독성 좋은 코드를 작성합니다. 스킬의 명중률이 {0}% 증가합니다.", level)
         };
 

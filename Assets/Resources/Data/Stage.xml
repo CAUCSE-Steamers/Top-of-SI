@@ -1,7 +1,7 @@
 <Stages>
   <Stage Icon="Cpp" Title="Web Front-end" TimeLimit="8" Reward="800" MainStage="false">
     <ProjectSpec>
-      <ProjectStatus Health="30" FullHealth="30" Name="Team 12" Model="Rhino" />
+      <ProjectStatus Health="30" FullHealth="30" Name="Team 12" Model="Spider" />
       <ProjectAbility ProjectType="1" TechType="513">
         <Skills>
           <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
@@ -32,7 +32,7 @@
   </Stage>
   <Stage Icon="JavaScript" Title="Visualization Program" TimeLimit="6" Reward="500" MainStage="true">
     <ProjectSpec>
-      <ProjectStatus Health="75" FullHealth="75" Name="Visualizer" Model="Rhino" />
+      <ProjectStatus Health="75" FullHealth="75" Name="Visualizer" Model="Golem" />
       <ProjectAbility ProjectType="1" TechType="4097">
         <Skills>
           <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
@@ -102,7 +102,7 @@
   </Stage>
   <Stage Icon="Java" Title="Analysis Tool" TimeLimit="19" Reward="3000" MainStage="true">
     <ProjectSpec>
-      <ProjectStatus Health="750" FullHealth="750" Name="Team 4" Model="Rhino" />
+      <ProjectStatus Health="750" FullHealth="750" Name="Team 4" Model="Golem" />
       <ProjectAbility ProjectType="2" TechType="4504">
         <Skills>
           <ProjectSkill Type="Model.VersionUpdate" Cooldown="0">
