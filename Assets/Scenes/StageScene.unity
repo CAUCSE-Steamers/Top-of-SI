@@ -5284,8 +5284,13 @@ MonoBehaviour:
   fieldSpawner: {fileID: 920565258}
   programmerTemplate: {fileID: 114151406200873448, guid: a2daeb17522b0e747914931b83fa7028,
     type: 2}
-  bossTemplate: {fileID: 114182205418394240, guid: 46792dabcd5d271409607e081dd4babf,
-    type: 2}
+  bossTemplates:
+  - modelType: 0
+    boss: {fileID: 114182205418394240, guid: 46792dabcd5d271409607e081dd4babf, type: 2}
+  - modelType: 1
+    boss: {fileID: 114800856734154706, guid: c5a967f56d8fb0241a46e943399f0fa4, type: 2}
+  - modelType: 2
+    boss: {fileID: 114004852543764240, guid: 462c13adb45118b4caf36a52a14e1adb, type: 2}
 --- !u!114 &400371153
 MonoBehaviour:
   m_ObjectHideFlags: 0

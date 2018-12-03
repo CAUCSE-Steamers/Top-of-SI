@@ -6,14 +6,18 @@ namespace Model
 {
     public class TestProject : AbstractProject
     {
+        [SerializeField]
+        private ModelType modelType;
+
         public TestProject()
         {
             Status = new ProjectStatus
             {
                 Name = "TestBoss",
                 FullHealth = 1000,
-                Health = 1000
+                Health = 1000,
             };
+
             List<ProjectSkill> skill_list = new List<ProjectSkill>
             {
                 new VersionUpdate(),
@@ -27,7 +31,6 @@ namespace Model
         void Start()
         {
             anim = GetComponent<Animator>();
-            
         }
 
         // Update is called once per frame

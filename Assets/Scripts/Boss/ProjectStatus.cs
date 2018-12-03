@@ -15,6 +15,12 @@ namespace Model
         public ProjectStatus()
         {
             FullHealth = Health;
+            Model = ModelType.Rhino;
+        }
+
+        public ModelType Model
+        {
+            get; set;
         }
 
         public string Name
@@ -47,6 +53,7 @@ namespace Model
                 Name = this.Name,
                 FullHealth = this.FullHealth,
                 Health = this.Health,
+                Model = this.Model,
                 Burf = new List<BurfStructure>(Burf.Select(burf => burf.Clone()))
             };
         }
@@ -79,6 +86,7 @@ namespace Model
         {
             return new XElement("ProjectStatus",
                     new XAttribute("Health", Health),
+                    new XAttribute("Model", Model),
                     new XAttribute("FullHealth", FullHealth),
                     new XAttribute("Name", Name));
         }
@@ -90,6 +98,8 @@ namespace Model
             Health = rootElement.AttributeValue("Health", int.Parse);
             FullHealth = rootElement.AttributeValue("FullHealth", int.Parse);
             Name = rootElement.AttributeValue("Name");
+
+            Model = (ModelType) Enum.Parse(typeof(ModelType), rootElement.AttributeValue("Model"));
         }
     }
 }
